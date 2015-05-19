@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane alignment="CENTER" hgap="10.0" prefHeight="640.0" prefWidth="342.0" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.Controller">
+  <children>
+    <StackPane prefHeight="693.0" prefWidth="394.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+      <children>
+        <VBox prefHeight="200.0" prefWidth="100.0" style="&#10;&#10;">
+          <children>
+            <TitledPane animated="false" collapsible="false" content="$null" expanded="false" text="StreamCheckor" />
+            <ListView fx:id="listView" prefHeight="155.00009999999747" prefWidth="130.9998779296875" VBox.vgrow="ALWAYS">
+              <effect>
+                <InnerShadow height="36.98601398601399" radius="17.993006993006993" width="36.98601398601399" />
+              </effect>
+            </ListView>
+            <HBox alignment="BOTTOM_LEFT" fillHeight="false" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" rotate="0.0" VBox.vgrow="NEVER">
+              <children>
+                <Button mnemonicParsing="false" text="Button" />
+                <Button mnemonicParsing="false" text="Button" />
+                <Button mnemonicParsing="false" text="Button" />
+              </children>
+            </HBox>
+          </children>
+          <effect>
+            <GaussianBlur radius="12.554054054054054" />
+          </effect>
+        </VBox>
+        <GridPane id="modalMenu" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" disable="false" focusTraversable="false" mouseTransparent="false" pickOnBounds="true" prefHeight="661.0" prefWidth="581.0" style="-fx-background-color: rgb(22, 22, 20,0.5);" styleClass="background" visible="true">
+          <children>
+            <Button blendMode="SRC_OVER" mnemonicParsing="false" prefHeight="64.0" prefWidth="290.0" text="Add Channel" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+              <effect>
+                <DropShadow height="75.42857142857143" radius="37.214285714285715" width="75.42857142857143" />
+              </effect>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="290.0" text="Settings" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+              <effect>
+                <DropShadow height="75.42857142857143" radius="37.214285714285715" width="75.42857142857143" />
+              </effect>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="290.0" text="Back" textAlignment="CENTER" textOverrun="ELLIPSIS" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+              <effect>
+                <DropShadow height="75.42857142857143" radius="37.214285714285715" width="75.42857142857143" />
+              </effect>
+            </Button>
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints maxHeight="278.0" minHeight="10.0" prefHeight="278.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+      </children>
+    </StackPane>
+  </children>
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+</GridPane>
