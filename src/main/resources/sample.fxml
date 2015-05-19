@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
 
-<GridPane alignment="CENTER" hgap="10.0" prefHeight="640.0" prefWidth="342.0" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.Controller">
+<GridPane alignment="CENTER" hgap="10.0" prefHeight="640.0" prefWidth="342.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
   <children>
     <StackPane prefHeight="693.0" prefWidth="394.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
       <children>
-        <VBox prefHeight="200.0" prefWidth="100.0" style="&#10;&#10;">
+        <VBox fx:id="blurBox" prefHeight="200.0" prefWidth="100.0" style="&#10;&#10;">
           <children>
             <TitledPane animated="false" collapsible="false" content="$null" expanded="false" text="StreamCheckor" />
             <ListView fx:id="listView" prefHeight="155.00009999999747" prefWidth="130.9998779296875" VBox.vgrow="ALWAYS">
@@ -25,15 +25,12 @@
               <children>
                 <Button mnemonicParsing="false" text="Button" />
                 <Button mnemonicParsing="false" text="Button" />
-                <Button mnemonicParsing="false" text="Button" />
+                <Button fx:id="settingsButton" mnemonicParsing="false" text="Settings" />
               </children>
             </HBox>
           </children>
-          <effect>
-            <GaussianBlur radius="12.554054054054054" />
-          </effect>
         </VBox>
-        <GridPane id="modalMenu" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" disable="false" focusTraversable="false" mouseTransparent="false" pickOnBounds="true" prefHeight="661.0" prefWidth="581.0" style="-fx-background-color: rgb(22, 22, 20,0.5);" styleClass="background" visible="true">
+        <GridPane id="modalMenu" fx:id="modalMenuGrid" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" disable="false" focusTraversable="false" mouseTransparent="false" pickOnBounds="true" prefHeight="661.0" prefWidth="581.0" style="-fx-background-color: rgb(22, 22, 20,0.5);" styleClass="background" visible="false">
           <children>
             <Button blendMode="SRC_OVER" mnemonicParsing="false" prefHeight="64.0" prefWidth="290.0" text="Add Channel" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
               <effect>
@@ -45,7 +42,7 @@
                 <DropShadow height="75.42857142857143" radius="37.214285714285715" width="75.42857142857143" />
               </effect>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="290.0" text="Back" textAlignment="CENTER" textOverrun="ELLIPSIS" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+            <Button fx:id="modalMenu_backButton" mnemonicParsing="false" prefHeight="64.0" prefWidth="290.0" text="Back" textAlignment="CENTER" textOverrun="ELLIPSIS" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
               <effect>
                 <DropShadow height="75.42857142857143" radius="37.214285714285715" width="75.42857142857143" />
               </effect>
