@@ -1,14 +1,11 @@
-package sample;
+package com.github.fozruk.streamcheckerguitest;
 
 import com.github.fozruk.StreamPane.StreamPane;
-import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -17,10 +14,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.log4j.Logger;
-import javafx.stage.WindowEvent;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
