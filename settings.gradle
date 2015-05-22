@@ -1,1 +1,3 @@
 rootProject.name = 'TestJavaFX'
+
+include 'streamchecker', 'StreamComponent'

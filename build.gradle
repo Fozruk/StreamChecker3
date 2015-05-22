@@ -17,4 +17,18 @@ repositories {
 }
 dependencies {
     compile group: 'log4j', name: 'log4j', version:'1.2.17'
+    //Compiliert Submodule
+    compile project(':StreamComponent')
+}
+
+jar {
+
+    manifest {
+        attributes(
+                'Main-Class': 'com.github.fozruk.streamcheckerguitest.Main',
+                'Class-Path': 'com.github.fozruk.streamcheckerguitest'
+        )
+    }
+    //Includiert alle Dependencies http://stackoverflow.com/questions/4871656/using-gradle-to-build-a-jar-with-dependencies
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 }
