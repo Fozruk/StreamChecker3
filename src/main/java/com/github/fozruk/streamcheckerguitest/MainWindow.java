@@ -1,6 +1,5 @@
 package com.github.fozruk.streamcheckerguitest;
 
-import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,15 +7,11 @@ import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.net.URL;
 
 public class MainWindow extends Application {
-
-    private static Controller controller;
-    public MainWindow()
-    {
-
-    }
 
     public static void startMainWindow(){
         launch();
@@ -29,13 +24,9 @@ public class MainWindow extends Application {
         fxmlLoader.setLocation(location);
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent root =   fxmlLoader.load(location.openStream());
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("XDDDDDDDDDDDDDDDDDDDDDDD");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
-
-    public static IOverview getController() {
-        return controller;
-    }
-
 }

@@ -24,7 +24,7 @@
             <HBox alignment="BOTTOM_LEFT" fillHeight="false" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" rotate="0.0" VBox.vgrow="NEVER">
               <children>
                 <Button mnemonicParsing="false" text="Button" />
-                <Button mnemonicParsing="false" text="Button" />
+                <Button fx:id="addButton" mnemonicParsing="false" text="Button" />
                 <Button fx:id="settingsButton" mnemonicParsing="false" text="Settings" />
               </children>
             </HBox>

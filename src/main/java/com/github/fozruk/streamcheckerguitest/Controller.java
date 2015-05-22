@@ -8,6 +8,7 @@ import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
 import com.github.fozruk.StreamPane.StreamPane;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -45,6 +46,9 @@ public class Controller implements Initializable , IOverview {
     private Button settingsButton;
 
     @FXML
+    private Button addButton;
+
+    @FXML
     private Parent root;
 
     private ObservableList<StreamPane> list;
@@ -66,12 +70,6 @@ public class Controller implements Initializable , IOverview {
             @Override
             public void handle(ActionEvent event) {
                 logger.trace(modalMenu_backButton + " click event triggered.");
-//                TranslateTransition ft = new TranslateTransition(Duration.millis(250), modalMenuGrid);
-//                ft.setByY(-modalMenu_backButton.getHeight());
-//                ft.play();
-//
-//                blurBox.setEffect(new GaussianBlur(12));
-
                 try {
                     Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
                 } catch (CreateChannelException e) {
@@ -80,24 +78,47 @@ public class Controller implements Initializable , IOverview {
             }
         });
 
+        list.addListener(new ListChangeListener<StreamPane>() {
+            @Override
+            public void onChanged(Change<? extends StreamPane> c) {
+                logger.trace("List changed");
+            }
+        });
+
+
         Main.controller = new StreamcheckerController(this);
     }
 
 
     @Override
     public void addChannel(IChannel channel) {
-        StreamPane pane = new StreamPane(channel.getChannelLink());
+        StreamPane pane = new StreamPane(channel);
         list.add(pane);
     }
 
     @Override
     public void updateDataInChannelViewFor(IChannel channel) {
-        list.get(0).setText(channel.getChannelLink() + " " + String.valueOf(channel.isOnline()));
+        for(StreamPane channelObject : list)
+        {
+           if(channel.equals(channelObject.getChannel()))
+           {
+               channelObject.updateLabels();
+               break;
+           }
+        }
     }
 
     @Override
     public void deleteChannelViewFor(IChannel channel) throws NoSuchChannelViewInOverviewException {
-
+        for(StreamPane channelObject : list)
+        {
+            if(channel.equals(channelObject.getChannel()))
+            {
+                list.remove(channelObject);
+                break;
+            }
+        }
+        throw new NoSuchChannelViewInOverviewException();
     }
 
     @Override
