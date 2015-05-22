@@ -1,7 +1,3 @@
-[submodule "StreamComponent"]
-	path = StreamComponent
-	url = https://github.com/Fozruk/StreamComponent
-
 [submodule "streamchecker"]
 	path = streamchecker
 	url = https://github.com/EpileptiCz/streamchecker

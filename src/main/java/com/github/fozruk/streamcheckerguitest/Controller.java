@@ -6,7 +6,6 @@ import com.github.epilepticz.streamchecker.exception.NoSuchChannelViewInOverview
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
-import com.github.fozruk.StreamPane.StreamPane;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -115,7 +114,7 @@ public class Controller implements Initializable , IOverview {
             if(channel.equals(channelObject.getChannel()))
             {
                 list.remove(channelObject);
-                break;
+                return;
             }
         }
         throw new NoSuchChannelViewInOverviewException();

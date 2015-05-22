@@ -18,7 +18,6 @@ repositories {
 dependencies {
     compile group: 'log4j', name: 'log4j', version:'1.2.17'
     //Compiliert Submodule
-    compile project(':StreamComponent')
     compile project(':streamchecker')
 }
 
