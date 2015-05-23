@@ -37,9 +37,9 @@
                   <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label alignment="CENTER" text="Add Channel" textFill="#a8a8a8" GridPane.halignment="CENTER">
+                  <Label fx:id="label" alignment="CENTER" text="Add Channel" textFill="#5e5e5e" GridPane.halignment="CENTER">
                      <font>
-                        <Font name="DINPro-Medium" size="48.0" />
+                        <Font size="48.0" />
                      </font>
                      <effect>
                         <DropShadow />
@@ -47,6 +47,9 @@
                   </Label>
                   <Button fx:id="addChannelBack" mnemonicParsing="false" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                </children>
+               <effect>
+                  <InnerShadow height="38.79" radius="18.895" width="38.79" />
+               </effect>
             </GridPane>
       </children>
     </StackPane>

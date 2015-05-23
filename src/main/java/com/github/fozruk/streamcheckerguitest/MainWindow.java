@@ -25,7 +25,11 @@ public class MainWindow extends Application {
         Parent root =   fxmlLoader.load(location.openStream());
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("XDDDDDDDDDDDDDDDDDDDDDDD");
-        primaryStage.setScene(new Scene(root, 300, 600));
-        primaryStage.show();
+        Scene scene = new Scene(root,300,600);
+        String css = this.getClass().getResource("/test.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        primaryStage.setScene(scene);
+
+          primaryStage.show();
     }
 }

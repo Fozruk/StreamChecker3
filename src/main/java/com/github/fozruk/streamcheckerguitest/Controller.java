@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -23,6 +24,7 @@ import javafx.util.Duration;
 import org.apache.log4j.Logger;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.scene.paint.Paint;
 
 public class Controller implements Initializable , IOverview {
 
@@ -57,6 +59,9 @@ public class Controller implements Initializable , IOverview {
 
     @FXML
     private Button exitButton;
+
+    @FXML
+    private Label label;
 
     private ObservableList<StreamPane> list;
 
@@ -113,6 +118,8 @@ public class Controller implements Initializable , IOverview {
         grid.add(form2, 0, 2);
 
         listView.setItems(list);
+
+        label.setTextFill(Paint.valueOf("#5e5e5e"));
 
         Main.controller = new StreamcheckerController(this);
     }
