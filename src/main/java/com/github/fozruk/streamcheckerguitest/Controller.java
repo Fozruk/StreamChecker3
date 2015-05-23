@@ -30,9 +30,6 @@ public class Controller implements Initializable , IOverview {
     private ListView listView;
 
     @FXML
-    private Button modalMenu_backButton;
-
-    @FXML
     private GridPane modalMenuGrid;
 
     @FXML
@@ -56,19 +53,11 @@ public class Controller implements Initializable , IOverview {
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
         list = FXCollections.observableArrayList();
-        listView.setItems(list);
-        modalMenu_backButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-
-            }
-        });
 
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                logger.trace(modalMenu_backButton + " click event triggered.");
+               // logger.trace(modalMenu_backButton + " click event triggered.");
                 try {
                     Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
                 } catch (CreateChannelException e) {
