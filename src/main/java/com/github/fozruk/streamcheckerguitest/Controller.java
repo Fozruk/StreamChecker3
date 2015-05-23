@@ -1,35 +1,24 @@
 package com.github.fozruk.streamcheckerguitest;
 
 import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
-import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.NoSuchChannelViewInOverviewException;
-import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
 import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Transition;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.apache.log4j.Logger;
 import java.net.URL;
@@ -80,12 +69,7 @@ public class Controller implements Initializable , IOverview {
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                // logger.trace(modalMenu_backButton + " click event triggered.");
-                try {
-                    Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
-                } catch (CreateChannelException e) {
-                    e.printStackTrace();
-                }
+
             }
         });
 
@@ -106,8 +90,8 @@ public class Controller implements Initializable , IOverview {
         addChannelBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                fadeout(grid);
-                Controller.this.grid.setVisible(false);
+                logger.trace("Add Channel Back Event fired");
+               fadeOutAddNewChannel();
             }
         });
 
@@ -189,5 +173,9 @@ public class Controller implements Initializable , IOverview {
         ft.play();
     }
 
-
+    public void fadeOutAddNewChannel()
+    {
+        fadeout(grid);
+        Controller.this.grid.setVisible(false);
+    }
 }
