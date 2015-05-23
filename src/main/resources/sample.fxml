@@ -26,48 +26,7 @@
             </ListView>
           </children>
         </VBox>
-            <GridPane id="modalMenu" fx:id="modalMenuGrid1" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" focusTraversable="false" mouseTransparent="false" pickOnBounds="true" prefHeight="661.0" prefWidth="581.0" style="-fx-background-color: rgb(48, 48, 48);" styleClass="background" visible="false">
-               <children>
-                  <GridPane id="modalMenu" fx:id="modalMenuGrid2" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" disable="false" focusTraversable="false" mouseTransparent="false" pickOnBounds="true" prefHeight="661.0" prefWidth="581.0" styleClass="background" GridPane.rowIndex="1">
-                     <children>
-                        <Button fx:id="modalMenu_backButton11" mnemonicParsing="false" prefHeight="26.0" text="Add Channel" textAlignment="CENTER" textFill="#757575" textOverrun="ELLIPSIS" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets left="25.0" right="25.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                           <image>
-                              <Image url="@pictures/twitch-logo-black.png" />
-                           </image>
-                        </ImageView>
-                        <TextField prefHeight="30.0" prefWidth="290.0" GridPane.rowIndex="1">
-                           <effect>
-                              <InnerShadow />
-                           </effect>
-                           <GridPane.margin>
-                              <Insets left="25.0" right="25.0" />
-                           </GridPane.margin>
-                        </TextField>
-                     </children>
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
-                        <RowConstraints fillHeight="false" maxHeight="277.0" minHeight="10.0" prefHeight="277.0" valignment="CENTER" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                  </GridPane>
-               </children>
+            <GridPane id="modalMenu" fx:id="grid" alignment="CENTER_LEFT" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" disable="false" focusTraversable="false" mouseTransparent="false" pickOnBounds="true" style="-fx-background-color: rgb(48, 48, 48); -fx-border-radius: 5;" styleClass="background">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
@@ -75,59 +34,6 @@
                   <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                   <RowConstraints fillHeight="false" maxHeight="277.0" minHeight="10.0" prefHeight="277.0" valignment="CENTER" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <StackPane.margin>
-                  <Insets />
-               </StackPane.margin>
-            </GridPane>
-            <GridPane id="modalMenu" fx:id="modalMenuGrid11" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" disable="false" focusTraversable="false" mouseTransparent="false" pickOnBounds="true" prefHeight="661.0" prefWidth="581.0" style="-fx-background-color: rgb(48, 48, 48);" styleClass="background">
-               <children>
-                  <GridPane id="modalMenu" fx:id="modalMenuGrid111" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" disable="false" focusTraversable="false" mouseTransparent="false" pickOnBounds="true" prefHeight="661.0" prefWidth="581.0" styleClass="background" GridPane.rowIndex="1">
-                     <children>
-                        <Button fx:id="modalMenu_backButton111" mnemonicParsing="false" prefHeight="26.0" text="Add Channel" textAlignment="CENTER" textFill="#757575" textOverrun="ELLIPSIS" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets left="25.0" right="25.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                           <image>
-                              <Image url="@pictures/hitboxlogogreen.png" />
-                           </image>
-                        </ImageView>
-                        <TextField prefHeight="30.0" prefWidth="290.0" GridPane.rowIndex="1">
-                           <effect>
-                              <InnerShadow />
-                           </effect>
-                           <GridPane.margin>
-                              <Insets left="25.0" right="25.0" />
-                           </GridPane.margin>
-                        </TextField>
-                     </children>
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
-                        <RowConstraints fillHeight="false" maxHeight="277.0" minHeight="10.0" prefHeight="277.0" valignment="CENTER" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                  </GridPane>
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
-                  <RowConstraints fillHeight="false" maxHeight="277.0" minHeight="10.0" prefHeight="277.0" valignment="CENTER" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>

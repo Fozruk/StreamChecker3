@@ -1,6 +1,5 @@
 package com.github.fozruk.streamcheckerguitest;
 
-import com.github.epilepticz.streamchecker.view.interf.IOverview;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
@@ -24,7 +23,7 @@ public class MainWindow extends Application {
         fxmlLoader.setLocation(location);
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent root =   fxmlLoader.load(location.openStream());
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.DECORATED);
         primaryStage.setTitle("XDDDDDDDDDDDDDDDDDDDDDDD");
         primaryStage.setScene(new Scene(root, 300, 600));
         primaryStage.show();

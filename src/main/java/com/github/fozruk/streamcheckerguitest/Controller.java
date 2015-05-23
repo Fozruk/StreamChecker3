@@ -6,18 +6,30 @@ import com.github.epilepticz.streamchecker.exception.NoSuchChannelViewInOverview
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Transition;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.apache.log4j.Logger;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -39,6 +51,9 @@ public class Controller implements Initializable , IOverview {
     private VBox blurBox;
 
     @FXML
+    private GridPane grid;
+
+    @FXML
     private Button settingsButton;
 
     @FXML
@@ -49,6 +64,7 @@ public class Controller implements Initializable , IOverview {
 
     private ObservableList<StreamPane> list;
 
+
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
@@ -57,7 +73,7 @@ public class Controller implements Initializable , IOverview {
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-               // logger.trace(modalMenu_backButton + " click event triggered.");
+                // logger.trace(modalMenu_backButton + " click event triggered.");
                 try {
                     Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
                 } catch (CreateChannelException e) {
@@ -69,10 +85,16 @@ public class Controller implements Initializable , IOverview {
         list.addListener(new ListChangeListener<StreamPane>() {
             @Override
             public void onChanged(Change<? extends StreamPane> c) {
-                logger.trace("List changed");
             }
         });
 
+        AddChannelForm form = new AddChannelForm();
+        form.getImage().setImage(new Image("pictures\\twitch-logo-black.png"));
+
+        AddChannelForm form2 = new AddChannelForm();
+        form2.getImage().setImage(new Image("pictures\\hitboxlogogreen.png"));
+        grid.add(form,1,1);
+        grid.add(form2,1,2);
 
         Main.controller = new StreamcheckerController(this);
     }
@@ -118,5 +140,6 @@ public class Controller implements Initializable , IOverview {
     public void errorCodeChangedFor(IChannel channel, int errorcount) {
 
     }
+
 
 }
