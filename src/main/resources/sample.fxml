@@ -36,6 +36,16 @@
                   <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" text="Add Channel" textFill="#a8a8a8" GridPane.halignment="CENTER">
+                     <font>
+                        <Font name="DINPro-Medium" size="48.0" />
+                     </font>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Label>
+               </children>
             </GridPane>
       </children>
     </StackPane>

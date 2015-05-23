@@ -93,8 +93,8 @@ public class Controller implements Initializable , IOverview {
 
         AddChannelForm form2 = new AddChannelForm();
         form2.getImage().setImage(new Image("pictures\\hitboxlogogreen.png"));
-        grid.add(form,1,1);
-        grid.add(form2,1,2);
+        grid.add(form,0,1);
+        grid.add(form2,0,2);
 
         Main.controller = new StreamcheckerController(this);
     }
