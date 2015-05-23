@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -62,6 +63,12 @@ public class Controller implements Initializable , IOverview {
     @FXML
     private Parent root;
 
+    @FXML
+    private Button addChannelBack;
+
+    @FXML
+    private Button exitButton;
+
     private ObservableList<StreamPane> list;
 
 
@@ -88,13 +95,40 @@ public class Controller implements Initializable , IOverview {
             }
         });
 
+        addButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Controller.this.grid.setVisible(true);
+                fadeIn(grid);
+            }
+        });
+
+        addChannelBack.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                fadeout(grid);
+                Controller.this.grid.setVisible(false);
+            }
+        });
+
+        exitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.exit(1);
+            }
+        });
+
+
+
         AddChannelForm form = new AddChannelForm();
         form.getImage().setImage(new Image("pictures\\twitch-logo-black.png"));
 
         AddChannelForm form2 = new AddChannelForm();
         form2.getImage().setImage(new Image("pictures\\hitboxlogogreen.png"));
-        grid.add(form,0,1);
-        grid.add(form2,0,2);
+        grid.add(form, 0, 1);
+        grid.add(form2, 0, 2);
+
+        listView.setItems(list);
 
         Main.controller = new StreamcheckerController(this);
     }
@@ -139,6 +173,20 @@ public class Controller implements Initializable , IOverview {
     @Override
     public void errorCodeChangedFor(IChannel channel, int errorcount) {
 
+    }
+
+    private void fadeout(Node node)
+    {
+        FadeTransition ft = new FadeTransition(Duration.millis(100),node);
+        ft.setToValue(0.0);
+        ft.play();
+    }
+
+    private void fadeIn(Node node)
+    {
+        FadeTransition ft = new FadeTransition(Duration.millis(100),node);
+        ft.setToValue(1.0);
+        ft.play();
     }
 
 

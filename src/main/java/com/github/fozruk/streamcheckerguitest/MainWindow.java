@@ -23,7 +23,7 @@ public class MainWindow extends Application {
         fxmlLoader.setLocation(location);
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent root =   fxmlLoader.load(location.openStream());
-        primaryStage.initStyle(StageStyle.DECORATED);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("XDDDDDDDDDDDDDDDDDDDDDDD");
         primaryStage.setScene(new Scene(root, 300, 600));
         primaryStage.show();
