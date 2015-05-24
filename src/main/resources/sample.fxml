@@ -19,7 +19,7 @@
       <children>
         <VBox fx:id="blurBox" prefHeight="200.0" prefWidth="100.0" style="&#10;&#10;">
           <children>
-            <ListView fx:id="listView" prefHeight="155.00009999999747" prefWidth="130.9998779296875" VBox.vgrow="ALWAYS">
+            <ListView fx:id="listView" prefHeight="155.00009999999747" prefWidth="130.9998779296875" styleClass="list" VBox.vgrow="ALWAYS">
               <effect>
                 <InnerShadow height="36.98601398601399" radius="17.993006993006993" width="36.98601398601399" />
               </effect>

@@ -1,7 +1,9 @@
 package com.github.fozruk.streamcheckerguitest;
 
 import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
+import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.NoSuchChannelViewInOverviewException;
+import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
 import javafx.animation.FadeTransition;
@@ -16,10 +18,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import org.apache.log4j.Logger;
 import java.net.URL;
@@ -96,7 +101,7 @@ public class Controller implements Initializable , IOverview {
             @Override
             public void handle(ActionEvent event) {
                 logger.trace("Add Channel Back Event fired");
-               fadeOutAddNewChannel();
+                fadeOutAddNewChannel();
             }
         });
 
@@ -117,11 +122,23 @@ public class Controller implements Initializable , IOverview {
         grid.add(form, 0, 1);
         grid.add(form2, 0, 2);
 
-        listView.setItems(list);
+
 
         label.setTextFill(Paint.valueOf("#5e5e5e"));
 
+        listView.setItems(list);
+
+
         Main.controller = new StreamcheckerController(this);
+        try {
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+        } catch (CreateChannelException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -58,3 +58,8 @@
 .menu-button .label { /* Workaround for RT-20015 */
     -fx-text-fill: -fx-text-base-color;
 }
+
+.list-cell:filled:hover {
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+}

@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
 
@@ -30,7 +32,13 @@ public class StreamPane extends AnchorPane {
     private Label uptime;
 
     @FXML
-    private VBox panes;
+    private GridPane panes;
+
+    @FXML
+    private Label isOnline;
+
+    @FXML
+    private AnchorPane anchor;
 
     private IChannel channel;
 
@@ -58,6 +66,7 @@ public class StreamPane extends AnchorPane {
                 Main.controller.deleteChannel(channel);
             }
         });
+
     }
 
     public void updateLabels()
@@ -68,6 +77,7 @@ public class StreamPane extends AnchorPane {
                 StreamPane.this.name.setText(channel.getChannelLink());
                 StreamPane.this.uptime.setText("00:00:00");
                 StreamPane.this.viewers.setText(String.valueOf(channel.getViewerAmount()));
+                StreamPane.this.isOnline.setText(channel.isOnline()?"Online":"Offline");
 
             }
         });

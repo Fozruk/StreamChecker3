@@ -11,27 +11,40 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<fx:root id="AnchorPane" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root id="AnchorPane" fx:id="anchor" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-      <VBox fx:id="panes" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <GridPane fx:id="panes" alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <Label fx:id="name" alignment="CENTER" text="test " textFill="#535353" textOverrun="CLIP">
+            <Label fx:id="name" alignment="CENTER" graphicTextGap="3.0" text="test " textFill="#535353" textOverrun="CLIP">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label fx:id="viewers" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP">
+            <Label fx:id="viewers" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP" GridPane.rowIndex="1">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label fx:id="uptime" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP">
+            <Label fx:id="uptime" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="isOnline" text="Label" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
          </children>
-      </VBox>
+      </GridPane>
   </children>
    <effect>
       <Bloom threshold="0.77" />
