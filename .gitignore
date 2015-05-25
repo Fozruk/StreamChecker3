@@ -1,1 +1,5 @@
 StreamComponent/*
+.gradle/*
+.idea/*
+build/*
+logs/*

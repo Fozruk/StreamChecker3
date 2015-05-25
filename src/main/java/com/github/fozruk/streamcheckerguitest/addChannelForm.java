@@ -1,6 +1,5 @@
 package com.github.fozruk.streamcheckerguitest;
 
-import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
@@ -12,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -20,9 +18,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -132,10 +128,6 @@ public class AddChannelForm extends StackPane implements Initializable {
                 // logger.trace(modalMenu_backButton + " click event triggered.");
                 try {
                     Main.controller.createChannel(new TwitchTVChannel(AddChannelForm.this.inputField.getText()));
-
-
-
-
                 } catch (CreateChannelException e) {
                     e.printStackTrace();
                 } finally {

@@ -44,7 +44,7 @@ public class MainWindow extends Application {
         Parent root =   fxmlLoader.load(location.openStream());
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("XDDDDDDDDDDDDDDDDDDDDDDD");
-        Scene scene = new Scene(root,300,600);
+        Scene scene = new Scene(root,300,700);
         String css = this.getClass().getResource("/test.css").toExternalForm();
         scene.getStylesheets().add(css);
         primaryStage.setScene(scene);
@@ -79,10 +79,6 @@ public class MainWindow extends Application {
         dummyPopup.setScene(new Scene(root2, 1d, 1d, Color.TRANSPARENT));
 // show the dummy stage
         dummyPopup.show();
-
-
-        primaryStage.show();
-
     }
 
     public void createTrayIcon(Stage stage) throws IOException, AWTException {

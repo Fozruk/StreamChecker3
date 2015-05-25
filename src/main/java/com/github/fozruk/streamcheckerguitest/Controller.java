@@ -142,6 +142,28 @@ public class Controller implements Initializable , IOverview {
             Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
             Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
             Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
+
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
+
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
+            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
         } catch (CreateChannelException e) {
             e.printStackTrace();
         }
