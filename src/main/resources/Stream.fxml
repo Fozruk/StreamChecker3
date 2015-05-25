@@ -14,14 +14,9 @@
 
 <fx:root fx:id="anchor" type="StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="imagelol" cacheHint="QUALITY" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" rotate="-6.3" scaleX="1.4" scaleY="1.4" scaleZ="12.0" StackPane.alignment="CENTER_LEFT">
-         <effect>
-            <ColorAdjust brightness="-0.33" contrast="-0.09" />
-         </effect>
-      </ImageView>
-      <GridPane fx:id="panes" alignment="CENTER">
+      <GridPane fx:id="panes" alignment="CENTER" hgap="6.0">
          <children>
-            <Label fx:id="name" alignment="CENTER" graphicTextGap="3.0" text="test " textFill="#535353" textOverrun="CLIP">
+            <Label fx:id="name" alignment="CENTER" graphicTextGap="3.0" text="test " textFill="#535353" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1">
                <font>
                   <Font size="16.0" />
                </font>
@@ -29,7 +24,7 @@
                   <DropShadow />
                </effect>
             </Label>
-            <Label fx:id="viewers" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP" GridPane.rowIndex="1">
+            <Label fx:id="viewers" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font size="16.0" />
                </font>
@@ -37,7 +32,7 @@
                   <DropShadow />
                </effect>
             </Label>
-            <Label fx:id="uptime" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <Label fx:id="uptime" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <font>
                   <Font size="16.0" />
                </font>
@@ -45,7 +40,7 @@
                   <DropShadow />
                </effect>
             </Label>
-            <Label fx:id="isOnline" text="Label" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <Label fx:id="isOnline" text="Label" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                <font>
                   <Font size="16.0" />
                </font>
@@ -53,10 +48,41 @@
                   <DropShadow />
                </effect>
             </Label>
+            <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@pictures/view-icon.png" />
+               </image>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </ImageView>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <effect>
+                  <DropShadow />
+               </effect>
+               <image>
+                  <Image url="@pictures/clock.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+               <effect>
+                  <DropShadow />
+               </effect>
+               <image>
+                  <Image url="@pictures/onlineoffline.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imagelol" fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <effect>
+                  <DropShadow />
+               </effect>
+            </ImageView>
          </children>
          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

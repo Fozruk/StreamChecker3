@@ -73,12 +73,11 @@ public class StreamPane extends StackPane {
 
         if(channel.getChannelLink().toLowerCase().contains("twitch"))
         {
-            imagelol.setImage(new Image("pictures\\twitchIcon.png"));
-            imagelol.setRotate(0);
+            imagelol.setImage(new Image("pictures\\twitch.png"));
 
         } else
         {
-            imagelol.setImage(new Image("pictures\\hitboxIcon.png"));
+            imagelol.setImage(new Image("pictures\\hitbox.png"));
 
         }
 
@@ -90,6 +89,8 @@ public class StreamPane extends StackPane {
             @Override
             public void run() {
                 StreamPane.this.name.setText(channel.getChannelName());
+                StreamPane.this.name.setMinWidth(Region.USE_PREF_SIZE);
+                StreamPane.this.name.setMaxWidth(Region.USE_PREF_SIZE);
                 StreamPane.this.uptime.setText(channel.getUptime());
                 StreamPane.this.viewers.setText(String.valueOf(channel.getViewerAmount()));
                 StreamPane.this.isOnline.setText(channel.isOnline() ? "Online" : "Offline");
