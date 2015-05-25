@@ -63,3 +63,11 @@
     -fx-background-color: #333333;
     -fx-text-fill: white;
 }
+
+.labelOnline {
+    -fx-color:green;
+}
+
+.labelOffline {
+    -fx-color:red;
+}

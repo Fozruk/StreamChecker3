@@ -3,6 +3,7 @@ package com.github.fozruk.streamcheckerguitest;
 import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.NoSuchChannelViewInOverviewException;
+import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
@@ -132,10 +133,15 @@ public class Controller implements Initializable , IOverview {
         Main.controller = new StreamcheckerController(this);
         try {
             Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
             Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
             Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
             Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
             Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
+            Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
         } catch (CreateChannelException e) {
             e.printStackTrace();
         }

@@ -6,11 +6,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Created by philipp.hentschel on 19.05.15.
  */
-public class StreamPane extends AnchorPane {
+public class StreamPane extends StackPane {
 
     private static final Logger logger = Logger.getLogger(StreamPane.class);
 
@@ -38,7 +38,10 @@ public class StreamPane extends AnchorPane {
     private Label isOnline;
 
     @FXML
-    private AnchorPane anchor;
+    private StackPane anchor;
+
+    @FXML
+    private ImageView imagelol;
 
     private IChannel channel;
 
@@ -50,6 +53,7 @@ public class StreamPane extends AnchorPane {
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
+
 
         try {
             fxmlLoader.load();
@@ -67,6 +71,17 @@ public class StreamPane extends AnchorPane {
             }
         });
 
+        if(channel.getChannelLink().toLowerCase().contains("twitch"))
+        {
+            imagelol.setImage(new Image("pictures\\twitchIcon.png"));
+            imagelol.setRotate(0);
+
+        } else
+        {
+            imagelol.setImage(new Image("pictures\\hitboxIcon.png"));
+
+        }
+
     }
 
     public void updateLabels()
@@ -74,10 +89,11 @@ public class StreamPane extends AnchorPane {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                StreamPane.this.name.setText(channel.getChannelLink());
-                StreamPane.this.uptime.setText("00:00:00");
+                StreamPane.this.name.setText(channel.getChannelName());
+                StreamPane.this.uptime.setText(channel.getUptime());
                 StreamPane.this.viewers.setText(String.valueOf(channel.getViewerAmount()));
-                StreamPane.this.isOnline.setText(channel.isOnline()?"Online":"Offline");
+                StreamPane.this.isOnline.setText(channel.isOnline() ? "Online" : "Offline");
+                StreamPane.this.isOnline.setStyle( (!channel.isOnline()?"-fx-text-fill: red;":"-fx-text-fill: #00e005"));
 
             }
         });
