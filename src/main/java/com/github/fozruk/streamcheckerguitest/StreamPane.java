@@ -5,12 +5,12 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -43,6 +43,30 @@ public class StreamPane extends StackPane {
     @FXML
     private ImageView imagelol;
 
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    private Button watchButton;
+
+    @FXML
+    private Button chatButton;
+
+    @FXML
+    private Button watchVlc;
+
+    @FXML
+    private Button watchBrowser;
+
+    @FXML
+    private HBox buttonBox;
+
+    @FXML
+    private HBox buttonBox1;
+
+    @FXML
+    private StackPane stackPane;
+
     private IChannel channel;
 
     public StreamPane(IChannel channel)
@@ -68,6 +92,36 @@ public class StreamPane extends StackPane {
             public void handle(MouseEvent event) {
                 logger.trace("Mouse Event");
                 Main.controller.deleteChannel(channel);
+            }
+        });
+
+        anchor.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                logger.trace("Mouse event");
+                panes.setEffect(new GaussianBlur(20));
+                stackPane.setVisible(true);
+            }
+        });
+
+        anchor.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                logger.trace("Mouse event");
+                panes.setEffect(null);
+                buttonBox.setVisible(true);
+                buttonBox1.setVisible(false);
+                stackPane.setVisible(false);
+            }
+        });
+
+        watchButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                logger.trace("Mouse Event");
+                buttonBox.setVisible(false);
+                buttonBox1.setVisible(true);
+
             }
         });
 
@@ -103,4 +157,33 @@ public class StreamPane extends StackPane {
     public IChannel getChannel() {
         return channel;
     }
+
+
+    private class WatchMenu extends ContextMenu {
+
+        public WatchMenu()
+        {
+            super();
+
+            MenuItem vlcMenu = new MenuItem("VLC");
+            vlcMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    logger.trace("VLC Event");
+                }
+            });
+
+            MenuItem browserMenu = new MenuItem("Browser");
+            vlcMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    logger.trace("Browser Event");
+                }
+            });
+
+            this.getItems().add(vlcMenu);
+            this.getItems().add(browserMenu);
+        }
+    }
 }
+

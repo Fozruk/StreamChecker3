@@ -72,6 +72,7 @@ public class Controller implements Initializable , IOverview {
     private ObservableList<StreamPane> list;
 
 
+
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
@@ -134,36 +135,6 @@ public class Controller implements Initializable , IOverview {
         try {
             Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
             Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
-
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
-
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new HitboxTVChannel("fagoterichlp"));
-            Main.controller.createChannel(new TwitchTVChannel("guardsmanbob"));
-            Main.controller.createChannel(new TwitchTVChannel("rocketbeanstv"));
         } catch (CreateChannelException e) {
             e.printStackTrace();
         }

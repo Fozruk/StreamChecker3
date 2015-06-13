@@ -48,7 +48,7 @@ public class MainWindow extends Application {
         String css = this.getClass().getResource("/test.css").toExternalForm();
         scene.getStylesheets().add(css);
         primaryStage.setScene(scene);
-       primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
+        primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 logger.trace("Focus event " + observable + " " + oldValue + " " + newValue);

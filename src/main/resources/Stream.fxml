@@ -89,5 +89,22 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
+      <StackPane fx:id="stackPane" visible="false">
+         <children>
+            <HBox fx:id="buttonBox" alignment="CENTER" spacing="11.0">
+               <children>
+                  <Button fx:id="watchButton" mnemonicParsing="false" text="Watch" />
+                  <Button fx:id="chatButton" mnemonicParsing="false" text="Chat" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" text="Delete" />
+               </children>
+            </HBox>
+            <HBox fx:id="buttonBox1" alignment="CENTER" spacing="11.0" visible="false">
+               <children>
+                  <Button fx:id="watchVlc" mnemonicParsing="false" text="VLC" />
+                  <Button fx:id="watchBrowser" mnemonicParsing="false" text="Brauser" />
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
    </children>
 </fx:root>
