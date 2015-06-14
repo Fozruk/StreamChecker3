@@ -4,6 +4,8 @@ import com.github.epilepticz.JavaLivestreamerWrapper.ILivestreamerObserver;
 import com.github.epilepticz.JavaLivestreamerWrapper.LivestreamerWrapper;
 import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
+import com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
+import com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -138,13 +140,17 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
         watchVlc.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-               // LivestreamerWrapper wrapper = new LivestreamerWrapper(new File("C:\\Program Files (x86)\\Livestreamer\\livestreamer.exe"),new File("C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe"));
-                //wrapper.addObserver(StreamPane.this);
-                //try {
-                  //  wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()),"source");
-                //} catch (MalformedURLException e) {
-                 //   e.printStackTrace();
-                //}
+                try {
+                PersistedSettingsManager manager = Controller.getCurrentController().getSettingsManager();
+                LivestreamerWrapper wrapper = new LivestreamerWrapper(manager.getLivestremer(),manager.getVideoPlayer());
+                wrapper.addObserver(StreamPane.this);
+
+                    wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()),"source");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (PropertyKeyNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

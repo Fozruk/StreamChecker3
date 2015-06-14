@@ -7,6 +7,8 @@ import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
+import com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.persistence.PersistenceManager;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -28,6 +30,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import org.apache.log4j.Logger;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.paint.Paint;
@@ -71,10 +75,21 @@ public class Controller implements Initializable , IOverview {
 
     private ObservableList<StreamPane> list;
 
+    private static Controller currentInstance;
+
+
+
+    private PersistedSettingsManager settingsManager;
 
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+
+        try {
+            settingsManager = new PersistedSettingsManager();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         list = FXCollections.observableArrayList();
 
@@ -138,6 +153,8 @@ public class Controller implements Initializable , IOverview {
         } catch (CreateChannelException e) {
             e.printStackTrace();
         }
+
+        this.currentInstance = this;
     }
 
 
@@ -200,5 +217,14 @@ public class Controller implements Initializable , IOverview {
     {
         fadeout(grid);
         Controller.this.grid.setVisible(false);
+    }
+
+    public PersistedSettingsManager getSettingsManager() {
+        return settingsManager;
+    }
+
+    public static Controller getCurrentController()
+    {
+        return currentInstance;
     }
 }
