@@ -38,7 +38,7 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) throws Exception{
         createTrayIcon(primaryStage);
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL location = getClass().getResource("/sample.fxml");
+        URL location = MainWindow.class.getClass().getResource("/sample.fxml");
         fxmlLoader.setLocation(location);
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent root =   fxmlLoader.load(location.openStream());
