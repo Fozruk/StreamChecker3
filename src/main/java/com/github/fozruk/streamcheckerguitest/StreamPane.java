@@ -1,11 +1,17 @@
 package com.github.fozruk.streamcheckerguitest;
 
+import com.github.epilepticz.JavaLivestreamerWrapper.ILivestreamerObserver;
+import com.github.epilepticz.JavaLivestreamerWrapper.LivestreamerWrapper;
+import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,12 +19,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import org.apache.log4j.Logger;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Created by philipp.hentschel on 19.05.15.
  */
-public class StreamPane extends StackPane {
+public class StreamPane extends StackPane implements ILivestreamerObserver {
 
     private static final Logger logger = Logger.getLogger(StreamPane.class);
 
@@ -90,8 +102,6 @@ public class StreamPane extends StackPane {
         panes.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                logger.trace("Mouse Event");
-                Main.controller.deleteChannel(channel);
             }
         });
 
@@ -122,6 +132,42 @@ public class StreamPane extends StackPane {
                 buttonBox.setVisible(false);
                 buttonBox1.setVisible(true);
 
+            }
+        });
+
+        watchVlc.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                LivestreamerWrapper wrapper = new LivestreamerWrapper(new File("C:\\Program Files (x86)\\Livestreamer\\livestreamer.exe"),new File("C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe"));
+                wrapper.addObserver(StreamPane.this);
+                try {
+                    wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()),"source");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        watchBrowser.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Desktop desktop = java.awt.Desktop.getDesktop();
+                URI oURL = null;
+                try {
+                    oURL = new URI(channel.getChannelLink());
+                    desktop.browse(oURL);
+                } catch (URISyntaxException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Main.controller.deleteChannel(channel);
             }
         });
 
@@ -156,6 +202,11 @@ public class StreamPane extends StackPane {
 
     public IChannel getChannel() {
         return channel;
+    }
+
+    @Override
+    public void recieveLivestreamerMessage(String message, SortOfMessage sort) {
+        logger.debug("XDDDD " + message + " " + sort.name());
     }
 
 

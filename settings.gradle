@@ -1,3 +1,4 @@
 rootProject.name = 'TestJavaFX'
 
 include 'streamchecker'
+include 'javalivestreamerwrapper'

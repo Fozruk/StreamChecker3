@@ -71,3 +71,7 @@
 .labelOffline {
     -fx-color:red;
 }
+
+.list-cell:focused {
+  -fx-background-color:transparent
+}
