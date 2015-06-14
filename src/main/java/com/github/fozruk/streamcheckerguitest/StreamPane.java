@@ -138,13 +138,13 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
         watchVlc.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                LivestreamerWrapper wrapper = new LivestreamerWrapper(new File("C:\\Program Files (x86)\\Livestreamer\\livestreamer.exe"),new File("C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe"));
-                wrapper.addObserver(StreamPane.this);
-                try {
-                    wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()),"source");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+               // LivestreamerWrapper wrapper = new LivestreamerWrapper(new File("C:\\Program Files (x86)\\Livestreamer\\livestreamer.exe"),new File("C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe"));
+                //wrapper.addObserver(StreamPane.this);
+                //try {
+                  //  wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()),"source");
+                //} catch (MalformedURLException e) {
+                 //   e.printStackTrace();
+                //}
             }
         });
 
