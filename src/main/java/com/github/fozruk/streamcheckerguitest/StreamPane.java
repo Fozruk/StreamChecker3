@@ -4,8 +4,8 @@ import com.github.epilepticz.JavaLivestreamerWrapper.ILivestreamerObserver;
 import com.github.epilepticz.JavaLivestreamerWrapper.LivestreamerWrapper;
 import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
-import com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
-import com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,7 +22,6 @@ import javafx.scene.layout.*;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -173,7 +172,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
         deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Main.controller.deleteChannel(channel);
+               Main.controller.deleteChannel(channel);
             }
         });
 

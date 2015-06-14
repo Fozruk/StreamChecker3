@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.persistence;
+package com.github.fozruk.streamcheckerguitest.persistence;
 
 import java.io.File;
 import java.io.IOException;

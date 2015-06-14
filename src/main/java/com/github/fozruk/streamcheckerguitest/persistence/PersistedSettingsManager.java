@@ -1,10 +1,8 @@
-package com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.persistence;
+package com.github.fozruk.streamcheckerguitest.persistence;
 
-import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
-import com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
+import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 
 import java.io.*;
-import java.util.List;
 import java.util.Properties;
 
 /**

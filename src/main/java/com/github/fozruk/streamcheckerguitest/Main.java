@@ -1,8 +1,6 @@
 package com.github.fozruk.streamcheckerguitest;
 
 import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
-import com.github.fozruk.streamcheckerguitest.com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

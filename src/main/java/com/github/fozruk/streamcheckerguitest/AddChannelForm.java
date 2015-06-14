@@ -1,6 +1,7 @@
 package com.github.fozruk.streamcheckerguitest;
 
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
+import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import javafx.animation.FadeTransition;
@@ -32,7 +33,9 @@ import java.util.ResourceBundle;
  */
 public class AddChannelForm extends StackPane implements Initializable {
 
-    IChannel channel;
+    public static enum Channel {Twitch,Hitbox};
+    private Channel channeltype;
+
     private static final Logger logger = Logger.getLogger(AddChannelForm.class);
 
 
@@ -53,8 +56,7 @@ public class AddChannelForm extends StackPane implements Initializable {
 
     @FXML
     private TextField inputField;
-
-    public AddChannelForm()
+    public AddChannelForm(Channel type)
     {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/addChannelForm.fxml"));
@@ -67,6 +69,7 @@ public class AddChannelForm extends StackPane implements Initializable {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        channeltype = type;
     }
 
 
@@ -126,7 +129,21 @@ public class AddChannelForm extends StackPane implements Initializable {
             public void handle(ActionEvent event) {
                 // logger.trace(modalMenu_backButton + " click event triggered.");
                 try {
-                    Main.controller.createChannel(new TwitchTVChannel(AddChannelForm.this.inputField.getText()));
+
+                    switch (channeltype)
+                    {
+                        case  Hitbox:
+                            Main.controller.createChannel(new HitboxTVChannel(AddChannelForm.this.inputField.getText()));
+
+                            break;
+
+                        case Twitch:
+                            Main.controller.createChannel(new TwitchTVChannel(AddChannelForm.this.inputField.getText()));
+
+                            break;
+                    }
+
+
                 } catch (CreateChannelException e) {
                     e.printStackTrace();
                 } finally {
