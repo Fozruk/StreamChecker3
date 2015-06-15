@@ -100,6 +100,9 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
 
         this.channel = channel;
 
+        updateLabels();
+
+
         panes.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
