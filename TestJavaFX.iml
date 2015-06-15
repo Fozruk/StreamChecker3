@@ -17,5 +17,14 @@
     <orderEntry type="module" module-name="streamchecker" exported="" />
     <orderEntry type="library" exported="" name="Gradle: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="module" module-name="javalivestreamerwrapper" exported="" />
+    <orderEntry type="module-library" exported="">
+      <library name="Gradle: C__Program_Files_Java_jdk1_8_0_05_jre_lib_jfxrt_jar">
+        <CLASSES>
+          <root url="jar://C:/Program Files/Java/jdk1.8.0_05/jre/lib/jfxrt.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

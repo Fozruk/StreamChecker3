@@ -11,7 +11,6 @@ import java.io.IOException;
  */
 public class Main {
     private static final Logger LOG = Logger.getLogger(Main.class);
-    static public StreamcheckerController controller;
     public static void main(String[] args) throws IOException, AWTException {
         LOG.info("Stramchecker started");
         MainWindow.startMainWindow();

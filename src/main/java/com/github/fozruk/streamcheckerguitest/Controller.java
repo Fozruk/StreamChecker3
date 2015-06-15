@@ -63,9 +63,17 @@ public class Controller implements Initializable, IOverview {
     private Button exitButton;
     @FXML
     private Label label;
+
+
     private ObservableList<StreamPane> list;
     private PersistedSettingsManager settingsManager;
+
+
     private PersistedChannelsManager channelPersistanceManager;
+
+
+
+    private StreamcheckerController controller;
 
     public static Controller getCurrentController() {
         return currentInstance;
@@ -115,6 +123,8 @@ public class Controller implements Initializable, IOverview {
         });
 
 
+
+
         AddChannelForm form = new AddChannelForm(Channel.Twitch);
         form.getImage().setImage(new Image("pictures\\twitch-logo-black.png"));
 
@@ -129,7 +139,7 @@ public class Controller implements Initializable, IOverview {
         listView.setItems(list);
 
 
-        Main.controller = new StreamcheckerController(this);
+        this.controller = new StreamcheckerController(this);
         this.currentInstance = this;
 
         //Load all persisted Channels
@@ -146,9 +156,9 @@ public class Controller implements Initializable, IOverview {
                     for (String temp : list) {
                         try {
                             if (temp.toLowerCase().contains("twitch.tv"))
-                                Main.controller.createChannel(new TwitchTVChannel(temp.substring(temp.lastIndexOf("/")+1)));
+                                controller.createChannel(new TwitchTVChannel(temp.substring(temp.lastIndexOf("/")+1)));
                             else if (temp.toLowerCase().contains("hitbox.tv"))
-                                Main.controller.createChannel(new HitboxTVChannel(temp.substring(temp.lastIndexOf("/")+1)));
+                                controller.createChannel(new HitboxTVChannel(temp.substring(temp.lastIndexOf("/")+1)));
                         } catch (CreateChannelException e) {
                             e.printStackTrace();
                         }
@@ -224,5 +234,15 @@ public class Controller implements Initializable, IOverview {
 
     public PersistedSettingsManager getSettingsManager() {
         return settingsManager;
+    }
+
+
+    public PersistedChannelsManager getChannelPersistanceManager() {
+        return channelPersistanceManager;
+    }
+
+
+    public StreamcheckerController getController() {
+        return controller;
     }
 }

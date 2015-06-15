@@ -1,5 +1,8 @@
 package com.github.fozruk.streamcheckerguitest.persistence;
 
+import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
+import com.github.fozruk.streamcheckerguitest.Controller;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,5 +31,36 @@ public class PersistedChannelsManager extends PersistenceManager {
             reader.close();
         }
         return channelList;
+    }
+
+    public void saveChannel(IChannel channel) throws IOException {
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(STREAMS_FILE, true));
+            writer.write(channel.getChannelLink() + "\n");
+            writer.flush();
+            writer.close();
+        } finally {
+            writer.close();
+        }
+    }
+
+    /**
+     * Writes down the entire list of streams that are currently displayed, you have to call the controllers delete method before this method
+     * @throws IOException
+     */
+    public void deleteChannel() throws IOException {
+        BufferedWriter writer = null;
+        try
+        {
+            writer = new BufferedWriter(new FileWriter(STREAMS_FILE));
+            for(IChannel channel : Controller.getCurrentController().getAddedChannels())
+            {
+                writer.write(channel.getChannelLink() + "\n");
+                writer.flush();
+            }
+        } finally {
+            writer.close();
+        }
     }
 }

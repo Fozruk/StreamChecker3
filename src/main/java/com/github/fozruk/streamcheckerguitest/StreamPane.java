@@ -110,6 +110,10 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             @Override
             public void handle(MouseEvent event) {
                 logger.trace("Mouse event");
+                if(!channel.isOnline())
+                    watchButton.setDisable(true);
+                else
+                    watchButton.setDisable(false);
                 panes.setEffect(new GaussianBlur(20));
                 stackPane.setVisible(true);
             }
@@ -172,7 +176,12 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
         deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-               Main.controller.deleteChannel(channel);
+                try {
+                    Controller.getCurrentController().getController().deleteChannel(channel);
+                    Controller.getCurrentController().getChannelPersistanceManager().deleteChannel();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -185,6 +194,22 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             imagelol.setImage(new Image("pictures\\hitbox.png"));
 
         }
+
+        chatButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Desktop desktop = java.awt.Desktop.getDesktop();
+                URI oURL = null;
+                try {
+                    oURL = new URI(channel.getChannelLink() + "/chat?popout=");
+                    desktop.browse(oURL);
+                } catch (URISyntaxException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -215,31 +240,6 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
     }
 
 
-    private class WatchMenu extends ContextMenu {
 
-        public WatchMenu()
-        {
-            super();
-
-            MenuItem vlcMenu = new MenuItem("VLC");
-            vlcMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    logger.trace("VLC Event");
-                }
-            });
-
-            MenuItem browserMenu = new MenuItem("Browser");
-            vlcMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    logger.trace("Browser Event");
-                }
-            });
-
-            this.getItems().add(vlcMenu);
-            this.getItems().add(browserMenu);
-        }
-    }
 }
 

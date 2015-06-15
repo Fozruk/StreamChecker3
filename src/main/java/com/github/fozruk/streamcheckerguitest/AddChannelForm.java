@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -133,18 +134,22 @@ public class AddChannelForm extends StackPane implements Initializable {
                     switch (channeltype)
                     {
                         case  Hitbox:
-                            Main.controller.createChannel(new HitboxTVChannel(AddChannelForm.this.inputField.getText()));
-
+                            IChannel hitboxChannel = new HitboxTVChannel(AddChannelForm.this.inputField.getText());
+                            Controller.getCurrentController().getController().createChannel(hitboxChannel);
+                            Controller.getCurrentController().getChannelPersistanceManager().saveChannel(hitboxChannel);
                             break;
 
                         case Twitch:
-                            Main.controller.createChannel(new TwitchTVChannel(AddChannelForm.this.inputField.getText()));
-
+                            IChannel channel = new TwitchTVChannel(AddChannelForm.this.inputField.getText());
+                            Controller.getCurrentController().getController().createChannel(channel);
+                            Controller.getCurrentController().getChannelPersistanceManager().saveChannel(channel);
                             break;
                     }
 
 
                 } catch (CreateChannelException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                     AddChannelForm.this.inputField.setText("");
