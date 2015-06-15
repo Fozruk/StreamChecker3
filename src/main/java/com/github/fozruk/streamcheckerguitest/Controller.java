@@ -32,6 +32,8 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -209,7 +211,9 @@ public class Controller implements Initializable, IOverview {
 
     @Override
     public IChannel[] getAddedChannels() {
-        return new IChannel[0];
+        List<IChannel> channels = new ArrayList<>();
+        list.forEach((stream) -> channels.add(stream.getChannel()));
+        return channels.toArray(new IChannel[0]);
     }
 
     @Override
