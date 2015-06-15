@@ -135,13 +135,13 @@ public class AddChannelForm extends StackPane implements Initializable {
                     {
                         case  Hitbox:
                             IChannel hitboxChannel = new HitboxTVChannel(AddChannelForm.this.inputField.getText());
-                            Controller.getCurrentController().getController().createChannel(hitboxChannel);
+                            Controller.getCurrentController().createChannel(hitboxChannel);
                             Controller.getCurrentController().getChannelPersistanceManager().saveChannel(hitboxChannel);
                             break;
 
                         case Twitch:
                             IChannel channel = new TwitchTVChannel(AddChannelForm.this.inputField.getText());
-                            Controller.getCurrentController().getController().createChannel(channel);
+                            Controller.getCurrentController().createChannel(channel);
                             Controller.getCurrentController().getChannelPersistanceManager().saveChannel(channel);
                             break;
                     }

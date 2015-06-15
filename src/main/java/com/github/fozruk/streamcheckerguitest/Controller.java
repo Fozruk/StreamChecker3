@@ -6,6 +6,7 @@ import com.github.epilepticz.streamchecker.exception.NoSuchChannelViewInOverview
 import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
+import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedChannelsManager;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
@@ -39,7 +40,7 @@ import java.util.ResourceBundle;
 
 import static com.github.fozruk.streamcheckerguitest.AddChannelForm.Channel;
 
-public class Controller implements Initializable, IOverview {
+public class Controller implements Initializable, IOverview, IChannelobserver {
 
     private static final Logger logger = Logger.getLogger(Controller.class);
     private static Controller currentInstance;
@@ -69,12 +70,7 @@ public class Controller implements Initializable, IOverview {
 
     private ObservableList<StreamPane> list;
     private PersistedSettingsManager settingsManager;
-
-
     private PersistedChannelsManager channelPersistanceManager;
-
-
-
     private StreamcheckerController controller;
 
     public static Controller getCurrentController() {
@@ -157,10 +153,11 @@ public class Controller implements Initializable, IOverview {
 
                     for (String temp : list) {
                         try {
+                            IChannel channel = null;
                             if (temp.toLowerCase().contains("twitch.tv"))
-                                controller.createChannel(new TwitchTVChannel(temp.substring(temp.lastIndexOf("/")+1)));
+                                createChannel(new TwitchTVChannel(temp.substring(temp.lastIndexOf("/") + 1)));
                             else if (temp.toLowerCase().contains("hitbox.tv"))
-                                controller.createChannel(new HitboxTVChannel(temp.substring(temp.lastIndexOf("/")+1)));
+                                createChannel(new HitboxTVChannel(temp.substring(temp.lastIndexOf("/")+1)));
                         } catch (CreateChannelException e) {
                             e.printStackTrace();
                         }
@@ -174,6 +171,16 @@ public class Controller implements Initializable, IOverview {
 
 
 
+    }
+
+    public void createChannel(IChannel channel) {
+        channel.addObserver(this);
+        controller.createChannel(channel);
+    }
+
+    public void deleteChannel(IChannel channel) {
+        channel.removeObserver(this);
+        controller.deleteChannel(channel);
     }
 
     @Override
@@ -247,8 +254,11 @@ public class Controller implements Initializable, IOverview {
         return channelPersistanceManager;
     }
 
-
-    public StreamcheckerController getController() {
-        return controller;
+    @Override
+    public void recieveNotification(IChannel sender, String message) {
+        MainWindow.showMessage("Info",message);
     }
+
+
+
 }

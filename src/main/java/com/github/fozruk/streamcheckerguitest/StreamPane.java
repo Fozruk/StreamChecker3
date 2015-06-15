@@ -180,7 +180,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    Controller.getCurrentController().getController().deleteChannel(channel);
+                    Controller.getCurrentController().deleteChannel(channel);
                     Controller.getCurrentController().getChannelPersistanceManager().deleteChannel();
                 } catch (IOException e) {
                     e.printStackTrace();
