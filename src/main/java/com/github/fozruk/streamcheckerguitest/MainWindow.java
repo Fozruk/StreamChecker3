@@ -25,7 +25,7 @@ import java.net.URL;
 
 public class MainWindow extends Application {
 
-    final SystemTray tray = SystemTray.getSystemTray();
+
 
     private static final Logger logger = Logger.getLogger(AddChannelForm.class);
     private static TrayIcon trayIcon;
@@ -68,6 +68,13 @@ public class MainWindow extends Application {
         {
             java.awt.Toolkit.getDefaultToolkit();
 
+            // app requires system tray support, just exit if there is no support.
+            if (!java.awt.SystemTray.isSupported()) {
+                System.out.println("No system tray support, application exiting.");
+                Platform.exit();
+            }
+
+            SystemTray tray = SystemTray.getSystemTray();
             Image icon = ImageIO.read(MainWindow.class.getResourceAsStream("/pictures/logo.png"));
             trayIcon = new TrayIcon(icon);
             trayIcon.setImageAutoSize(true);
@@ -86,6 +93,7 @@ public class MainWindow extends Application {
                     });
                 }
             });
+
             logger.debug("Add TrayIcon to tray");
             tray.add(trayIcon);
 
@@ -112,8 +120,6 @@ public class MainWindow extends Application {
         primaryStage.setY(locationY);
         primaryStage.show();
     }
-
-    //TODO Every time the displayMessage method is called the Mouse Event from the TrayIcon does not respond anymore -> The Window cant be opened again, the Balloon tip never shows up
     //Some help maybe https://gist.github.com/jewelsea/e231e89e8d36ef4e5d8a
     public static void showMessage(String info, String message) {
         logger.debug("Balloob Tip: " + message);
@@ -121,8 +127,9 @@ public class MainWindow extends Application {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 logger.debug("This should be in AWT Event Queue");
-                //trayIcon.displayMessage("h", "k", TrayIcon.MessageType.ERROR);
+                trayIcon.displayMessage("Info",message, TrayIcon.MessageType.INFO);
             }
         });
     }
+
 }
