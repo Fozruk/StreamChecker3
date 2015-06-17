@@ -50,7 +50,7 @@
             </Label>
             <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                <image>
-                  <Image url="@pictures/view-icon.png" />
+                  <Image url="@../pictures/view-icon.png" />
                </image>
                <effect>
                   <DropShadow />
@@ -61,7 +61,7 @@
                   <DropShadow />
                </effect>
                <image>
-                  <Image url="@pictures/clock.png" />
+                  <Image url="@../pictures/clock.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
@@ -69,7 +69,7 @@
                   <DropShadow />
                </effect>
                <image>
-                  <Image url="@pictures/onlineoffline.png" />
+                  <Image url="@../pictures/onlineoffline.png" />
                </image>
             </ImageView>
             <ImageView fx:id="imagelol" fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">

@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -124,10 +123,10 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
 
         AddChannelForm form = new AddChannelForm(Channel.Twitch);
-        form.getImage().setImage(new Image("pictures\\twitch-logo-black.png"));
+        form.getImage().setImage(new Image(Controller.class.getResourceAsStream("/pictures/twitch-logo-black.png")));
 
         AddChannelForm form2 = new AddChannelForm(Channel.Hitbox);
-        form2.getImage().setImage(new Image("pictures\\hitboxlogogreen.png"));
+        form2.getImage().setImage(new Image(Controller.class.getResourceAsStream("/pictures/hitboxlogogreen.png")));
         grid.add(form, 0, 1);
         grid.add(form2, 0, 2);
 

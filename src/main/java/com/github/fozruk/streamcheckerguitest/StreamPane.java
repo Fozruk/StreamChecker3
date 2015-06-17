@@ -10,10 +10,8 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -86,7 +84,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
     {
 
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/Stream.fxml"));
+                getClass().getResource("/fxml/Stream.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -190,11 +188,11 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
 
         if(channel.getChannelLink().toLowerCase().contains("twitch"))
         {
-            imagelol.setImage(new Image("pictures\\twitch.png"));
+            imagelol.setImage(new Image(StreamPane.class.getResourceAsStream("/pictures/twitch.png")));
 
         } else
         {
-            imagelol.setImage(new Image("pictures\\hitbox.png"));
+            imagelol.setImage(new Image(StreamPane.class.getResourceAsStream("/pictures/hitbox.png")));
 
         }
 

@@ -6,13 +6,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
@@ -20,7 +15,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.net.URL;
 
 public class MainWindow extends Application {
@@ -41,7 +35,8 @@ public class MainWindow extends Application {
         this.primaryStage = primaryStage;
         javax.swing.SwingUtilities.invokeLater(this::createTrayIcon);
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL location = getClass().getResource("/sample.fxml");
+        URL location = Main.class.getClass().getResource("/fxml/sample.fxml");
+        logger.debug("Url location: " + location);
         fxmlLoader.setLocation(location);
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent root =   fxmlLoader.load(location.openStream());

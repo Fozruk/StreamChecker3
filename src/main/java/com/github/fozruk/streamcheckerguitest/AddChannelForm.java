@@ -14,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -60,7 +59,7 @@ public class AddChannelForm extends StackPane implements Initializable {
     public AddChannelForm(Channel type)
     {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/addChannelForm.fxml"));
+                getClass().getResource("/fxml/addChannelForm.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
