@@ -45,6 +45,8 @@ public class MainWindow extends Application {
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent root =   fxmlLoader.load(location.openStream());
         primaryStage.initStyle(StageStyle.UNDECORATED);
+
+        primaryStage.getIcons().add(new javafx.scene.image.Image(Main.class.getResourceAsStream("/pictures/quader.png")));
         primaryStage.setTitle("XDDDDDDDDDDDDDDDDDDDDDDD");
         Scene scene = new Scene(root,300,700);
         String css = this.getClass().getResource("/test.css").toExternalForm();
@@ -74,7 +76,7 @@ public class MainWindow extends Application {
             }
 
             SystemTray tray = SystemTray.getSystemTray();
-            Image icon = ImageIO.read(MainWindow.class.getResourceAsStream("/pictures/logo.png"));
+            Image icon = ImageIO.read(MainWindow.class.getResourceAsStream("/pictures/quader.png"));
             trayIcon = new TrayIcon(icon);
             trayIcon.setImageAutoSize(true);
             trayIcon.addMouseListener(new MouseAdapter() {
@@ -127,7 +129,7 @@ public class MainWindow extends Application {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 logger.debug("This should be in AWT Event Queue");
-                trayIcon.displayMessage("Info",message, TrayIcon.MessageType.INFO);
+                trayIcon.displayMessage("Info", message, TrayIcon.MessageType.INFO);
             }
         });
     }
