@@ -145,15 +145,16 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                PersistedSettingsManager manager = Controller.getCurrentController().getSettingsManager();
-                LivestreamerWrapper wrapper = new LivestreamerWrapper(manager.getLivestremer(),manager.getVideoPlayer());
-                wrapper.addObserver(StreamPane.this);
-
-                    wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()),"source");
+                    PersistedSettingsManager manager = Controller.getCurrentController().getSettingsManager();
+                    LivestreamerWrapper wrapper = new LivestreamerWrapper(manager.getLivestremer(),manager.getVideoPlayer());
+                    wrapper.addObserver(StreamPane.this);
+                    wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()), "source");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (PropertyKeyNotFoundException e) {
                     e.printStackTrace();
+                } finally {
+                    Controller.getCurrentController().hideWindow();
                 }
             }
         });
@@ -163,6 +164,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             public void handle(MouseEvent event) {
                 Desktop desktop = java.awt.Desktop.getDesktop();
                 URI oURL = null;
+
                 try {
                     oURL = new URI(channel.getChannelLink());
                     desktop.browse(oURL);
@@ -170,6 +172,8 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
                     e1.printStackTrace();
                 } catch (IOException e1) {
                     e1.printStackTrace();
+                } finally {
+                    Controller.getCurrentController().hideWindow();
                 }
             }
         });

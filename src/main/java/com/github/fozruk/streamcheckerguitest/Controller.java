@@ -258,6 +258,11 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         MainWindow.showMessage("Info",message);
     }
 
+    public void hideWindow()
+    {
+        MainWindow.getPrimaryStage().hide();
+    }
+
 
 
 }
