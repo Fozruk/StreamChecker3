@@ -101,6 +101,7 @@ public class MainWindow extends Application {
 
     public void showStage()
     {
+        primaryStage.show();
         Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int taskBarHeight = scrnSize.height - winSize.height + 10;
@@ -113,7 +114,7 @@ public class MainWindow extends Application {
             locationX = (int) (desktopwidth - primaryStage.getWidth());
         primaryStage.setX(locationX);
         primaryStage.setY(locationY);
-        primaryStage.show();
+
     }
     //Some help maybe https://gist.github.com/jewelsea/e231e89e8d36ef4e5d8a
     public static void showMessage(String info, String message) {
