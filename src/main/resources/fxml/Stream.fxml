@@ -1,110 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-
-<fx:root fx:id="anchor" type="StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <GridPane fx:id="panes" alignment="CENTER" hgap="6.0">
-         <children>
-            <Label fx:id="name" alignment="CENTER" graphicTextGap="3.0" text="test " textFill="#535353" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Label>
-            <Label fx:id="viewers" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Label>
-            <Label fx:id="uptime" alignment="CENTER" text="test" textFill="#535353" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Label>
-            <Label fx:id="isOnline" text="Label" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Label>
-            <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-               <image>
-                  <Image url="@../pictures/view-icon.png" />
-               </image>
-               <effect>
-                  <DropShadow />
-               </effect>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
-               <effect>
-                  <DropShadow />
-               </effect>
-               <image>
-                  <Image url="@../pictures/clock.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
-               <effect>
-                  <DropShadow />
-               </effect>
-               <image>
-                  <Image url="@../pictures/onlineoffline.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="imagelol" fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-               <effect>
-                  <DropShadow />
-               </effect>
-            </ImageView>
-         </children>
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-      </GridPane>
-      <StackPane fx:id="stackPane" visible="false">
-         <children>
-            <HBox fx:id="buttonBox" alignment="CENTER" spacing="11.0">
-               <children>
-                  <Button fx:id="watchButton" mnemonicParsing="false" text="Watch" />
-                  <Button fx:id="chatButton" mnemonicParsing="false" text="Chat" />
-                  <Button fx:id="deleteButton" mnemonicParsing="false" text="Delete" />
-               </children>
-            </HBox>
-            <HBox fx:id="buttonBox1" alignment="CENTER" spacing="11.0" visible="false">
-               <children>
-                  <Button fx:id="watchVlc" mnemonicParsing="false" text="VLC" />
-                  <Button fx:id="watchBrowser" mnemonicParsing="false" text="Brauser" />
-               </children>
-            </HBox>
-         </children>
-      </StackPane>
-   </children>
+<?import javafx.scene.text.Font?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" fx:id="anchor" type="StackPane"
+         xmlns="http://javafx.com/javafx/8">
+    <children>
+        <GridPane fx:id="panes" alignment="CENTER" hgap="6.0">
+            <children>
+                <Label fx:id="name" alignment="CENTER" graphicTextGap="3.0"
+                       text="test " textFill="#535353" textOverrun="CLIP"
+                       wrapText="true" GridPane.columnIndex="1">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                    <effect>
+                        <DropShadow/>
+                    </effect>
+                </Label>
+                <Label fx:id="viewers" alignment="CENTER" text="test"
+                       textFill="#535353" textOverrun="CLIP"
+                       GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                    <effect>
+                        <DropShadow/>
+                    </effect>
+                </Label>
+                <Label fx:id="uptime" alignment="CENTER" text="test"
+                       textFill="#535353" textOverrun="CLIP"
+                       GridPane.columnIndex="2" GridPane.halignment="RIGHT"
+                       GridPane.rowIndex="1">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                    <effect>
+                        <DropShadow/>
+                    </effect>
+                </Label>
+                <Label fx:id="isOnline" text="Label" GridPane.columnIndex="2"
+                       GridPane.halignment="RIGHT">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                    <effect>
+                        <DropShadow/>
+                    </effect>
+                </Label>
+                <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true"
+                           preserveRatio="true" GridPane.rowIndex="1">
+                    <image>
+                        <Image url="@../pictures/view-icon.png"/>
+                    </image>
+                    <effect>
+                        <DropShadow/>
+                    </effect>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                           preserveRatio="true" GridPane.columnIndex="3"
+                           GridPane.rowIndex="1">
+                    <effect>
+                        <DropShadow/>
+                    </effect>
+                    <image>
+                        <Image url="@../pictures/clock.png"/>
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true"
+                           preserveRatio="true" GridPane.columnIndex="3">
+                    <effect>
+                        <DropShadow/>
+                    </effect>
+                    <image>
+                        <Image url="@../pictures/onlineoffline.png"/>
+                    </image>
+                </ImageView>
+                <ImageView fx:id="imagelol" fitHeight="150.0" fitWidth="20.0"
+                           pickOnBounds="true" preserveRatio="true">
+                    <effect>
+                        <DropShadow/>
+                    </effect>
+                </ImageView>
+            </children>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+                                   prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+                                   prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"
+                                vgrow="SOMETIMES"/>
+            </rowConstraints>
+        </GridPane>
+        <StackPane fx:id="stackPane" visible="false">
+            <children>
+                <HBox fx:id="buttonBox" alignment="CENTER" spacing="11.0">
+                    <children>
+                        <Button fx:id="watchButton" mnemonicParsing="false"
+                                text="Watch"/>
+                        <Button fx:id="chatButton" mnemonicParsing="false"
+                                text="Chat"/>
+                        <Button fx:id="deleteButton" mnemonicParsing="false"
+                                text="Delete"/>
+                    </children>
+                </HBox>
+                <HBox fx:id="buttonBox1" alignment="CENTER" spacing="11.0"
+                      visible="false">
+                    <children>
+                        <Button fx:id="watchVlc" mnemonicParsing="false"
+                                text="VLC"/>
+                        <Button fx:id="watchBrowser" mnemonicParsing="false"
+                                text="Brauser"/>
+                    </children>
+                </HBox>
+            </children>
+        </StackPane>
+    </children>
 </fx:root>

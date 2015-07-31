@@ -47,15 +47,14 @@ public class PersistedChannelsManager extends PersistenceManager {
 
     /**
      * Writes down the entire list of streams that are currently displayed, you have to call the controllers delete method before this method
+     *
      * @throws IOException
      */
     public void deleteChannel() throws IOException {
         BufferedWriter writer = null;
-        try
-        {
+        try {
             writer = new BufferedWriter(new FileWriter(STREAMS_FILE));
-            for(IChannel channel : Controller.getCurrentController().getAddedChannels())
-            {
+            for (IChannel channel : Controller.getCurrentController().getAddedChannels()) {
                 writer.write(channel.getChannelLink() + "\n");
                 writer.flush();
             }

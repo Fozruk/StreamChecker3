@@ -76,9 +76,9 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         return currentInstance;
     }
 
-    @Override // This method is called by the FXMLLoader when initialization is complete
+    @Override
+    // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-
 
 
         list = FXCollections.observableArrayList();
@@ -120,8 +120,6 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         });
 
 
-
-
         AddChannelForm form = new AddChannelForm(Channel.Twitch);
         form.getImage().setImage(new Image(Controller.class.getResourceAsStream("/pictures/twitch-logo-black.png")));
 
@@ -156,7 +154,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                             if (temp.toLowerCase().contains("twitch.tv"))
                                 createChannel(new TwitchTVChannel(temp.substring(temp.lastIndexOf("/") + 1)));
                             else if (temp.toLowerCase().contains("hitbox.tv"))
-                                createChannel(new HitboxTVChannel(temp.substring(temp.lastIndexOf("/")+1)));
+                                createChannel(new HitboxTVChannel(temp.substring(temp.lastIndexOf("/") + 1)));
                         } catch (CreateChannelException e) {
                             e.printStackTrace();
                         }
@@ -167,7 +165,6 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 }
             }
         }).start();
-
 
 
     }
@@ -255,14 +252,12 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     @Override
     public void recieveNotification(IChannel sender, String message) {
-        MainWindow.showMessage("Info",message);
+        MainWindow.showMessage("Info", message);
     }
 
-    public void hideWindow()
-    {
+    public void hideWindow() {
         MainWindow.getPrimaryStage().hide();
     }
-
 
 
 }

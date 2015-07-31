@@ -24,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,31 +34,24 @@ import java.util.ResourceBundle;
  */
 public class AddChannelForm extends StackPane implements Initializable {
 
-    public static enum Channel {Twitch,Hitbox};
-    private Channel channeltype;
-
     private static final Logger logger = Logger.getLogger(AddChannelForm.class);
 
-
+    ;
+    private Channel channeltype;
     @FXML
     private ImageView image;
-
     @FXML
     private Button addButton;
-
     @FXML
     private Button cancelButton;
-
     @FXML
     private GridPane grid;
-
     @FXML
     private StackPane stackpane;
-
     @FXML
     private TextField inputField;
-    public AddChannelForm(Channel type)
-    {
+
+    public AddChannelForm(Channel type) {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/fxml/addChannelForm.fxml"));
 
@@ -72,7 +66,6 @@ public class AddChannelForm extends StackPane implements Initializable {
         channeltype = type;
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -80,7 +73,7 @@ public class AddChannelForm extends StackPane implements Initializable {
             @Override
             public void handle(Event event) {
                 logger.trace("Entered Event");
-                if(grid.getOpacity() != 1.0) {
+                if (grid.getOpacity() != 1.0) {
                     mouseOverEffect();
                 }
             }
@@ -90,7 +83,7 @@ public class AddChannelForm extends StackPane implements Initializable {
             @Override
             public void handle(Event event) {
                 logger.trace("Entered Event");
-                if(grid.getOpacity() != 1.0) {
+                if (grid.getOpacity() != 1.0) {
                     image.setEffect(null);
                     deleteMouseOverEffect();
                 }
@@ -130,9 +123,8 @@ public class AddChannelForm extends StackPane implements Initializable {
                 // logger.trace(modalMenu_backButton + " click event triggered.");
                 try {
 
-                    switch (channeltype)
-                    {
-                        case  Hitbox:
+                    switch (channeltype) {
+                        case Hitbox:
                             IChannel hitboxChannel = new HitboxTVChannel(AddChannelForm.this.inputField.getText());
                             Controller.getCurrentController().createChannel(hitboxChannel);
                             Controller.getCurrentController().getChannelPersistanceManager().saveChannel(hitboxChannel);
@@ -161,58 +153,51 @@ public class AddChannelForm extends StackPane implements Initializable {
             }
         });
 
-       // this.stackpane.setAlignment(Pos.CENTER);
+        // this.stackpane.setAlignment(Pos.CENTER);
     }
 
-
-    private void mouseOverEffect()
-    {
+    private void mouseOverEffect() {
         Effect effect = new DropShadow(10, Color.BLACK);
         image.setEffect(effect);
 
-        FadeTransition ft = new FadeTransition(Duration.millis(100),image);
+        FadeTransition ft = new FadeTransition(Duration.millis(100), image);
         ft.setToValue(1.0);
         ft.play();
     }
 
-    private void deleteMouseOverEffect()
-    {
+    private void deleteMouseOverEffect() {
         Effect effect = new DropShadow(10, Color.BLACK);
         image.setEffect(effect);
 
-        FadeTransition ft = new FadeTransition(Duration.millis(100),image);
+        FadeTransition ft = new FadeTransition(Duration.millis(100), image);
         ft.setToValue(0.4);
         ft.play();
     }
 
-    private void mousePresed()
-    {
-        ScaleTransition tr = new ScaleTransition(Duration.millis(100),image);
+    private void mousePresed() {
+        ScaleTransition tr = new ScaleTransition(Duration.millis(100), image);
         tr.setToZ(0.8);
         tr.setToY(0.8);
         tr.setToX(0.8);
         tr.play();
     }
 
-    private void mouseReleased()
-    {
-        ScaleTransition tr = new ScaleTransition(Duration.millis(100),image);
+    private void mouseReleased() {
+        ScaleTransition tr = new ScaleTransition(Duration.millis(100), image);
         tr.setToZ(1.0);
         tr.setToY(1.0);
         tr.setToX(1.0);
         tr.play();
     }
 
-    private void fadeout(Node node)
-    {
-        FadeTransition ft = new FadeTransition(Duration.millis(100),node);
+    private void fadeout(Node node) {
+        FadeTransition ft = new FadeTransition(Duration.millis(100), node);
         ft.setToValue(0.0);
         ft.play();
     }
 
-    private void fadeIn(Node node)
-    {
-        FadeTransition ft = new FadeTransition(Duration.millis(100),node);
+    private void fadeIn(Node node) {
+        FadeTransition ft = new FadeTransition(Duration.millis(100), node);
         ft.setToValue(1.0);
         ft.play();
     }
@@ -220,4 +205,6 @@ public class AddChannelForm extends StackPane implements Initializable {
     public ImageView getImage() {
         return image;
     }
+
+    public static enum Channel {Twitch, Hitbox}
 }

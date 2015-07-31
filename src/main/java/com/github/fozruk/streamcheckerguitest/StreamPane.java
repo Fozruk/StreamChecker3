@@ -16,7 +16,10 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -80,8 +83,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
 
     private IChannel channel;
 
-    public StreamPane(IChannel channel)
-    {
+    public StreamPane(IChannel channel) {
 
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/fxml/Stream.fxml"));
@@ -111,7 +113,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             @Override
             public void handle(MouseEvent event) {
                 logger.trace("Mouse event");
-                if(!channel.isOnline())
+                if (!channel.isOnline())
                     watchButton.setDisable(true);
                 else
                     watchButton.setDisable(false);
@@ -146,7 +148,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             public void handle(MouseEvent event) {
                 try {
                     PersistedSettingsManager manager = Controller.getCurrentController().getSettingsManager();
-                    LivestreamerWrapper wrapper = new LivestreamerWrapper(manager.getLivestremer(),manager.getVideoPlayer());
+                    LivestreamerWrapper wrapper = new LivestreamerWrapper(manager.getLivestremer(), manager.getVideoPlayer());
                     wrapper.addObserver(StreamPane.this);
                     wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()), "source");
                 } catch (MalformedURLException e) {
@@ -190,12 +192,10 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             }
         });
 
-        if(channel.getChannelLink().toLowerCase().contains("twitch"))
-        {
+        if (channel.getChannelLink().toLowerCase().contains("twitch")) {
             imagelol.setImage(new Image(StreamPane.class.getResourceAsStream("/pictures/twitch.png")));
 
-        } else
-        {
+        } else {
             imagelol.setImage(new Image(StreamPane.class.getResourceAsStream("/pictures/hitbox.png")));
 
         }
@@ -218,8 +218,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
 
     }
 
-    public void updateLabels()
-    {
+    public void updateLabels() {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -229,11 +228,12 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
                 StreamPane.this.uptime.setText(channel.getUptime());
                 StreamPane.this.viewers.setText(String.valueOf(channel.getViewerAmount()));
                 StreamPane.this.isOnline.setText(channel.isOnline() ? "Online" : "Offline");
-                StreamPane.this.isOnline.setStyle( (!channel.isOnline()?"-fx-text-fill: red;":"-fx-text-fill: #00e005"));
+                StreamPane.this.isOnline.setStyle((!channel.isOnline() ? "-fx-text-fill: red;" : "-fx-text-fill: #00e005"));
 
             }
         });
     }
+
 
     public IChannel getChannel() {
         return channel;
@@ -243,7 +243,6 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
     public void recieveLivestreamerMessage(String message, SortOfMessage sort) {
         logger.debug("XDDDD " + message + " " + sort.name());
     }
-
 
 
 }
