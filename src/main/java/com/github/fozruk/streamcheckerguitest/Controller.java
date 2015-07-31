@@ -264,7 +264,12 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     @Override
     public void recieveNotification(IChannel sender, String message) {
-        list.sort(comparator);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                list.sort(comparator);
+            }
+        });
         MainWindow.showMessage("Info", message);
     }
 
@@ -277,7 +282,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         public int compare(StreamPane o1, StreamPane o2) {
             return ComparisonChain.start().compare(!o1.getChannel()
                     .isOnline(), !o2.getChannel().isOnline()).compare(o1
-                    .getChannel().getChannelName().toLowerCase(),o2.getChannel()
+                    .getChannel().getChannelName().toLowerCase(), o2.getChannel()
                     .getChannelName().toLowerCase())
                     .result();
         }
