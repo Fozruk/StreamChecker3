@@ -228,7 +228,8 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
                 StreamPane.this.uptime.setText(channel.getUptime());
                 StreamPane.this.viewers.setText(String.valueOf(channel.getViewerAmount()));
                 StreamPane.this.isOnline.setText(channel.isOnline() ? "Online" : "Offline");
-                StreamPane.this.isOnline.setStyle((!channel.isOnline() ? "-fx-text-fill: red;" : "-fx-text-fill: #00e005"));
+                StreamPane.this.isOnline.setStyle((!channel.isOnline() ?
+                        "-fx-text-fill: #d18080;" : "-fx-text-fill: #80d181"));
 
             }
         });

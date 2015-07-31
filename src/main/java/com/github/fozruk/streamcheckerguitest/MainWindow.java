@@ -126,17 +126,14 @@ public class MainWindow extends Application {
         double desktopwidth = Toolkit.getDefaultToolkit().getScreenSize()
                 .getWidth();
 
-        double winHeight = winSize.getHeight();
         double winWidth = winSize.getWidth();
 
-
-        int fensterhoehe = (int) primaryStage.getHeight();
 
         int locationX = (int) MouseInfo.getPointerInfo().getLocation().getX();
         if (locationX + primaryStage.getWidth() > desktopwidth)
             locationX = (int) (desktopwidth - primaryStage.getWidth());
 
-        MouseLocation mouseLocation = getMouseLocation(scrnSize, winSize);
+        MouseLocation mouseLocation = getMouseLocation(scrnSize);
         TaskbarStare state = getTaskbarLocation(scrnSize, winSize);
 
         double positionX = 0;
@@ -162,7 +159,7 @@ public class MainWindow extends Application {
         primaryStage.setY(positionY);
         primaryStage.setX(positionX);
 
-        outOfBoundsCheck();
+        outOfBoundsCheck(scrnSize);
 
         logger.debug("Window displayed at X: " + primaryStage.getX() + " Y: "
                 + primaryStage.getY());
@@ -170,8 +167,7 @@ public class MainWindow extends Application {
     }
 
 
-    private MouseLocation getMouseLocation(Dimension screenSize, Rectangle
-            windowSize) {
+    private MouseLocation getMouseLocation(Dimension screenSize) {
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
         double middleX = screenSize.getWidth() / 2.0;
         double middleY = screenSize.getHeight() / 2.0;
@@ -195,9 +191,13 @@ public class MainWindow extends Application {
             return TaskbarStare.Horizontal;
     }
 
-    private void outOfBoundsCheck()
+    private void outOfBoundsCheck(Dimension screensize)
     {
+        if(primaryStage.getY() + primaryStage.getHeight() > screensize.getHeight())
+            primaryStage.setY(screensize.getHeight() - primaryStage.getHeight());
 
+        if(primaryStage.getX() + primaryStage.getWidth() > screensize.getWidth())
+            primaryStage.setX(screensize.getWidth() - primaryStage.getWidth());
     }
 
     private enum MouseLocation {

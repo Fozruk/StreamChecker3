@@ -1,12 +1,15 @@
 .root {
     -fx-font-family: "System";
     -fx-font-size: 13.0px;
-    -fx-base: #2D2D2D;
-    -fx-background: #484848;
+    -fx-base: #222222;
+    -fx-background: #111111;
     -fx-focus-color: #005779;
-    -fx-control-inner-background: #555555;
+    -fx-text-base-color: #a8a8a8;
+        -fx-text-background-color: #a8a8a8;
+    -fx-control-inner-background: #111111;
     -fx-inner-border: linear-gradient(to bottom, derive(-fx-color,35.0%) 0%, derive(-fx-color,-6.0%) 100%);
-    -fx-body-color: linear-gradient( to bottom, derive(-fx-color, 35.0%) 0%, derive(-fx-color, -6.0%) 100%);
+   -fx-body-color: linear-gradient( to bottom, derive(-fx-color, 00.0%) 0%,
+   derive(-fx-color, -6.0%) 100%);
     -fx-shadow-highlight-color: derive(-fx-background,-7.118644067796609%);
 }
 .button, .toggle-button, .choice-box {
@@ -60,16 +63,16 @@
 }
 
 .list-cell:filled:hover {
-    -fx-background-color: #333333;
+    -fx-background-color: #000000;
     -fx-text-fill: white;
 }
 
 .labelOnline {
-    -fx-color:green;
+    -fx-color:#81d180;
 }
 
 .labelOffline {
-    -fx-color:red;
+    -fx-color:#d18080;
 }
 
 .list-cell:focused {
