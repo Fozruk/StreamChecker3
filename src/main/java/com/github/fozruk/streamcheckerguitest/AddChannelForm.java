@@ -3,7 +3,7 @@ package com.github.fozruk.streamcheckerguitest;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
-import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
+import com.github.epilepticz.streamchecker.model.channel.impl.Channel;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
@@ -125,13 +125,13 @@ public class AddChannelForm extends StackPane implements Initializable {
 
                     switch (channeltype) {
                         case Hitbox:
-                            IChannel hitboxChannel = new HitboxTVChannel(AddChannelForm.this.inputField.getText());
+                            com.github.epilepticz.streamchecker.model.channel.impl.Channel hitboxChannel = new HitboxTVChannel(AddChannelForm.this.inputField.getText());
                             Controller.getCurrentController().createChannel(hitboxChannel);
                             Controller.getCurrentController().getChannelPersistanceManager().saveChannel(hitboxChannel);
                             break;
 
                         case Twitch:
-                            IChannel channel = new TwitchTVChannel(AddChannelForm.this.inputField.getText());
+                            com.github.epilepticz.streamchecker.model.channel.impl.Channel channel = new TwitchTVChannel(AddChannelForm.this.inputField.getText());
                             Controller.getCurrentController().createChannel(channel);
                             Controller.getCurrentController().getChannelPersistanceManager().saveChannel(channel);
                             break;

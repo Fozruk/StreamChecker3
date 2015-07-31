@@ -10,6 +10,7 @@ import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedChannelsManager;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.google.common.collect.ComparisonChain;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -34,6 +35,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -131,7 +133,15 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
         label.setTextFill(Paint.valueOf("#5e5e5e"));
 
+
+
+
         listView.setItems(list);
+
+
+
+
+
 
 
         this.controller = new StreamcheckerController(this);
@@ -163,13 +173,15 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                list.sort(comparator);
             }
         }).start();
 
 
     }
 
-    public void createChannel(IChannel channel) {
+    public void createChannel(com.github.epilepticz.streamchecker.model.channel.impl.Channel channel) {
         channel.addObserver(this);
         controller.createChannel(channel);
     }
@@ -252,6 +264,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     @Override
     public void recieveNotification(IChannel sender, String message) {
+        list.sort(comparator);
         MainWindow.showMessage("Info", message);
     }
 
@@ -259,5 +272,14 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         MainWindow.getPrimaryStage().hide();
     }
 
-
+    private Comparator<StreamPane> comparator = new Comparator<StreamPane>() {
+        @Override
+        public int compare(StreamPane o1, StreamPane o2) {
+            return ComparisonChain.start().compare(!o1.getChannel()
+                    .isOnline(), !o2.getChannel().isOnline()).compare(o1
+                    .getChannel().getChannelName().toLowerCase(),o2.getChannel()
+                    .getChannelName().toLowerCase())
+                    .result();
+        }
+    };
 }
