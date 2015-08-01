@@ -5,7 +5,7 @@
     -fx-background: #111111;
     -fx-focus-color: #005779;
     -fx-text-base-color: #a8a8a8;
-        -fx-text-background-color: #a8a8a8;
+     -fx-text-background-color: #a8a8a8;
     -fx-control-inner-background: #111111;
     -fx-inner-border: linear-gradient(to bottom, derive(-fx-color,35.0%) 0%, derive(-fx-color,-6.0%) 100%);
    -fx-body-color: linear-gradient( to bottom, derive(-fx-color, 00.0%) 0%,

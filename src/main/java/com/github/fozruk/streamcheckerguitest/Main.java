@@ -12,6 +12,7 @@ public class Main {
     private static final Logger LOG = Logger.getLogger(Main.class);
 
     public static void main(String[] args) throws IOException, AWTException {
+        LOG.info("JAVAFX Version: " + com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
         LOG.info("Stramchecker started");
         MainWindow.startMainWindow();
         LOG.info("Streamchecker closed");

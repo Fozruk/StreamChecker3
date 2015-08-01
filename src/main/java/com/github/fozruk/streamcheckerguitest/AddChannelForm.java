@@ -36,7 +36,6 @@ public class AddChannelForm extends StackPane implements Initializable {
 
     private static final Logger logger = Logger.getLogger(AddChannelForm.class);
 
-    ;
     private Channel channeltype;
     @FXML
     private ImageView image;

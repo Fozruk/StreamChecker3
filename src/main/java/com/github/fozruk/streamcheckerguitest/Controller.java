@@ -25,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -102,6 +103,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             @Override
             public void handle(ActionEvent event) {
                 Controller.this.grid.setVisible(true);
+                Controller.this.listView.setEffect(new GaussianBlur(30.0));
                 fadeIn(grid);
             }
         });
@@ -111,6 +113,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             public void handle(ActionEvent event) {
                 logger.trace("Add Channel Back Event fired");
                 fadeOutAddNewChannel();
+                resetGaussianBlur();
             }
         });
 
@@ -179,6 +182,11 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         }).start();
 
 
+    }
+
+    public void resetGaussianBlur()
+    {
+        Controller.this.listView.setEffect(null);
     }
 
     public void createChannel(com.github.epilepticz.streamchecker.model.channel.impl.Channel channel) {
