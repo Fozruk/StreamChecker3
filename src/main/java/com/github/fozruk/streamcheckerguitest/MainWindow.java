@@ -24,22 +24,14 @@ public class MainWindow extends Application {
     private static final Logger logger = Logger.getLogger(AddChannelForm.class);
     private static TrayIcon trayIcon;
     private static Stage primaryStage;
+    public static  BalloonTipManager ballonManager;
+
 
     public static void startMainWindow() {
         launch();
     }
 
-    //Some help maybe https://gist.github.com/jewelsea/e231e89e8d36ef4e5d8a
-    public static void showMessage(String info, String message) {
-        logger.debug("Balloob Tip: " + message);
-        //javax.swing.SwingUtilities.invokeLater(() -> trayIcon.displayMessage("h", "k", TrayIcon.MessageType.ERROR));
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                logger.debug("This should be in AWT Event Queue");
-                trayIcon.displayMessage("Info", message, TrayIcon.MessageType.INFO);
-            }
-        });
-    }
+
 
     public static Stage getPrimaryStage() {
         return primaryStage;
@@ -48,7 +40,9 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+
         javax.swing.SwingUtilities.invokeLater(this::createTrayIcon);
+
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL location = Main.class.getClass().getResource("/fxml/sample.fxml");
         fxmlLoader.setLocation(location);
@@ -77,7 +71,6 @@ public class MainWindow extends Application {
     public void createTrayIcon() {
         try {
             java.awt.Toolkit.getDefaultToolkit();
-
             // app requires system tray support, just exit if there is no support.
             if (!java.awt.SystemTray.isSupported()) {
                 System.out.println("No system tray support, application exiting.");
@@ -106,6 +99,7 @@ public class MainWindow extends Application {
 
             logger.debug("Add TrayIcon to tray");
             tray.add(trayIcon);
+            this.ballonManager = new BalloonTipManager(trayIcon);
 
         } catch (Exception e) {
             e.printStackTrace();

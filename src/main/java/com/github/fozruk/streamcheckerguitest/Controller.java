@@ -45,6 +45,7 @@ import static com.github.fozruk.streamcheckerguitest.AddChannelForm.Channel;
 public class Controller implements Initializable, IOverview, IChannelobserver {
 
     private static final Logger logger = Logger.getLogger(Controller.class);
+
     private static Controller currentInstance;
     @FXML
     private ListView listView;
@@ -278,7 +279,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 list.sort(comparator);
             }
         });
-        MainWindow.showMessage("Info", message);
+        MainWindow.ballonManager.addMessageToQueue(message);
     }
 
     public void hideWindow() {
