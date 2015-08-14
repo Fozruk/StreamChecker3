@@ -3,6 +3,7 @@ package com.github.fozruk.streamcheckerguitest;
 import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.NoSuchChannelViewInOverviewException;
+import com.github.epilepticz.streamchecker.model.channel.impl.AbstractChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
@@ -25,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -112,7 +114,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         addChannelBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                logger.trace("Add Channel Back Event fired");
+                logger.trace("Add AbstractChannel Back Event fired");
                 fadeOutAddNewChannel();
                 resetGaussianBlur();
             }
@@ -190,9 +192,9 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         Controller.this.listView.setEffect(null);
     }
 
-    public void createChannel(com.github.epilepticz.streamchecker.model.channel.impl.Channel channel) {
-        channel.addObserver(this);
-        controller.createChannel(channel);
+    public void createChannel(AbstractChannel abstractChannel) {
+        abstractChannel.addObserver(this);
+        controller.createChannel(abstractChannel);
     }
 
     public void deleteChannel(IChannel channel) {
@@ -256,6 +258,8 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         ft.setToValue(1.0);
         ft.play();
     }
+
+
 
     public void fadeOutAddNewChannel() {
         fadeout(grid);
