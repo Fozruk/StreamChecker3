@@ -23,7 +23,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +35,8 @@ import java.util.ResourceBundle;
  */
 public class AddChannelForm extends StackPane implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddChannelForm.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddChannelForm
+            .class);
 
     private Channel channeltype;
     @FXML
@@ -205,5 +207,5 @@ public class AddChannelForm extends StackPane implements Initializable {
         return image;
     }
 
-    public static enum Channel {Twitch, Hitbox}
+    public enum Channel {Twitch, Hitbox}
 }

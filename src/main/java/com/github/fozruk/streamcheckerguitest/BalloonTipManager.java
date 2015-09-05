@@ -1,8 +1,12 @@
 package com.github.fozruk.streamcheckerguitest;
 
-import org.apache.log4j.Logger;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistenceManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by Philipp on 01.08.2015.
@@ -10,10 +14,12 @@ import java.awt.*;
 public class BalloonTipManager {
 
 
-    private static final Logger logger = Logger.getLogger(AddChannelForm.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddChannelForm
+            .class);
     private TrayIcon trayIcon;
     private StringBuilder queuedStrings = new StringBuilder();
     private Thread activeThread;
+
 
     public BalloonTipManager(TrayIcon trayIcon)
     {
@@ -32,7 +38,9 @@ public class BalloonTipManager {
     private void showMessage() {
         //javax.swing.SwingUtilities.invokeLater(() -> trayIcon.displayMessage("h", "k", TrayIcon.MessageType.ERROR));
 
+
         this.activeThread = new Thread(new Runnable() {
+
 
             public void run() {
 
@@ -60,8 +68,31 @@ public class BalloonTipManager {
 
 
                 logger.debug("Gonna dispatch messages....");
-                trayIcon.displayMessage("Info", builder.toString(), TrayIcon
-                        .MessageType.INFO);
+
+                try {
+                    if(PersistedSettingsManager.getInstance().getOs() == PersistenceManager.OperatingSystem.Windows)
+                    {
+                        trayIcon.displayMessage("Info", builder.toString(), TrayIcon.MessageType.INFO);
+
+                    } else if(PersistedSettingsManager.getInstance().getOs() == PersistenceManager.OperatingSystem.Linux)
+                    {
+                        for(String xd : queuedStrings.toString().split("\n"))
+                        {
+                            //String temp = "/usr/bin/notify-send 'Info' '"+xd+"' --icon=dialog-information";
+                            String[] cmd = { "/usr/bin/notify-send",
+                                    "-t",
+                                    "10000",
+                                    xd,
+                            "--icon=dialog-information"};
+                            Runtime.getRuntime().exec(cmd);
+                        }
+                    }else
+                    {
+                        trayIcon.displayMessage("Info", builder.toString(), TrayIcon.MessageType.INFO);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
                 BalloonTipManager.this.queuedStrings.setLength(0);
@@ -69,6 +100,7 @@ public class BalloonTipManager {
             }
         });
 
+        activeThread.setName("BalloonTipThread");
         activeThread.start();
     }
 }

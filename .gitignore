@@ -3,3 +3,4 @@ StreamComponent/*
 .idea/*
 build/*
 logs/*
+/build/

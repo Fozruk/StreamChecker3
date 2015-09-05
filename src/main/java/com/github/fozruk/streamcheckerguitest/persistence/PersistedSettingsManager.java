@@ -7,56 +7,37 @@ import java.util.Properties;
 
 /**
  * Created by Philipp on 14.06.2015.
+ * Settings file Keys that you need:
+ *
+ * livestreamer=
+ * videoPlayer=
+ * token_twitch=
+ * username=
+ *
  */
 public class PersistedSettingsManager extends PersistenceManager {
 
     Properties settings = new Properties();
+    private static PersistedSettingsManager manager;
 
-    public PersistedSettingsManager() throws IOException {
+
+    private PersistedSettingsManager() throws IOException {
         loadSettings();
     }
 
-    private void loadSettings() throws IOException {
-        String os = System.getProperty("os.name").toLowerCase();
-
-        if (!SETTINGS_FILE.exists()) {
-            SETTINGS_FILE.createNewFile();
-        }
-
-        if (os.indexOf("win") >= 0) {
-            this.setOs(OperatingSystem.Windows);
-            loadSettingsWindows();
-        } else if (os.indexOf("mac") >= 0) {
-            this.setOs(OperatingSystem.Mac);
-            loadSettingsMac();
-        } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") >= 0) {
-            this.setOs(OperatingSystem.Linux);
-            loadSettingsLinux();
-        } else {
-            throw new UnsupportedOperationException();
-        }
-
-
+    public static PersistedSettingsManager getInstance() throws IOException {
+        if(manager == null)
+            manager = new PersistedSettingsManager();
+        return manager;
     }
 
-    private void loadSettingsWindows() throws IOException {
+    private void loadSettings() throws IOException {
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(SETTINGS_FILE));
         settings.load(stream);
         stream.close();
     }
 
-    private void saveSettingsWindows() throws IOException {
-        FileOutputStream xddd = new FileOutputStream(SETTINGS_FILE);
-        settings.store(xddd, "");
-    }
 
-    private void loadSettingsMac() {
-        throw new IllegalStateException("Not yet Implemented");
-    }
-
-    private void loadSettingsLinux() {
-        throw new IllegalStateException("Not yet Umplemented");
-    }
 
     public File getLivestremer() throws PropertyKeyNotFoundException {
         String property = settings.getProperty("livestreamer");
@@ -80,5 +61,9 @@ public class PersistedSettingsManager extends PersistenceManager {
         return livestreamer;
     }
 
-
+    public String getValue(String value)
+    {
+        String property = settings.getProperty(value);
+        return property;
+    }
 }

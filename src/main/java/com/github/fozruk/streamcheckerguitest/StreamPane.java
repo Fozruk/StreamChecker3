@@ -1,11 +1,11 @@
 package com.github.fozruk.streamcheckerguitest;
 
 import com.github.epilepticz.JavaLivestreamerWrapper.ILivestreamerObserver;
-import com.github.epilepticz.JavaLivestreamerWrapper.LivestreamerWrapper;
 import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,21 +20,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import org.apache.log4j.Logger;
+import org.pircbotx.exception.IrcException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * Created by philipp.hentschel on 19.05.15.
  */
 public class StreamPane extends StackPane implements ILivestreamerObserver {
 
-    private static final Logger logger = Logger.getLogger(StreamPane.class);
+    private static final Logger logger = LoggerFactory.getLogger(StreamPane.class);
 
     @FXML
     private Label name;
@@ -148,12 +148,13 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             public void handle(MouseEvent event) {
                 try {
                     PersistedSettingsManager manager = Controller.getCurrentController().getSettingsManager();
-                    LivestreamerWrapper wrapper = new LivestreamerWrapper(manager.getLivestremer(), manager.getVideoPlayer());
-                    wrapper.addObserver(StreamPane.this);
-                    wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()), "source");
-                } catch (MalformedURLException e) {
+                    VlcLivestreamController gui = new VlcLivestreamController(channel,manager
+                            .getVideoPlayer(),manager.getLivestremer());
+                } catch (IOException e) {
                     e.printStackTrace();
                 } catch (PropertyKeyNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IrcException e) {
                     e.printStackTrace();
                 } finally {
                     Controller.getCurrentController().hideWindow();

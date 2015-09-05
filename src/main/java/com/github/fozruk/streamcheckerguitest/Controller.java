@@ -33,7 +33,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,7 +47,7 @@ import static com.github.fozruk.streamcheckerguitest.AddChannelForm.Channel;
 
 public class Controller implements Initializable, IOverview, IChannelobserver {
 
-    private static final Logger logger = Logger.getLogger(Controller.class);
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
 
     private static Controller currentInstance;
     @FXML
@@ -151,14 +152,14 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
 
         this.controller = new StreamcheckerController(this);
-        this.currentInstance = this;
+        currentInstance = this;
 
         //Load all persisted Channels
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    settingsManager = new PersistedSettingsManager();
+                    settingsManager = PersistedSettingsManager.getInstance();
                     channelPersistanceManager = new PersistedChannelsManager();
 
                     logger.debug("Load Persisted Channels...");
@@ -180,7 +181,12 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                     e.printStackTrace();
                 }
 
-                list.sort(comparator);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        list.sort(comparator);
+                    }
+                });
             }
         }).start();
 
@@ -284,6 +290,11 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             }
         });
         MainWindow.ballonManager.addMessageToQueue(message);
+    }
+
+    @Override
+    public void receiveStatusString(String message) {
+
     }
 
     public void hideWindow() {
