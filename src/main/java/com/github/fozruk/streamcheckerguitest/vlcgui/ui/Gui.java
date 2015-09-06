@@ -299,6 +299,7 @@ public class Gui extends JFrame implements IChannelobserver {
     @Override
     public void dispose() {
         super.dispose();
+        messageAdder.stop();
         chatListModel.removeListDataListener(listdataListener);
     }
 
@@ -497,7 +498,6 @@ public class Gui extends JFrame implements IChannelobserver {
         private Color colorz2 = myColor;
 
         public MenubarPainter(Color color) {
-            this.colorz = color;
         }
 
         public MenubarPainter(Color color1, Color color2) {
