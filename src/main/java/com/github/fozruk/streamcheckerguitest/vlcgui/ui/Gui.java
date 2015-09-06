@@ -6,16 +6,12 @@ import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamCon
 import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.sampleCanvas;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -24,37 +20,37 @@ import java.util.ArrayList;
 
 public class Gui extends JFrame implements IChannelobserver {
 
-    private ListDataListener listdataListener;
-    AdjustmentListener listener = (new AdjustmentListener() {
-        public void adjustmentValueChanged(AdjustmentEvent e) {
-            e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-        }
-    });
-    private JPanel contentPane;
-    private sampleCanvas canvas;
-    private Chat list;
-    private DefaultListModel model;
-    private JSplitPane splitPane;
-    private java.util.List<ChatMessage> chatmessages = new ArrayList<>();
-    private JScrollPane scrollpane;
-    private JPanel panel;
-    private JTextField textField;
-    private JButton btnNewButton;
-    private JCheckBox chckbxNewCheckBox;
-    private JPanel panel_1;
-    private VlcLivestreamController controller;
-    private JSlider slider = new JSlider(0, 200);
-    private JTabbedPane tabbedPane;
-    private JPanel panel_2;
-    private JLabel ircMap;
     private static final Logger LOGGER = LoggerFactory.getLogger(Gui.class);
+
+    private JSlider slider = new JSlider(0, 200);
+
+    //VLC
+    private sampleCanvas vlcPlayerCanvas;
+
+    //Chat
+    private Chat chatWindow;
+    private JScrollPane chatWindowScrollPane;
+    private DefaultListModel<ChatMessage> chatListModel;
+    private JTextField textField;
+    private JCheckBox toggleAutoscrollBox;
+    private ListDataListener listdataListener;
+
     private MessageAdder messageAdder;
-    private ListCellRenderer renderer;
+
+
+    //Colors for Look and Feel
     static Color myColor = Color.darkGray.darker().darker();
     static Color fontColor = Color.lightGray;
+
+    //Pictures for Look and Feel
     private static BufferedImage BUTTON_NORMAL = null;
     private static BufferedImage BUTTON_HOVER = null;
     private static BufferedImage BUTTON_PRESSED = null;
+
+    //Controller
+    VlcLivestreamController controller;
+
+    AdjustmentListener listener = ((e) -> e.getAdjustable().setValue(e.getAdjustable().getMaximum()));
 
     static
     {
@@ -89,45 +85,31 @@ public class Gui extends JFrame implements IChannelobserver {
         setBounds(100, 100, 1081, 629);
         slider.setPreferredSize(new Dimension(100, 26));
         slider.setMaximumSize(new Dimension(70, 26));
+        slider.addChangeListener((e) -> controller.setVolume(slider.getValue()));
+        JPanel basePane = new JPanel();
+        basePane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        basePane.setLayout(new BorderLayout(0, 0));
+        setContentPane(basePane);
 
-        slider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                controller.setVolume(slider.getValue());
-            }
-        });
+        JSplitPane splitPane = new JSplitPane();
+        basePane.add(splitPane, BorderLayout.CENTER);
 
+        vlcPlayerCanvas = new sampleCanvas();
 
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(new BorderLayout(0, 0));
-        setContentPane(contentPane);
-
-        splitPane = new JSplitPane();
-        contentPane.add(splitPane, BorderLayout.CENTER);
-
-        canvas = new sampleCanvas();
-
-        canvas.setBackground(Color.black);
-        splitPane.setLeftComponent(canvas);
+        vlcPlayerCanvas.setBackground(Color.black);
+        splitPane.setLeftComponent(vlcPlayerCanvas);
 
         splitPane.getLeftComponent().setMinimumSize(new Dimension(getWidth()
                 - 300, 100));
 
 
-        model = new DefaultListModel();
+        chatListModel = new DefaultListModel<ChatMessage>();
 
         listdataListener = new ListDataListener() {
             @Override
             public void intervalAdded(ListDataEvent e) {
-                if (model.size() > 100)
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            model.remove(0);
-                        }
-                    });
-
+                if (chatListModel.size() > 100)
+                SwingUtilities.invokeLater(()->chatListModel.remove(0));
             }
 
             @Override
@@ -141,100 +123,87 @@ public class Gui extends JFrame implements IChannelobserver {
             }
         };
 
-        model.addListDataListener(listdataListener);
+        chatListModel.addListDataListener(listdataListener);
 
-        panel_1 = new JPanel();
+        JPanel panel_1 = new JPanel();
         panel_1.setAlignmentY(Component.TOP_ALIGNMENT);
         panel_1.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel_1.setLayout(new BorderLayout(0, 0));
 
-        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         panel_1.add(tabbedPane, BorderLayout.CENTER);
 
-        scrollpane = new JScrollPane();
-        tabbedPane.addTab("Chat", null, scrollpane, null);
-        scrollpane.setMaximumSize(new Dimension(300, 10000));
-        scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        chatWindowScrollPane = new JScrollPane();
+        tabbedPane.addTab("Chat", null, chatWindowScrollPane, null);
+        chatWindowScrollPane.setMaximumSize(new Dimension(300, 10000));
+        chatWindowScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        list = new Chat(model);
+        chatWindow = new Chat(chatListModel);
 
         ComponentListener l = new ComponentAdapter() {
 
             @Override
             public void componentResized(ComponentEvent e) {
-                list.updateUI();
+                chatWindow.updateUI();
             }
         };
 
-        list.addComponentListener(l);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        renderer = new com.github.fozruk
+        chatWindow.addComponentListener(l);
+        chatWindow.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ListCellRenderer cellRenderChat = new com.github.fozruk
                 .streamcheckerguitest.vlcgui.ui.ListCellRenderer();
-        list.setCellRenderer(renderer);
-        list.setFixedCellWidth(300);
-        list.setBackground(new Color(23, 23, 23));
-        scrollpane.setViewportView(list);
-
-        panel_2 = new JPanel();
-        panel_2.setLayout(new BorderLayout(0, 0));
-
-        ircMap = new JLabel("");
-        panel_2.add(ircMap, BorderLayout.CENTER);
+        chatWindow.setCellRenderer(cellRenderChat);
+        chatWindow.setFixedCellWidth(300);
+        chatWindow.setBackground(new Color(23, 23, 23));
+        chatWindowScrollPane.setViewportView(chatWindow);
 
         splitPane.setRightComponent(panel_1);
 
-        panel = new JPanel();
-        panel.setMaximumSize(new Dimension(32767, 50));
-        panel_1.add(panel, BorderLayout.SOUTH);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        JPanel sendMessagesPane = new JPanel();
+        sendMessagesPane.setMaximumSize(new Dimension(32767, 50));
+        panel_1.add(sendMessagesPane, BorderLayout.SOUTH);
+        sendMessagesPane.setLayout(new BoxLayout(sendMessagesPane, BoxLayout.X_AXIS));
 
         textField = new JTextField();
         textField.setBorder(null);
 
-        panel.add(textField);
+        sendMessagesPane.add(textField);
         textField.setColumns(10);
 
-        btnNewButton = new JButton("Send");
-        btnNewButton.setVerticalAlignment(SwingConstants.TOP);
-        btnNewButton.setHorizontalAlignment(SwingConstants.LEADING);
-        btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.sendMessage(textField.getText());
+        JButton sendMessageButton = new JButton("Send");
+        sendMessageButton.setVerticalAlignment(SwingConstants.TOP);
+        sendMessageButton.setHorizontalAlignment(SwingConstants.LEADING);
+        sendMessageButton.addActionListener((e) -> {
+            controller.sendMessage(textField.getText());
 
-                ChatMessage person = new ChatMessage(controller.chat
-                        .getUsername(),
-                        textField.getText());
+            ChatMessage person = new ChatMessage(controller.chat
+                    .getUsername(),
+                    textField.getText());
 
-                textField.setText("");
+            textField.setText("");
 
-                appendChatMessage(person);
+            appendChatMessage(person);
+        });
+        sendMessagesPane.add(sendMessageButton);
 
+        toggleAutoscrollBox = new JCheckBox("");
+        toggleAutoscrollBox.setActionCommand("");
+        toggleAutoscrollBox.setSelected(true);
+        toggleAutoscrollBox.addActionListener((e)->{
+            if (toggleAutoscrollBox.isSelected()) {
+                addAutoScroll();
+            } else {
+                removeAutoScroll();
             }
         });
-        panel.add(btnNewButton);
-
-        chckbxNewCheckBox = new JCheckBox("");
-        chckbxNewCheckBox.setActionCommand("");
-        chckbxNewCheckBox.setSelected(true);
-        chckbxNewCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (chckbxNewCheckBox.isSelected()) {
-                    addAutoScroll();
-                } else {
-                    removeAutoScroll();
-                }
-            }
-        });
-        panel.add(chckbxNewCheckBox);
-        panel.add(slider);
+        sendMessagesPane.add(toggleAutoscrollBox);
+        sendMessagesPane.add(slider);
         setVisible(true);
         toFront();
         setTitle("Loading Channel Data....");
         addAutoScroll();
 
-        canvas.addMouseListener(new MouseAdapter() {
+        vlcPlayerCanvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
@@ -246,7 +215,7 @@ public class Gui extends JFrame implements IChannelobserver {
 
         this.setIconImage(ImageIO.read(getClass().getResource("/pictures/IconJframe.png")));
 
-        messageAdder = new MessageAdder(model);
+        messageAdder = new MessageAdder(chatListModel);
     }
 
     //Invoked if the window gets closed
@@ -256,35 +225,20 @@ public class Gui extends JFrame implements IChannelobserver {
     }
 
     public synchronized void appendChatMessage(ChatMessage message) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-               messageAdder.addMessage(message);
-            }
-        });
-
+        SwingUtilities.invokeLater(() -> messageAdder.addMessage(message));
     }
 
-    public sampleCanvas getCanvas() {
-        return canvas;
-    }
-
-    public JList getList() {
-        return list;
+    public sampleCanvas getVlcPlayerCanvas() {
+        return vlcPlayerCanvas;
     }
 
     private void addAutoScroll() {
-        scrollpane.getVerticalScrollBar().addAdjustmentListener(listener);
+        chatWindowScrollPane.getVerticalScrollBar().addAdjustmentListener(listener);
     }
 
     private void removeAutoScroll() {
-        scrollpane.getVerticalScrollBar().removeAdjustmentListener(listener);
+        chatWindowScrollPane.getVerticalScrollBar().removeAdjustmentListener(listener);
     }
-
-    public void setTitle() {
-        setTitle("xddd");
-    }
-
 
     @Override
     public void recieveNotification(IChannel sender, String message) {
@@ -298,34 +252,33 @@ public class Gui extends JFrame implements IChannelobserver {
 
     class MessageAdder
     {
-        private DefaultListModel model;
         Thread addThread;
-        volatile ArrayList<ChatMessage> messages = new ArrayList();
+        volatile ArrayList<ChatMessage> messages = new ArrayList<ChatMessage>();
         private boolean run = true;
 
-        private MessageAdder(DefaultListModel model)
+        private MessageAdder(DefaultListModel<ChatMessage> model)
         {
-            this.model = model;
-            this.addThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while(run)
-                    {
-                        try {
+            this.addThread = new Thread(() -> {
+                while(run)
+                {
+                    try {
 
-                            Thread.sleep(500);
-                            ArrayList<ChatMessage> temp = (ArrayList<ChatMessage>) messages.clone();
-                            messages.clear();
-                            for(ChatMessage p : temp)
-                            {
+                        Thread.sleep(500);
+                        ArrayList<ChatMessage> temp = (ArrayList<ChatMessage>) messages.clone();
+                        messages.clear();
+                        for(ChatMessage p : temp)
+                        {
+                            try {
                                 model.addElement(p);
+                            } catch (NullPointerException e)
+                            {
+                                e.printStackTrace();
                             }
-
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
                         }
-                    }
 
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -346,7 +299,7 @@ public class Gui extends JFrame implements IChannelobserver {
     @Override
     public void dispose() {
         super.dispose();
-        model.removeListDataListener(listdataListener);
+        chatListModel.removeListDataListener(listdataListener);
     }
 
     //Design
@@ -363,9 +316,9 @@ public class Gui extends JFrame implements IChannelobserver {
                     UIManager.setLookAndFeel(info.getClassName());
 
                     UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".background", new javax.swing.plaf.ColorUIResource(myColor));
-                    UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.renderer\"[Disabled].textForeground", new javax.swing.plaf.ColorUIResource(myColor));
+                    UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.cellRenderChat\"[Disabled].textForeground", new javax.swing.plaf.ColorUIResource(myColor));
                     UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\"[Selected].background", new javax.swing.plaf.ColorUIResource(c));
-                    UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.renderer\"[Selected].background", new javax.swing.plaf.ColorUIResource(c));
+                    UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.cellRenderChat\"[Selected].background", new javax.swing.plaf.ColorUIResource(c));
 
                     UIManager.getLookAndFeelDefaults().put("ComboBox[Editable+Focused].backgroundPainter",
                             new MenubarPainter(c, c.brighter()));
@@ -544,6 +497,7 @@ public class Gui extends JFrame implements IChannelobserver {
         private Color colorz2 = myColor;
 
         public MenubarPainter(Color color) {
+            this.colorz = color;
         }
 
         public MenubarPainter(Color color1, Color color2) {
@@ -561,17 +515,15 @@ public class Gui extends JFrame implements IChannelobserver {
     }
 
     private static class ImagePainter implements Painter<JComponent> {
-        private final Color colorz;
         private BufferedImage path;
 
         public ImagePainter(Color color, BufferedImage path) {
-            this.colorz = color;
             this.path = path;
+
         }
 
         public void paint(Graphics2D g, JComponent object, int width, int heigth) {
             g.drawImage(path, 0, 0, object.getWidth(), object.getHeight(), null);
         }
     }
-
 }

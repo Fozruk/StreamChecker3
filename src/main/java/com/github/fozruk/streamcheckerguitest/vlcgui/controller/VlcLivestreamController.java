@@ -39,7 +39,7 @@ public class VlcLivestreamController implements ChatObserver {
         this.channel = channel;
         this.streamWindow = new Gui(this);
         channel.addObserver(streamWindow);
-        this.player = new VlcPlayer(streamWindow.getCanvas(),vlc,livestreamer);
+        this.player = new VlcPlayer(streamWindow.getVlcPlayerCanvas(),vlc,livestreamer);
         startPlayer(channel);
 
         //Refreshes Data for the frame title
