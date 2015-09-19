@@ -12,12 +12,12 @@ public class PircBotXTwitch extends PircBotX {
      *
      * @param configuration
      */
-    public PircBotXTwitch(Configuration<? extends PircBotX> configuration) {
+    public PircBotXTwitch(Configuration configuration) {
         super(configuration);
     }
 
     public void shutdown()
     {
-        shutdown(true);
+        shutdown();
     }
 }

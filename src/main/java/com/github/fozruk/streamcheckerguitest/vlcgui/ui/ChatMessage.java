@@ -139,4 +139,15 @@ public class ChatMessage {
         this.message = message;
     }
 
+    public ChatMessage(String user,String color,String message)
+    {
+        Calendar rightNow = Calendar.getInstance();
+        hour = rightNow.get(Calendar.HOUR_OF_DAY);
+        minute = rightNow.get(Calendar.MINUTE);
+
+        this.message = message;
+        this.color = color;
+        this.username = user;
+    }
+
 }

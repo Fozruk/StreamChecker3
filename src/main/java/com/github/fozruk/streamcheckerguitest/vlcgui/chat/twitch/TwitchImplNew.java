@@ -60,7 +60,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
 
         LOGGER.info("Connecting to: " + serverIp[0] + ":" + serverIp[1]);
 
-        Configuration conf = new Configuration.Builder<>().setName(username)
+        Configuration conf = new Configuration.Builder().setName(username)
                 .setServerHostname(serverIp[0]).setEncoding
                         (Charset.forName("UTF-8"))
                 .setServerPort(Integer.parseInt(serverIp[1]))
@@ -135,7 +135,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
 
         LOGGER.info("Connecting to: " + serverIp[0] + ":" + serverIp[1]);
 
-        Configuration conf = new Configuration.Builder<>().setName(username)
+        Configuration conf = new Configuration.Builder().setName(username)
                 .setServerHostname(serverIp[0]).setEncoding
                 (Charset.forName("UTF-8"))
                 .setServerPort(Integer.parseInt(serverIp[1]))
@@ -184,11 +184,20 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
     @Override
     public void onUnknown(UnknownEvent event) throws Exception {
         super.onUnknown(event);
-        LOGGER.info("OnMessage: " + event.getLine());
         observer._onMessage(new ChatMessage(event.getLine()));
     }
 
-//    @Override
+    @Override
+    public void onMessage(MessageEvent event) throws Exception {
+        super.onMessage(event);
+        ChatMessage message = new ChatMessage(event.getUser().getNick(),event
+                .getTags()
+                .get("color"),event.getMessage());
+        observer._onMessage(message);
+
+    }
+
+    //    @Override
 //    public void onNotice(NoticeEvent event) throws Exception {
 //        super.onNotice(event);
 //        System.out.println("test");
