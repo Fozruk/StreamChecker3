@@ -18,6 +18,6 @@ public class PircBotXTwitch extends PircBotX {
 
     public void shutdown()
     {
-        shutdown();
+        super.shutdown();
     }
 }

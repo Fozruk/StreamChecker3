@@ -17,7 +17,6 @@
     <orderEntry type="module" module-name="streamchecker" exported="" />
     <orderEntry type="library" exported="" name="Gradle: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="module" module-name="javalivestreamerwrapper" exported="" />
-    <orderEntry type="library" exported="" name="Gradle: com.google.guava:guava:r05" level="project" />
     <orderEntry type="library" exported="" name="Gradle: uk.co.caprica:vlcj:3.8.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.slf4j:slf4j-simple:1.6.4" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.slf4j:slf4j-log4j12:1.7.5" level="project" />
@@ -26,5 +25,17 @@
     <orderEntry type="library" exported="" name="Gradle: net.java.dev.jna:platform:3.5.2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.slf4j:slf4j-api:1.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.pircbotx:pircbotx:2.0.1" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/pircbotx-2.1-7d32bd8fbc109069085789f86ff725c092fb9c5e.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: org.java-websocket:Java-WebSocket:1.3.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:18.0" level="project" />
   </component>
 </module>

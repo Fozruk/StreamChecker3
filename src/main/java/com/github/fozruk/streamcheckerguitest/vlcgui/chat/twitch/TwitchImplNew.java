@@ -243,7 +243,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
 
     @Override
     public void disconnect() {
-        bot.stopBotReconnect();
+        //bot.stopBotReconnect();
         bot.shutdown();
         whisperObserver.remove(this);
         LOGGER.debug("Observers for Whisper: " + whisperObserver.size());
