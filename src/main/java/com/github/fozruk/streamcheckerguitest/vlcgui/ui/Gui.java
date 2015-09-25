@@ -1,39 +1,47 @@
 package com.github.fozruk.streamcheckerguitest.vlcgui.ui;
 
+import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.sampleCanvas;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class Gui extends JFrame implements IChannelobserver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Gui.class);
+    private final JScrollPane viewerListPane;
+    private final ViewerListTab viewerList;
 
     private JSlider slider = new JSlider(0, 200);
 
     //VLC
     private sampleCanvas vlcPlayerCanvas;
 
-    //Chat
-    private Chat chatWindow;
+    //ResizeableList
+    private ResizeableList chatWindow;
     private JScrollPane chatWindowScrollPane;
     private DefaultListModel<ChatMessage> chatListModel;
     private JTextField textField;
     private JCheckBox toggleAutoscrollBox;
     private ListDataListener listdataListener;
+    private DefaultListModel<String> viewerlist;
 
     private MessageAdder messageAdder;
 
@@ -134,11 +142,49 @@ public class Gui extends JFrame implements IChannelobserver {
         panel_1.add(tabbedPane, BorderLayout.CENTER);
 
         chatWindowScrollPane = new JScrollPane();
-        tabbedPane.addTab("Chat", null, chatWindowScrollPane, null);
+
+        tabbedPane.addTab("ResizeableList", null, chatWindowScrollPane, null);
+        this.viewerlist = new DefaultListModel<>();
+        viewerList = new ViewerListTab(viewerlist);
+
+        viewerListPane = new JScrollPane(viewerList);
+
+        tabbedPane.addTab("Viewer", null, viewerListPane, null);
+
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                //If index == 1 reload viewerlist
+                if (tabbedPane.getSelectedIndex() == 1) {
+                    try {
+                        Gui.this.viewerlist.removeAllElements();
+                        String[] viewers = new String[0];
+                        viewers = controller.reloadViewerList();
+                        for (String temp : viewers)
+                            Gui.this.viewerlist.addElement(temp);
+
+                    } catch (ReadingWebsiteFailedException e1) {
+                        e1.printStackTrace();
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    } catch (MalformedURLException e1) {
+                        e1.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
         chatWindowScrollPane.setMaximumSize(new Dimension(300, 10000));
         chatWindowScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        chatWindow = new Chat(chatListModel);
+        viewerListPane.setMaximumSize(new Dimension(300, 10000));
+        viewerListPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        ListCellRenderer cellRenderChat = new com.github.fozruk
+                .streamcheckerguitest.vlcgui.ui.ListCellRenderer();
+
+        chatWindow = new ResizeableList(chatListModel,cellRenderChat);
 
         ComponentListener l = new ComponentAdapter() {
 
@@ -150,12 +196,12 @@ public class Gui extends JFrame implements IChannelobserver {
 
         chatWindow.addComponentListener(l);
         chatWindow.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        ListCellRenderer cellRenderChat = new com.github.fozruk
-                .streamcheckerguitest.vlcgui.ui.ListCellRenderer();
-        chatWindow.setCellRenderer(cellRenderChat);
-        chatWindow.setFixedCellWidth(300);
-        chatWindow.setBackground(new Color(23, 23, 23));
+
+
         chatWindowScrollPane.setViewportView(chatWindow);
+
+
+        viewerListPane.setViewportView(viewerList);
 
         splitPane.setRightComponent(panel_1);
 

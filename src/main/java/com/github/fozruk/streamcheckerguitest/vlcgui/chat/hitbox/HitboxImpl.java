@@ -91,6 +91,11 @@ public class HitboxImpl extends WebSocketClient implements IChat {
 
     }
 
+    @Override
+    public String[] getUserList() {
+        return null;
+    }
+
     //Websocket
 
     @Override

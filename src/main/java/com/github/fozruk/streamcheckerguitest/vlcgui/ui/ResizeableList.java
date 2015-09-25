@@ -1,17 +1,26 @@
 package com.github.fozruk.streamcheckerguitest.vlcgui.ui;
 
 import javax.swing.*;
+import javax.swing.ListCellRenderer;
 import java.awt.*;
 
 /**
  * Created by Philipp on 18.08.2015.
+ *
  */
-public class Chat extends JList implements Scrollable {
+public class ResizeableList extends JList implements Scrollable {
 
-    public Chat(DefaultListModel model)
+    public ResizeableList(DefaultListModel model)
     {
         super(model);
+        setFixedCellWidth(-1);
+        setBackground(new Color(23, 23, 23));
+    }
 
+    public ResizeableList(DefaultListModel model, ListCellRenderer cellRenderer)
+    {
+        this(model);
+        setCellRenderer(cellRenderer);
     }
 
     public Dimension getPreferredScrollableViewportSize() {

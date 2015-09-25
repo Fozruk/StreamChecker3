@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +69,7 @@ public class VlcLivestreamController implements ChatObserver {
         }
     }
 
-    //Chat Stuffs
+    //ResizeableList Stuffs
 
     @Override
     public void _onMessage(ChatMessage message) {
@@ -105,4 +106,7 @@ public class VlcLivestreamController implements ChatObserver {
     }
 
 
+    public String[] reloadViewerList() throws ReadingWebsiteFailedException, JSONException, MalformedURLException {
+        return chat.getUserList();
+    }
 }

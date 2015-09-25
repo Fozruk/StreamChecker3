@@ -11,10 +11,7 @@ import java.awt.*;
  */
 public class ListCellRenderer extends JLabel implements javax.swing.ListCellRenderer {
 
-    JLabel user;
-    JLabel message;
-    JList list;
-
+    private JList list;
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -63,6 +60,7 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
         {
             setBackground(Color.green.darker().darker());
         }
+
         return this;
     }
 
@@ -72,6 +70,7 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
                 list.getWidth()).height);
     }
 
+    //
     public static java.awt.Dimension getPreferredHeight(JLabel label,
                                                       boolean width, int prefSize) {
 

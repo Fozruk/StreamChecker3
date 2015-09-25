@@ -18,9 +18,11 @@ import org.pircbotx.hooks.ListenerAdapter;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Philipp on 12.08.2015.
@@ -176,17 +178,19 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
         whisperObserver.add(this);
         bot.sendRaw().rawLine("CAP REQ :twitch.tv/tags");
         bot.sendRaw().rawLine("CAP REQ :twitch.tv/commands");
+        bot.sendRaw().rawLine("CAP REQ :twitch.tv/membership");
         bot.sendRaw().rawLine("JOIN #" + channel.getChannelName().toLowerCase());
 
     }
 
-    //Hier kommen die Messages an
+    //Hier kommen IRC Messages an
     @Override
     public void onUnknown(UnknownEvent event) throws Exception {
         super.onUnknown(event);
         observer._onMessage(new ChatMessage(event.getLine()));
     }
 
+    //Hier kommen User Messages an
     @Override
     public void onMessage(MessageEvent event) throws Exception {
         super.onMessage(event);
@@ -247,6 +251,36 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
         bot.shutdown();
         whisperObserver.remove(this);
         LOGGER.debug("Observers for Whisper: " + whisperObserver.size());
+    }
+
+    @Override
+    public String[] getUserList() throws MalformedURLException,
+            ReadingWebsiteFailedException, JSONException {
+
+        ArrayList<String> chatter = new ArrayList<String>();
+
+        URL url = new URL("https://tmi.twitch" +
+                ".tv/group/user/"+channel.getChannelName().toLowerCase()+"/chatters");
+        LOGGER.info("Get userlist from url: "+ url);
+        JSONObject json = new JSONObject(WebUtils.readContentFrom(url));
+
+        JSONArray mods = json.getJSONObject("chatters").getJSONArray
+                ("moderators");
+        JSONArray viewer = json.getJSONObject("chatters").getJSONArray
+                ("viewers");
+
+        for(int i = 0; i < mods.length();i++)
+        {
+            chatter.add("[MOD]"+mods.get(i));
+        }
+
+        for(int i = 0; i < viewer.length();i++)
+        {
+            chatter.add(viewer.get(i).toString());
+        }
+
+        String[] stockArr = new String[chatter.size()];
+        return chatter.toArray(stockArr);
     }
 
 
