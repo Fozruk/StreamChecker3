@@ -2,8 +2,11 @@
 JavaFX Test Gui for livestreamer 
 
 Bar: 
-![Screenshot](https://raw.githubusercontent.com/Fozruk/StreamChecker3/implementVlcGui/bar.png)
+<br>
+![Screenshot](https://raw.githubusercontent.com/Fozruk/StreamChecker3/implementVlcGui/bar.png) 
+<br>
 Player: 
-![Screenshot](https://raw.githubusercontent.com/Fozruk/StreamChecker3/implementVlcGui/pic.PNG)
+<br>
+![Screenshot](https://raw.githubusercontent.com/Fozruk/StreamChecker3/implementVlcGui/pic.PNG) 
 
 
