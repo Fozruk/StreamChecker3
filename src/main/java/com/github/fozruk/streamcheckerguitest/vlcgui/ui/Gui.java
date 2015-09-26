@@ -222,7 +222,7 @@ public class Gui extends JFrame implements IChannelobserver {
         sendMessageButton.addActionListener((e) -> {
             controller.sendMessage(textField.getText());
 
-            ChatMessage person = new ChatMessage(controller.chat
+            ChatMessage person = new ChatMessage(controller
                     .getUsername(),
                     textField.getText());
 

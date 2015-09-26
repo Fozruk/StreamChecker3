@@ -1,6 +1,8 @@
 package com.github.fozruk.streamcheckerguitest.persistence;
 
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.util.Properties;
@@ -66,4 +68,13 @@ public class PersistedSettingsManager extends PersistenceManager {
         String property = settings.getProperty(value);
         return property;
     }
+
+    public void save() throws JSONException {
+        JSONObject settings = new JSONObject();
+        settings.put("videoPlayer","test");
+        settings.put("livestreamer","test");
+
+    }
+
+
 }

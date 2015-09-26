@@ -178,7 +178,6 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
         whisperObserver.add(this);
         bot.sendRaw().rawLine("CAP REQ :twitch.tv/tags");
         bot.sendRaw().rawLine("CAP REQ :twitch.tv/commands");
-        bot.sendRaw().rawLine("CAP REQ :twitch.tv/membership");
         bot.sendRaw().rawLine("JOIN #" + channel.getChannelName().toLowerCase());
 
     }
@@ -189,6 +188,8 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
         super.onUnknown(event);
         observer._onMessage(new ChatMessage(event.getLine()));
     }
+
+    
 
     //Hier kommen User Messages an
     @Override

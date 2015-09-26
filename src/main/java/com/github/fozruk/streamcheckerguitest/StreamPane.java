@@ -147,9 +147,8 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    PersistedSettingsManager manager = Controller.getCurrentController().getSettingsManager();
-                    VlcLivestreamController gui = new VlcLivestreamController(channel,manager
-                            .getVideoPlayer(),manager.getLivestremer());
+                    VlcLivestreamController gui = new VlcLivestreamController
+                            (channel);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (PropertyKeyNotFoundException e) {

@@ -7,6 +7,8 @@ import com.github.epilepticz.streamchecker.exception.UpdateChannelException;
 import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
+import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.vlcgui.chat.*;
 import com.github.fozruk.streamcheckerguitest.vlcgui.chat.twitch.TwitchImplNew;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
@@ -27,21 +29,32 @@ public class VlcLivestreamController implements ChatObserver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger
             (VlcLivestreamController.class);
-    Gui streamWindow;
-    IChannel channel;
-    VlcPlayer player;
-    public IChat chat;
+    private Gui streamWindow;
+    private IChannel channel;
+    private VlcPlayer player;
+    private IChat chat;
+    private PersistedSettingsManager persistenceManager =
+            PersistedSettingsManager.getInstance();
+    private boolean isLoaded;
+    private boolean shutdownRequest;
 
     public static final MessageHighlighter highligter = new
             MessageHighlighter(new ArrayList(Arrays.asList("xd", "lol",
             "f0zruk")));
+    private boolean loaded;
 
-    public VlcLivestreamController(IChannel channel, File vlc, File livestreamer) throws IOException, IrcException {
+    public VlcLivestreamController(IChannel channel) throws IOException, IrcException, PropertyKeyNotFoundException {
         this.channel = channel;
         this.streamWindow = new Gui(this);
         channel.addObserver(streamWindow);
-        this.player = new VlcPlayer(streamWindow.getVlcPlayerCanvas(),vlc,livestreamer);
-        startPlayer(channel);
+
+
+        this.player = new VlcPlayer(streamWindow.getVlcPlayerCanvas(),
+                persistenceManager.getVideoPlayer(),
+                persistenceManager.getLivestremer());
+
+        startPlayer();
+        startChat();
 
         //Refreshes Data for the frame title
         try {
@@ -49,21 +62,41 @@ public class VlcLivestreamController implements ChatObserver {
         } catch (UpdateChannelException e) {
             e.printStackTrace();
         }
+        this.loaded = true;
+        if(shutdownRequest)
+            this.stopWindow();
     }
 
-    private void startPlayer(IChannel channel) throws IOException {
+    private void startPlayer() throws IOException {
+        if(channel instanceof TwitchTVChannel)
+        {
+            player.play(new URL(channel.getChannelLink()), "source");
+        }
+        else if(channel instanceof HitboxTVChannel)
+        {
+            player.play(new URL(channel.getChannelLink()), "best");
+        }
+        else
+        {
+            throw new IllegalStateException("Channel not yet implemented");
+        }
+    }
+
+    private void startChat()
+    {
         if(channel instanceof TwitchTVChannel)
         {
             try {
                 chat = new TwitchImplNew(channel,this);
-            } catch (IrcException|JSONException|ReadingWebsiteFailedException e) {
+            } catch (IrcException|JSONException|ReadingWebsiteFailedException|IOException e) {
                 e.printStackTrace();
             }
-            player.play(new URL(channel.getChannelLink()), "source");
-        } else if(channel instanceof HitboxTVChannel)
+        }
+        else if(channel instanceof HitboxTVChannel)
         {
-            player.play(new URL(channel.getChannelLink()), "best");
-        } else
+           // player.play(new URL(channel.getChannelLink()), "best");
+        }
+        else
         {
             throw new IllegalStateException("Channel not yet implemented");
         }
@@ -80,6 +113,11 @@ public class VlcLivestreamController implements ChatObserver {
         chat._sendMessage(channel.getChannelName(), message);
     }
 
+    public String getUsername()
+    {
+        return chat.getUsername();
+    }
+
     //Methods for Closing events
 
     @Override
@@ -88,9 +126,19 @@ public class VlcLivestreamController implements ChatObserver {
     }
 
     public void stopWindow() {
+
+        if(loaded)
+        {
+            player.onShutdown(0);
+            chat.disconnect();
+        } else
+        {
+            LOGGER.info("Shutdown Request detected, gonna stop all processes " +
+                    "if window is loaded complemetely.");
+            shutdownRequest = true;
+        }
         //chat._leaveChannel((TwitchTVChannel) channel);
-        player.onShutdown(0);
-        chat.disconnect();
+
     }
 
     //Player stuffs
