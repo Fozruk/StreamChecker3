@@ -9,6 +9,7 @@ import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
+import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedChannelsManager;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.google.common.collect.ComparisonChain;
@@ -26,7 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.effect.BoxBlur;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -72,7 +73,22 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
     private Button exitButton;
     @FXML
     private Label label;
+    @FXML
+    private GridPane settings;
 
+    //Settings buttons
+    @FXML
+    private Button settingsBack;
+    @FXML
+    private Button settingsOk;
+    @FXML
+    private Button settingsLivestreamer;
+    @FXML
+    private Button settingsVlc;
+    @FXML
+    private TextField settingsTextfiledVlc;
+    @FXML
+    private TextField settingsTextfiledLivestreamer;
 
     private ObservableList<StreamPane> list;
     private PersistedSettingsManager settingsManager;
@@ -93,7 +109,19 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                fadeout(grid);
+                Controller.this.settings.setVisible(true);
+                Controller.this.listView.setEffect(new GaussianBlur(30.0));
+                fadeIn(settings);
 
+                try {
+                    settingsTextfiledLivestreamer.setText(PersistedSettingsManager.getInstance().getLivestremer().getAbsolutePath());
+                    settingsTextfiledVlc.setText(PersistedSettingsManager.getInstance().getVideoPlayer().getAbsolutePath());
+                } catch (PropertyKeyNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -106,18 +134,20 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                fadeOut(settings);
                 Controller.this.grid.setVisible(true);
                 Controller.this.listView.setEffect(new GaussianBlur(30.0));
                 fadeIn(grid);
             }
         });
 
+
         addChannelBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 logger.trace("Add AbstractChannel Back Event fired");
-                fadeOutAddNewChannel();
-                resetGaussianBlur();
+                fadeOut(grid);
+                resetEffect(listView);
             }
         });
 
@@ -128,6 +158,10 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             }
         });
 
+        settingsBack.setOnAction((e) -> {
+            fadeOut(settings);
+            resetEffect(listView);
+        });
 
         AddChannelForm form = new AddChannelForm(Channel.Twitch);
         form.getImage().setImage(new Image(Controller.class.getResourceAsStream("/pictures/twitch-logo-black.png")));
@@ -193,9 +227,9 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     }
 
-    public void resetGaussianBlur()
+    public void resetEffect(Node node)
     {
-        Controller.this.listView.setEffect(null);
+        node.setEffect(null);
     }
 
     public void createChannel(AbstractChannel abstractChannel) {
@@ -267,9 +301,9 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
 
 
-    public void fadeOutAddNewChannel() {
-        fadeout(grid);
-        Controller.this.grid.setVisible(false);
+    public void fadeOut(Node node) {
+        fadeout(node);
+        node.setVisible(false);
     }
 
     public PersistedSettingsManager getSettingsManager() {
@@ -311,4 +345,6 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                     .result();
         }
     };
+
+
 }

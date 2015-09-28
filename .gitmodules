@@ -3,4 +3,4 @@
 	url = https://github.com/EpileptiCz/streamchecker
 [submodule "javalivestreamerwrapper"]
 	path = javalivestreamerwrapper
-	url = https://github.com/EpileptiCz/javalivestreamerwrapper
+	url = https://github.com/Fozruk/JavaLivestreamerWrapper
