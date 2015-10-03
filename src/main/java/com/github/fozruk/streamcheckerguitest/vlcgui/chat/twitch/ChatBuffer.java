@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,8 @@ public class ChatBuffer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatBuffer.class);
     private Gui gui;
     private Date latest;
+    private MessageStats stats;
+    private double max = 0;
 
 
     public ChatBuffer(DefaultListModel<ChatMessage> model,Gui gui)
@@ -31,6 +34,7 @@ public class ChatBuffer {
             this.model = model;
             this.gui = gui;
             this.latest = new Date();
+            this.stats = new MessageStats();
         }
 
         public void setDelay(int delay)
@@ -43,7 +47,7 @@ public class ChatBuffer {
             if(!currentlyCollecting)
             {
                 currentlyCollecting = true;
-                 new Thread(new CollectThread()).start();
+                new Thread(new CollectThread()).start();
             }
             getCurrentList().add(message);
         }
@@ -79,11 +83,16 @@ public class ChatBuffer {
             } finally {
                 double receivedMessages = temp.size();
                 double timediff = new Date().getTime() - latest.getTime();
-                double dreisatz = receivedMessages / (delay + timediff);
+                double dreisatz = receivedMessages / (timediff);
                 double messagesPerSec = dreisatz * 1000;
-                LOGGER.info("Messages per Second: " + messagesPerSec);
-                gui.getTabbedPane().setTitleAt(0, messagesPerSec + " MPS " +
-                        "(Timescale: " + timediff);
+                stats.addAverage(messagesPerSec);
+                LOGGER.info("Messages per Second for this tick: " + new DecimalFormat("#.##").format(messagesPerSec));
+                max = messagesPerSec > max ? messagesPerSec : max;
+                gui.getTabbedPane().setTitleAt(0,   new DecimalFormat("#.##")
+                        .format(stats.getAverage()) + " Avg - " +
+                        new DecimalFormat("#.##").format(messagesPerSec) + " " +
+                        " Tick " +  new DecimalFormat("#.##").format(max) + "" +
+                        " max");
                 temp.clear();
                 latest = new Date();
                 currentlyCollecting = false;
