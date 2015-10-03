@@ -157,4 +157,9 @@ public class VlcLivestreamController implements ChatObserver {
     public String[] reloadViewerList() throws ReadingWebsiteFailedException, JSONException, MalformedURLException {
         return chat.getUserList();
     }
+
+    public void setFullscreen()
+    {
+        player.toggleFullScreen();
+    }
 }

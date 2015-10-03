@@ -18,8 +18,7 @@
                         <ListView fx:id="listView" maxHeight="300000.0" styleClass="list" VBox.vgrow="ALWAYS" />
                     </children>
                 </VBox>
-                <GridPane id="modalMenu" fx:id="grid" alignment="CENTER_LEFT"
-                          blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" focusTraversable="false" mouseTransparent="false" opacity="0.0" pickOnBounds="true" style=" -fx-border-radius: 5;" styleClass="background" visible="false">
+                <GridPane id="modalMenu" fx:id="grid" alignment="CENTER_LEFT" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" focusTraversable="false" mouseTransparent="false" opacity="0.0" pickOnBounds="true" style=" -fx-border-radius: 5;" styleClass="background" visible="false">
                     <children>
                         <Label fx:id="label" alignment="CENTER" text="Add Channel" textFill="#5e5e5e" GridPane.halignment="CENTER">
                             <effect>
@@ -41,6 +40,45 @@
                         <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
+            <GridPane id="modalMenu" fx:id="settings" alignment="CENTER_LEFT" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" focusTraversable="false" mouseTransparent="false" opacity="0.0" style=" -fx-border-radius: 5;" styleClass="background" visible="false">
+               <children>
+                  <Label fx:id="label1" alignment="CENTER" text="Settings" textFill="#5e5e5e" GridPane.halignment="CENTER">
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                     <children>
+                        <Button fx:id="settingsOk" mnemonicParsing="false" text="OK" />
+                        <Button fx:id="settingsBack" mnemonicParsing="false" text="Back" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                     <children>
+                        <TextField fx:id="settingsTextfiledVlc" />
+                        <Button fx:id="settingsVlc" mnemonicParsing="false" text="VLC" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                     <children>
+                        <TextField fx:id="settingsTextfiledLivestreamer" />
+                        <Button fx:id="settingsLivestreamer" mnemonicParsing="false" text="Livestreamer" />
+                     </children>
+                  </HBox>
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+                  <RowConstraints fillHeight="false" maxHeight="277.0" minHeight="10.0" prefHeight="277.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
             </children>
         </StackPane>
         <TitledPane animated="false" collapsible="false" content="$null" expanded="false" text="StreamCheckor" />

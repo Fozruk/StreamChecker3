@@ -262,6 +262,7 @@ public class Gui extends JFrame implements IChannelobserver {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
+                LOGGER.debug("Fullscreen Mouse event");
                 controller.toggleFullscreen();
             }
         });
