@@ -3,6 +3,7 @@ package com.github.fozruk.streamcheckerguitest.vlcgui.ui;
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
+import com.github.fozruk.streamcheckerguitest.vlcgui.chat.twitch.ChatBuffer;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.sampleCanvas;
 import org.json.JSONException;
@@ -21,7 +22,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 
 public class Gui extends JFrame implements IChannelobserver {
 
@@ -42,8 +42,9 @@ public class Gui extends JFrame implements IChannelobserver {
     private JCheckBox toggleAutoscrollBox;
     private ListDataListener listdataListener;
     private DefaultListModel<String> viewerlist;
+    private JSpinner chatSpeed;
 
-    private MessageAdder messageAdder;
+    private ChatBuffer chatBuffer;
 
 
     //Colors for Look and Feel
@@ -76,6 +77,12 @@ public class Gui extends JFrame implements IChannelobserver {
         }
     }
 
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
+    }
+
+    private final JTabbedPane tabbedPane;
+
     /**
      * Create the frame.
      */
@@ -99,6 +106,8 @@ public class Gui extends JFrame implements IChannelobserver {
         basePane.setLayout(new BorderLayout(0, 0));
         setContentPane(basePane);
 
+
+
         JSplitPane splitPane = new JSplitPane();
         basePane.add(splitPane, BorderLayout.CENTER);
 
@@ -116,7 +125,7 @@ public class Gui extends JFrame implements IChannelobserver {
         listdataListener = new ListDataListener() {
             @Override
             public void intervalAdded(ListDataEvent e) {
-                if (chatListModel.size() > 100)
+                if (chatListModel.size() > 200)
                 SwingUtilities.invokeLater(()->chatListModel.remove(0));
             }
 
@@ -138,7 +147,7 @@ public class Gui extends JFrame implements IChannelobserver {
         panel_1.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel_1.setLayout(new BorderLayout(0, 0));
 
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         panel_1.add(tabbedPane, BorderLayout.CENTER);
 
         chatWindowScrollPane = new JScrollPane();
@@ -235,7 +244,7 @@ public class Gui extends JFrame implements IChannelobserver {
         toggleAutoscrollBox = new JCheckBox("");
         toggleAutoscrollBox.setActionCommand("");
         toggleAutoscrollBox.setSelected(true);
-        toggleAutoscrollBox.addActionListener((e)->{
+        toggleAutoscrollBox.addActionListener((e) -> {
             if (toggleAutoscrollBox.isSelected()) {
                 addAutoScroll();
             } else {
@@ -261,7 +270,18 @@ public class Gui extends JFrame implements IChannelobserver {
 
         this.setIconImage(ImageIO.read(getClass().getResource("/pictures/IconJframe.png")));
 
-        messageAdder = new MessageAdder(chatListModel);
+        chatBuffer = new ChatBuffer(chatListModel,this);
+
+
+        chatSpeed = new JSpinner(new SpinnerNumberModel(250,1,2000,1));
+        sendMessagesPane.add(chatSpeed);
+        chatSpeed.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                chatBuffer.setDelay((Integer) chatSpeed.getValue());
+            }
+        });
+
     }
 
     //Invoked if the window gets closed
@@ -271,7 +291,8 @@ public class Gui extends JFrame implements IChannelobserver {
     }
 
     public synchronized void appendChatMessage(ChatMessage message) {
-        SwingUtilities.invokeLater(() -> messageAdder.addMessage(message));
+        SwingUtilities.invokeLater(() -> chatBuffer.addMessage(message));
+        //SwingUtilities.invokeLater(() -> chatListModel.addElement(message));
     }
 
     public sampleCanvas getVlcPlayerCanvas() {
@@ -296,56 +317,12 @@ public class Gui extends JFrame implements IChannelobserver {
         setTitle(message);
     }
 
-    class MessageAdder
-    {
-        Thread addThread;
-        volatile ArrayList<ChatMessage> messages = new ArrayList<ChatMessage>();
-        private boolean run = true;
 
-        private MessageAdder(DefaultListModel<ChatMessage> model)
-        {
-            this.addThread = new Thread(() -> {
-                while(run)
-                {
-                    try {
-
-                        Thread.sleep(500);
-                        ArrayList<ChatMessage> temp = (ArrayList<ChatMessage>) messages.clone();
-                        messages.clear();
-                        for(ChatMessage p : temp)
-                        {
-                            try {
-                                model.addElement(p);
-                            } catch (NullPointerException e)
-                            {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            addThread.start();
-        }
-
-        public void stop()
-        {
-            this.run = false;
-        }
-
-
-        public synchronized void addMessage(ChatMessage message) {
-            messages.add(message);
-        }
-    }
 
     @Override
     public void dispose() {
         super.dispose();
-        messageAdder.stop();
+       // chatBuffer.stop();
         chatListModel.removeListDataListener(listdataListener);
     }
 

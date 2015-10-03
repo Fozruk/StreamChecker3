@@ -92,6 +92,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
         fxmlLoader.setController(this);
 
 
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
@@ -99,6 +100,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
         }
 
         this.channel = channel;
+        watchButton.setDisable(false);
 
         updateLabels();
 
@@ -113,10 +115,10 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             @Override
             public void handle(MouseEvent event) {
                 logger.trace("Mouse event");
-                if (!channel.isOnline())
-                    watchButton.setDisable(true);
-                else
-                    watchButton.setDisable(false);
+                //if (!channel.isOnline())
+                    //watchButton.setDisable(true);
+                //else
+                    //watchButton.setDisable(false);
                 panes.setEffect(new GaussianBlur(20));
                 stackPane.setVisible(true);
             }

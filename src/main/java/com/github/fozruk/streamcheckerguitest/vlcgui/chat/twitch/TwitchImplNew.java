@@ -38,6 +38,9 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
     private static final Logger LOGGER = LoggerFactory.getLogger(TwitchImplNew.class);
     private static ArrayList<TwitchImplNew> whisperObserver = new ArrayList<>();
 
+    private static final String TWITCH_IRC_GROUP_SERVER= "http://tmi.twitch" +
+            ".tv/servers?cluster=group";
+
 
     public static void main(String[] args) throws IOException, IrcException, InterruptedException, ReadingWebsiteFailedException, JSONException {
 
@@ -51,8 +54,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
 
         this.observer = observer;
 
-        String json = WebUtils.readContentFrom(new URL("http://tmi.twitch" +
-                ".tv/servers?cluster=group"));
+        String json = WebUtils.readContentFrom(new URL(TWITCH_IRC_GROUP_SERVER));
 
         JSONObject jsonObject = new JSONObject(json);
 
