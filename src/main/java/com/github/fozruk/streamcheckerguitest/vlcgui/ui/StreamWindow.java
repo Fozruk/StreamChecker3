@@ -9,6 +9,7 @@ import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.sampleCanvas;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.ListCellRenderer;
@@ -23,19 +24,23 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-public class Gui extends JFrame implements IChannelobserver {
+public class StreamWindow extends JFrame implements IChannelobserver {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Gui.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StreamWindow.class);
     private final JScrollPane viewerListPane;
-    private final ViewerListTab viewerList;
+    private final ViewerList viewerList;
 
     private JSlider slider = new JSlider(0, 200);
 
     //VLC
     private sampleCanvas vlcPlayerCanvas;
 
+    public ChatWindow getChatWindow() {
+        return chatWindow;
+    }
+
     //ResizeableList
-    private ResizeableList chatWindow;
+    private ChatWindow chatWindow;
     private JScrollPane chatWindowScrollPane;
     private DefaultListModel<ChatMessage> chatListModel;
     private JTextField textField;
@@ -86,7 +91,7 @@ public class Gui extends JFrame implements IChannelobserver {
     /**
      * Create the frame.
      */
-    public Gui(VlcLivestreamController controller) throws IOException {
+    public StreamWindow(VlcLivestreamController controller) throws IOException {
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -119,28 +124,7 @@ public class Gui extends JFrame implements IChannelobserver {
         splitPane.getLeftComponent().setMinimumSize(new Dimension(getWidth()
                 - 300, 100));
 
-
         chatListModel = new DefaultListModel<ChatMessage>();
-
-        listdataListener = new ListDataListener() {
-            @Override
-            public void intervalAdded(ListDataEvent e) {
-                if (chatListModel.size() > 200)
-                SwingUtilities.invokeLater(()->chatListModel.remove(0));
-            }
-
-            @Override
-            public void intervalRemoved(ListDataEvent e) {
-
-            }
-
-            @Override
-            public void contentsChanged(ListDataEvent e) {
-
-            }
-        };
-
-        chatListModel.addListDataListener(listdataListener);
 
         JPanel panel_1 = new JPanel();
         panel_1.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -154,7 +138,7 @@ public class Gui extends JFrame implements IChannelobserver {
 
         tabbedPane.addTab("ResizeableList", null, chatWindowScrollPane, null);
         this.viewerlist = new DefaultListModel<>();
-        viewerList = new ViewerListTab(viewerlist);
+        viewerList = new ViewerList(viewerlist);
 
         viewerListPane = new JScrollPane(viewerList);
 
@@ -166,11 +150,11 @@ public class Gui extends JFrame implements IChannelobserver {
                 //If index == 1 reload viewerlist
                 if (tabbedPane.getSelectedIndex() == 1) {
                     try {
-                        Gui.this.viewerlist.removeAllElements();
+                        StreamWindow.this.viewerlist.removeAllElements();
                         String[] viewers = new String[0];
                         viewers = controller.reloadViewerList();
                         for (String temp : viewers)
-                            Gui.this.viewerlist.addElement(temp);
+                            StreamWindow.this.viewerlist.addElement(temp);
 
                     } catch (ReadingWebsiteFailedException e1) {
                         e1.printStackTrace();
@@ -193,7 +177,7 @@ public class Gui extends JFrame implements IChannelobserver {
         ListCellRenderer cellRenderChat = new com.github.fozruk
                 .streamcheckerguitest.vlcgui.ui.ListCellRenderer();
 
-        chatWindow = new ResizeableList(chatListModel,cellRenderChat);
+        chatWindow = new ChatWindow(chatListModel,cellRenderChat);
 
         ComponentListener l = new ComponentAdapter() {
 

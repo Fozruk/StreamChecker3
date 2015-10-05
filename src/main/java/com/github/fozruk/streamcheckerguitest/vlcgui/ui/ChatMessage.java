@@ -45,7 +45,7 @@ public class ChatMessage {
         return message;
     }
 
-    String getTime()
+    public String getTime()
     {
 
         return String.format("[%02d", hour) +":"+String
@@ -80,5 +80,4 @@ public class ChatMessage {
         this.color = color;
         this.username = user;
     }
-
 }

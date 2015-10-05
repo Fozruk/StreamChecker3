@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest;
+package com.github.fozruk.streamcheckerguitest.StreamGui.controller;
 
 import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
@@ -9,6 +9,9 @@ import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
+import com.github.fozruk.streamcheckerguitest.StreamGui.ui.AddChannelForm;
+import com.github.fozruk.streamcheckerguitest.StreamGui.ui.StreamListUI;
+import com.github.fozruk.streamcheckerguitest.StreamGui.ui.StreamPanel;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedChannelsManager;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
@@ -44,7 +47,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.github.fozruk.streamcheckerguitest.AddChannelForm.Channel;
+import static com.github.fozruk.streamcheckerguitest.StreamGui.ui.AddChannelForm.Channel;
 
 public class Controller implements Initializable, IOverview, IChannelobserver {
 
@@ -90,7 +93,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
     @FXML
     private TextField settingsTextfiledLivestreamer;
 
-    private ObservableList<StreamPane> list;
+    private ObservableList<StreamPanel> list;
     private PersistedSettingsManager settingsManager;
     private PersistedChannelsManager channelPersistanceManager;
     private StreamcheckerController controller;
@@ -125,9 +128,9 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             }
         });
 
-        list.addListener(new ListChangeListener<StreamPane>() {
+        list.addListener(new ListChangeListener<StreamPanel>() {
             @Override
-            public void onChanged(Change<? extends StreamPane> c) {
+            public void onChanged(Change<? extends StreamPanel> c) {
             }
         });
 
@@ -244,7 +247,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     @Override
     public void addChannel(IChannel channel) {
-        StreamPane pane = new StreamPane(channel);
+        StreamPanel pane = new StreamPanel(channel);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -256,7 +259,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     @Override
     public void updateDataInChannelViewFor(IChannel channel) {
-        for (StreamPane channelObject : list) {
+        for (StreamPanel channelObject : list) {
             if (channel.equals(channelObject.getChannel())) {
                 channelObject.updateLabels();
                 break;
@@ -266,7 +269,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     @Override
     public void deleteChannelViewFor(IChannel channel) throws NoSuchChannelViewInOverviewException {
-        for (StreamPane channelObject : list) {
+        for (StreamPanel channelObject : list) {
             if (channel.equals(channelObject.getChannel())) {
                 list.remove(channelObject);
                 return;
@@ -323,7 +326,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 list.sort(comparator);
             }
         });
-        MainWindow.ballonManager.addMessageToQueue(message);
+        StreamListUI.ballonManager.addMessageToQueue(message);
     }
 
     @Override
@@ -332,12 +335,12 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
     }
 
     public void hideWindow() {
-        MainWindow.getPrimaryStage().hide();
+        StreamListUI.getPrimaryStage().hide();
     }
 
-    private Comparator<StreamPane> comparator = new Comparator<StreamPane>() {
+    private Comparator<StreamPanel> comparator = new Comparator<StreamPanel>() {
         @Override
-        public int compare(StreamPane o1, StreamPane o2) {
+        public int compare(StreamPanel o1, StreamPanel o2) {
             return ComparisonChain.start().compare(!o1.getChannel()
                     .isOnline(), !o2.getChannel().isOnline()).compare(o1
                     .getChannel().getChannelName().toLowerCase(), o2.getChannel()

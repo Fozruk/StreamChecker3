@@ -2,22 +2,28 @@ package com.github.fozruk.streamcheckerguitest.vlcgui.controller;
 
 
 
+import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.exception.UpdateChannelException;
 import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
+import com.github.fozruk.streamcheckerguitest.StreamGui.controller.Stream;
+import com.github.fozruk.streamcheckerguitest.StreamGui.controller.TwitchPlugin;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.github.fozruk.streamcheckerguitest.plugin.PluginLoader;
+import com.github.fozruk.streamcheckerguitest.tests.TestChannel;
+import com.github.fozruk.streamcheckerguitest.tests.TestChatImpl;
 import com.github.fozruk.streamcheckerguitest.vlcgui.chat.*;
 import com.github.fozruk.streamcheckerguitest.vlcgui.chat.twitch.TwitchImplNew;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
-import com.github.fozruk.streamcheckerguitest.vlcgui.ui.Gui;
+import com.github.fozruk.streamcheckerguitest.vlcgui.ui.StreamWindow;
 import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.VlcPlayer;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.File;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,29 +35,25 @@ public class VlcLivestreamController implements ChatObserver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger
             (VlcLivestreamController.class);
-    private Gui streamWindow;
-    private IChannel channel;
-    private VlcPlayer player;
-    private IChat chat;
+    private StreamWindow streamWindow;
     private PersistedSettingsManager persistenceManager =
             PersistedSettingsManager.getInstance();
     private boolean isLoaded;
     private boolean shutdownRequest;
 
+    private Stream stream;
+
     public static final MessageHighlighter highligter = new
-            MessageHighlighter(new ArrayList(Arrays.asList("xd", "lol",
-            "f0zruk")));
+            MessageHighlighter(new ArrayList(Arrays.asList("f0zruk","fozruk")));
     private boolean loaded;
 
-    public VlcLivestreamController(IChannel channel) throws IOException, IrcException, PropertyKeyNotFoundException {
-        this.channel = channel;
-        this.streamWindow = new Gui(this);
+    public VlcLivestreamController(IChannel channel) throws IOException, IrcException, PropertyKeyNotFoundException, ReadingWebsiteFailedException, CreateChannelException, JSONException {
+        this.streamWindow = new StreamWindow(this);
         channel.addObserver(streamWindow);
 
-
-        this.player = new VlcPlayer(streamWindow.getVlcPlayerCanvas(),
-                persistenceManager.getVideoPlayer(),
-                persistenceManager.getLivestremer());
+        PluginLoader loader = new TwitchPlugin();
+        loader.create(channel);
+        this.stream = loader.returnObject();
 
         startPlayer();
         startChat();
@@ -68,38 +70,14 @@ public class VlcLivestreamController implements ChatObserver {
     }
 
     private void startPlayer() throws IOException {
-        if(channel instanceof TwitchTVChannel)
-        {
-            player.play(new URL(channel.getChannelLink()), "source");
-        }
-        else if(channel instanceof HitboxTVChannel)
-        {
-            player.play(new URL(channel.getChannelLink()), "best");
-        }
-        else
-        {
-            throw new IllegalStateException("Channel not yet implemented");
-        }
+        stream.getPlayer().setCanvas(this.streamWindow.getVlcPlayerCanvas());
+        stream.getPlayer().play(new URL(stream.getChannel().getChannelLink()),
+                stream.quality[0]);
     }
 
-    private void startChat()
-    {
-        if(channel instanceof TwitchTVChannel)
-        {
-            try {
-                chat = new TwitchImplNew(channel,this);
-            } catch (IrcException|JSONException|ReadingWebsiteFailedException|IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else if(channel instanceof HitboxTVChannel)
-        {
-           // player.play(new URL(channel.getChannelLink()), "best");
-        }
-        else
-        {
-            throw new IllegalStateException("Channel not yet implemented");
-        }
+    private void startChat() throws ReadingWebsiteFailedException, JSONException, IOException {
+        stream.getChat().setObserver(this);
+        stream.getChat().start();
     }
 
     //ResizeableList Stuffs
@@ -110,12 +88,12 @@ public class VlcLivestreamController implements ChatObserver {
     }
 
     public void sendMessage(String message) {
-        chat._sendMessage(channel.getChannelName(), message);
+        stream.getChat()._sendMessage(stream.getChannel().getChannelName(), message);
     }
 
     public String getUsername()
     {
-        return chat.getUsername();
+        return stream.getChat().getUsername();
     }
 
     //Methods for Closing events
@@ -129,8 +107,8 @@ public class VlcLivestreamController implements ChatObserver {
 
         if(loaded)
         {
-            player.onShutdown(0);
-            chat.disconnect();
+            stream.getPlayer().onShutdown(0);
+            stream.getChat().disconnect();
         } else
         {
             LOGGER.info("Shutdown Request detected, gonna stop all processes " +
@@ -145,21 +123,27 @@ public class VlcLivestreamController implements ChatObserver {
 
     public void setVolume(int volume)
     {
-        player.setVolume(volume);
+        stream.getPlayer().setVolume(volume);
     }
 
     public void toggleFullscreen()
     {
-        player.toggleFullScreen();
+        stream.getPlayer().toggleFullScreen();
     }
 
 
     public String[] reloadViewerList() throws ReadingWebsiteFailedException, JSONException, MalformedURLException {
-        return chat.getUserList();
+        return stream.getChat().getUserList();
     }
 
     public void setFullscreen()
     {
-        player.toggleFullScreen();
+        stream.getPlayer().toggleFullScreen();
     }
+
+    public StreamWindow getStreamWindow()
+    {
+        return this.streamWindow;
+    }
+
 }

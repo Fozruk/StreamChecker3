@@ -3,6 +3,7 @@ package com.github.fozruk.streamcheckerguitest.vlcgui.chat;
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 /**
@@ -17,4 +18,7 @@ public interface IChat {
     void disconnect();
     String[] getUserList() throws MalformedURLException,
             ReadingWebsiteFailedException, JSONException;
+
+    void start() throws IOException, ReadingWebsiteFailedException, JSONException;
+    void setObserver(ChatObserver observer);
 }

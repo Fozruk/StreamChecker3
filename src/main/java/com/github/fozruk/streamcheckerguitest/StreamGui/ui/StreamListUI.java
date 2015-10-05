@@ -1,5 +1,7 @@
-package com.github.fozruk.streamcheckerguitest;
+package com.github.fozruk.streamcheckerguitest.StreamGui.ui;
 
+import com.github.fozruk.streamcheckerguitest.BalloonTipManager;
+import com.github.fozruk.streamcheckerguitest.Main;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistenceManager;
 import javafx.application.Application;
@@ -22,14 +24,14 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 
-public class MainWindow extends Application {
+public class StreamListUI extends Application {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AddChannelForm
             .class);;
     private static TrayIcon trayIcon;
     private static Stage primaryStage;
-    public static  BalloonTipManager ballonManager;
+    public static BalloonTipManager ballonManager;
 
 
     public static void startMainWindow() {
@@ -44,7 +46,7 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        MainWindow.primaryStage = primaryStage;
+        StreamListUI.primaryStage = primaryStage;
 
         //javax.swing.SwingUtilities.invokeLater(this::createTrayIcon);
 
@@ -85,7 +87,7 @@ public class MainWindow extends Application {
             }
 
             SystemTray tray = SystemTray.getSystemTray();
-            Image icon = ImageIO.read(MainWindow.class.getResourceAsStream("/pictures/quader.png"));
+            Image icon = ImageIO.read(StreamListUI.class.getResourceAsStream("/pictures/quader.png"));
             trayIcon = new TrayIcon(icon);
             trayIcon.setImageAutoSize(true);
             trayIcon.addMouseListener(new MouseAdapter() {
@@ -97,8 +99,8 @@ public class MainWindow extends Application {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            LOGGER.debug("Gonna show MainWindow, in thread");
-                            Platform.runLater(MainWindow.this::showStage);
+                            LOGGER.debug("Gonna show StreamListUI, in thread");
+                            Platform.runLater(StreamListUI.this::showStage);
                         }
                     });
                 }
@@ -112,7 +114,7 @@ public class MainWindow extends Application {
             e.printStackTrace();
         }
 
-        Platform.runLater(MainWindow.this::showStage);
+        Platform.runLater(StreamListUI.this::showStage);
 
     }
 

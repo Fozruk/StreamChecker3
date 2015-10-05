@@ -1,7 +1,7 @@
 package com.github.fozruk.streamcheckerguitest.vlcgui.chat.twitch;
 
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
-import com.github.fozruk.streamcheckerguitest.vlcgui.ui.Gui;
+import com.github.fozruk.streamcheckerguitest.vlcgui.ui.StreamWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Philipp on 03.10.2015.
@@ -23,16 +22,16 @@ public class ChatBuffer {
     DefaultListModel model;
     private int delay = 250;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatBuffer.class);
-    private Gui gui;
+    private StreamWindow streamListWindow;
     private Date latest;
     private MessageStats stats;
     private double max = 0;
 
 
-    public ChatBuffer(DefaultListModel<ChatMessage> model,Gui gui)
+    public ChatBuffer(DefaultListModel<ChatMessage> model,StreamWindow streamListWindow)
         {
             this.model = model;
-            this.gui = gui;
+            this.streamListWindow = streamListWindow;
             this.latest = new Date();
             this.stats = new MessageStats();
         }
@@ -88,7 +87,7 @@ public class ChatBuffer {
                 stats.addAverage(messagesPerSec);
                 LOGGER.info("Messages per Second for this tick: " + new DecimalFormat("#.##").format(messagesPerSec));
                 max = messagesPerSec > max ? messagesPerSec : max;
-                gui.getTabbedPane().setTitleAt(0,   new DecimalFormat("#.##")
+                streamListWindow.getTabbedPane().setTitleAt(0,   new DecimalFormat("#.##")
                         .format(stats.getAverage()) + " Avg - " +
                         new DecimalFormat("#.##").format(messagesPerSec) + " " +
                         " Tick " +  new DecimalFormat("#.##").format(max) + "" +

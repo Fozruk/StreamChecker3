@@ -1,5 +1,6 @@
 package com.github.fozruk.streamcheckerguitest.vlcgui.chat.hitbox;
 
+import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.impl.AbstractChannel;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.vlcgui.chat.ChatObserver;
@@ -94,6 +95,16 @@ public class HitboxImpl extends WebSocketClient implements IChat {
     @Override
     public String[] getUserList() {
         return null;
+    }
+
+    @Override
+    public void start() throws IOException, ReadingWebsiteFailedException, JSONException {
+
+    }
+
+    @Override
+    public void setObserver(ChatObserver observer) {
+
     }
 
     //Websocket

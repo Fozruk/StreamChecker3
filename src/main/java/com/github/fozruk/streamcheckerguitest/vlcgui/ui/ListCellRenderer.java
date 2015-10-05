@@ -13,6 +13,11 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
 
     private JList list;
 
+    public ListCellRenderer()
+    {
+        System.out.println("Allocated");
+    }
+
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
@@ -84,6 +89,12 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
         float h = view.getPreferredSpan(View.Y_AXIS);
 
         return new java.awt.Dimension((int) Math.ceil(w), (int) Math.ceil(h));
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        System.out.println("xd");
     }
 
 }

@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest;
+package com.github.fozruk.streamcheckerguitest.experimental;
 
 import java.io.IOException;
 import java.io.InputStream;

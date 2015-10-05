@@ -2,7 +2,6 @@ package com.github.fozruk.streamcheckerguitest.vlcgui.ui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import java.awt.event.ComponentAdapter;
@@ -11,11 +10,11 @@ import java.awt.event.ComponentEvent;
 /**
  * Created by Philipp on 25.09.2015.
  */
-public class ViewerListTab extends ResizeableList {
+public class ViewerList extends ResizeableList {
     private static final Logger LOGGER = LoggerFactory.getLogger
-            (ViewerListTab.class);
+            (ViewerList.class);
 
-    public ViewerListTab(DefaultListModel model) {
+    public ViewerList(DefaultListModel model) {
         super(model);
         addComponentListener(new ComponentAdapter() {
             @Override

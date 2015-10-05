@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest.StreamGui;
+package com.github.fozruk.streamcheckerguitest.experimental;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;

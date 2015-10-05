@@ -1,5 +1,6 @@
 package com.github.fozruk.streamcheckerguitest;
 
+import com.github.fozruk.streamcheckerguitest.StreamGui.ui.StreamListUI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import sun.util.logging.PlatformLogger;
@@ -20,7 +21,7 @@ public class Main {
         LOG.info("JAVAFX Version: " + com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
         LOG.info("Stramchecker started");
 
-        MainWindow.startMainWindow();
+        StreamListUI.startMainWindow();
         LOG.info("Streamchecker closed");
     }
 

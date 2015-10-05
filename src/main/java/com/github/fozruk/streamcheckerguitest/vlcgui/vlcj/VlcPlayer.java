@@ -4,6 +4,8 @@ import com.github.epilepticz.JavaLivestreamerWrapper.ILivestreamerObserver;
 import com.github.epilepticz.JavaLivestreamerWrapper.IServerOberserver;
 import com.github.epilepticz.JavaLivestreamerWrapper.ServerLivestreamer;
 import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
+import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ import uk.co.caprica.vlcj.runtime.x.LibXUtil;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -32,6 +35,7 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
     ServerLivestreamer livestreamer;
     MediaPlayerFactory mediaPlayerFactory;
     boolean mediaIsPlaying;
+    private PersistedSettingsManager persistenceManager;
 
     private final File LIVESTREAMERPATH;
     private final File VLCPATH;
@@ -47,21 +51,16 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
 
 
 
-    public VlcPlayer(sampleCanvas canvas,File pathToVLC,File pathToLiveStreamer)
-    {
-
-        this.LIVESTREAMERPATH = pathToLiveStreamer;
-        this.VLCPATH = pathToVLC;
-
-        String temp =  VLCPATH.getAbsolutePath().replace("vlc.exe", "");
+    public VlcPlayer() throws IOException, PropertyKeyNotFoundException {
+        persistenceManager = PersistedSettingsManager.getInstance();
+        this.LIVESTREAMERPATH = persistenceManager.getLivestremer();
+        this.VLCPATH =  persistenceManager.getVideoPlayer();
+        String temp = VLCPATH.getAbsolutePath().replace("vlc.exe", "");
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:\\Program Files\\VideoLAN\\VLC");
 
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(),
                 LibVlc.class);
         LibXUtil.initialise();
-
-        this.canvas = canvas;
-
         JFrame frame = new JFrame("Win32 Full Screen Strategy");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocation(100, 100);
@@ -72,13 +71,16 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
 
         mediaPlayerFactory = new MediaPlayerFactory();
 
-        player.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
+
 
         this.livestreamer = new ServerLivestreamer(LIVESTREAMERPATH,VLCPATH,
                 this);
         this.livestreamer.addObserver(this);
+    }
 
-
+    public void setCanvas(sampleCanvas canvas)
+    {
+        this.canvas = canvas;
     }
 
     public void play(URL url,String quality)
@@ -91,6 +93,7 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
         if(!mediaIsPlaying)
         {
             LOGGER.info("IP Found for VLC: " + ip);
+            player.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
             player.playMedia(ip);
             mediaIsPlaying = true;
             canvas.appendMessage("Start VLC.....");
