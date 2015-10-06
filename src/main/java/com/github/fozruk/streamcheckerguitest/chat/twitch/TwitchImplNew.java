@@ -1,12 +1,13 @@
-package com.github.fozruk.streamcheckerguitest.vlcgui.chat.twitch;
+package com.github.fozruk.streamcheckerguitest.chat.twitch;
 
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.util.WebUtils;
+import com.github.fozruk.streamcheckerguitest.chat.ChatObserver;
+import com.github.fozruk.streamcheckerguitest.chat.IChat;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.ChatObserver;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.IChat;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
+import com.github.fozruk.streamcheckerguitest.util.Util;
 import org.pircbotx.hooks.events.*;
 import org.slf4j.Logger;
 import org.json.JSONArray;
@@ -22,7 +23,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by Philipp on 12.08.2015.
@@ -50,7 +50,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
 
     }
 
-    public TwitchImplNew(IChannel channel,ChatObserver observer) throws
+    public TwitchImplNew(IChannel channel) throws
             IOException,
             IrcException,
             ReadingWebsiteFailedException, JSONException {
@@ -65,7 +65,6 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
         }
 
         this.channel = channel;
-        this.observer = observer;
         this.username = (PersistedSettingsManager.getInstance().getValue
                 ("username"));
 
@@ -259,13 +258,11 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
             public void run() {
 
                 bot = new PircBotXTwitch(conf);
-
                 try {
                     bot.startBot();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (IrcException e) {
-                    e.printStackTrace();
+                } catch (IOException | IrcException e )
+                {
+                    Util.printExceptionToMessageDialog(e);
                 }
             }
         });

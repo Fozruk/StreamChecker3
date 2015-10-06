@@ -17,7 +17,6 @@ public class ChatMessage {
     private String channelname;
     private String color;
     private String username;
-    Map<String,String> mappedString;
     int hour;
     int minute;
 

@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest.vlcgui.chat;
+package com.github.fozruk.streamcheckerguitest.chat;
 
 import java.util.ArrayList;
 

@@ -5,21 +5,17 @@ package com.github.fozruk.streamcheckerguitest.vlcgui.controller;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.exception.UpdateChannelException;
-import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
-import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
-import com.github.fozruk.streamcheckerguitest.StreamGui.controller.Stream;
-import com.github.fozruk.streamcheckerguitest.StreamGui.controller.TwitchPlugin;
+import com.github.fozruk.streamcheckerguitest.chat.ChatObserver;
+import com.github.fozruk.streamcheckerguitest.chat.MessageHighlighter;
+import com.github.fozruk.streamcheckerguitest.plugins.base.Stream;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
-import com.github.fozruk.streamcheckerguitest.plugin.PluginLoader;
-import com.github.fozruk.streamcheckerguitest.tests.TestChannel;
-import com.github.fozruk.streamcheckerguitest.tests.TestChatImpl;
+import com.github.fozruk.streamcheckerguitest.plugins.base.PluginLoader;
 import com.github.fozruk.streamcheckerguitest.vlcgui.chat.*;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.twitch.TwitchImplNew;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.StreamWindow;
-import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.VlcPlayer;
+import com.github.fozruk.streamcheckerguitest.util.Util;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +36,8 @@ public class VlcLivestreamController implements ChatObserver {
             PersistedSettingsManager.getInstance();
     private boolean isLoaded;
     private boolean shutdownRequest;
+    private static final String PLUGIN_PACKAGE_PATH = "com.github.fozruk" +
+            ".streamcheckerguitest.plugins.";
 
     private Stream stream;
 
@@ -47,24 +45,29 @@ public class VlcLivestreamController implements ChatObserver {
             MessageHighlighter(new ArrayList(Arrays.asList("f0zruk","fozruk")));
     private boolean loaded;
 
-    public VlcLivestreamController(IChannel channel) throws IOException, IrcException, PropertyKeyNotFoundException, ReadingWebsiteFailedException, CreateChannelException, JSONException {
+    public VlcLivestreamController(IChannel channel) throws IOException,
+            IrcException, PropertyKeyNotFoundException, ReadingWebsiteFailedException, CreateChannelException, JSONException {
         this.streamWindow = new StreamWindow(this);
-        channel.addObserver(streamWindow);
 
-        PluginLoader loader = new TwitchPlugin();
-        loader.create(channel);
-        this.stream = loader.returnObject();
-
-        startPlayer();
-        startChat();
-
-        //Refreshes Data for the frame title
+        PluginLoader loader = null;
         try {
-            channel.refreshData();
+            loader = (PluginLoader) Class.forName(PLUGIN_PACKAGE_PATH+channel.getClass()
+                    .getSimpleName() +
+                    "_Gui")
+                    .newInstance();
+            loader.create(channel);
+            this.stream = loader.returnObject();
+            stream.getChannel().addObserver(streamWindow);
+            startPlayer();
+            startChat();
+            stream.getChannel().refreshData();
+            this.loaded = true;
+        } catch (InstantiationException | ClassCastException |
+                IllegalAccessException | ClassNotFoundException e) {
+            Util.printExceptionToMessageDialog(e);
         } catch (UpdateChannelException e) {
-            e.printStackTrace();
+            Util.printExceptionToMessageDialog(e);
         }
-        this.loaded = true;
         if(shutdownRequest)
             this.stopWindow();
     }

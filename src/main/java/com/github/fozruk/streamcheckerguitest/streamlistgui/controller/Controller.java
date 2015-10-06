@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest.StreamGui.controller;
+package com.github.fozruk.streamcheckerguitest.streamlistgui.controller;
 
 import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
@@ -9,9 +9,9 @@ import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
-import com.github.fozruk.streamcheckerguitest.StreamGui.ui.AddChannelForm;
-import com.github.fozruk.streamcheckerguitest.StreamGui.ui.StreamListUI;
-import com.github.fozruk.streamcheckerguitest.StreamGui.ui.StreamPanel;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.AddChannelForm;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.StreamListUI;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.StreamPanel;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedChannelsManager;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
@@ -47,7 +47,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.github.fozruk.streamcheckerguitest.StreamGui.ui.AddChannelForm.Channel;
+import static com.github.fozruk.streamcheckerguitest.streamlistgui.ui.AddChannelForm.Channel;
 
 public class Controller implements Initializable, IOverview, IChannelobserver {
 

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="850.0" prefWidth="244.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fozruk.streamcheckerguitest.StreamGui.controller.Controller">
+<GridPane prefHeight="850.0" prefWidth="244.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fozruk.streamcheckerguitest.streamlistgui.controller.Controller">
     <children>
         <StackPane GridPane.rowIndex="1">
             <children>

@@ -1,19 +1,4 @@
-package com.github.fozruk.streamcheckerguitest.vlcgui.chat.twitch;
-
-import com.github.epilepticz.streamchecker.model.channel.impl.AbstractChannel;
-import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
-import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.ChatObserver;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.IChat;
-import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
-import org.jibble.pircbot.PircBot;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+package com.github.fozruk.streamcheckerguitest.chat.twitch;
 
 /**
  * Created by Philipp on 12.08.2015.

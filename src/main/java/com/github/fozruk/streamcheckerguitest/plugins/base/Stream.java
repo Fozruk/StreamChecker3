@@ -1,8 +1,8 @@
-package com.github.fozruk.streamcheckerguitest.StreamGui.controller;
+package com.github.fozruk.streamcheckerguitest.plugins.base;
 
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.ChatObserver;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.IChat;
+import com.github.fozruk.streamcheckerguitest.chat.ChatObserver;
+import com.github.fozruk.streamcheckerguitest.chat.IChat;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
 import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.VlcPlayer;
 

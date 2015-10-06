@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest.vlcgui.chat.twitch;
+package com.github.fozruk.streamcheckerguitest.chat.twitch;
 
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.StreamWindow;

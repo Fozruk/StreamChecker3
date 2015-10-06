@@ -1,10 +1,10 @@
-package com.github.fozruk.streamcheckerguitest.vlcgui.chat.hitbox;
+package com.github.fozruk.streamcheckerguitest.chat.hitbox;
 
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.impl.AbstractChannel;
+import com.github.fozruk.streamcheckerguitest.chat.ChatObserver;
+import com.github.fozruk.streamcheckerguitest.chat.IChat;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.ChatObserver;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.IChat;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_10;
 import org.java_websocket.handshake.ServerHandshake;

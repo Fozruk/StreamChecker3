@@ -1,11 +1,11 @@
-package com.github.fozruk.streamcheckerguitest.StreamGui.ui;
+package com.github.fozruk.streamcheckerguitest.streamlistgui.ui;
 
 import com.github.epilepticz.JavaLivestreamerWrapper.ILivestreamerObserver;
 import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
-import com.github.fozruk.streamcheckerguitest.StreamGui.controller.Controller;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.controller.Controller;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import javafx.application.Platform;

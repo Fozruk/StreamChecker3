@@ -1,6 +1,6 @@
 package com.github.fozruk.streamcheckerguitest;
 
-import com.github.fozruk.streamcheckerguitest.StreamGui.ui.AddChannelForm;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.AddChannelForm;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistenceManager;
 import org.slf4j.Logger;

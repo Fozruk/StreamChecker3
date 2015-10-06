@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest.StreamGui.ui;
+package com.github.fozruk.streamcheckerguitest.streamlistgui.ui;
 
 import com.github.fozruk.streamcheckerguitest.BalloonTipManager;
 import com.github.fozruk.streamcheckerguitest.Main;

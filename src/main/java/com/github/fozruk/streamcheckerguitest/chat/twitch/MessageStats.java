@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest.vlcgui.chat.twitch;
+package com.github.fozruk.streamcheckerguitest.chat.twitch;
 
 import org.pircbotx.hooks.events.MessageEvent;
 

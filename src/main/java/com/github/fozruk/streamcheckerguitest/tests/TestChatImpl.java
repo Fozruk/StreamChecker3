@@ -1,8 +1,8 @@
 package com.github.fozruk.streamcheckerguitest.tests;
 
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.ChatObserver;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.IChat;
+import com.github.fozruk.streamcheckerguitest.chat.ChatObserver;
+import com.github.fozruk.streamcheckerguitest.chat.IChat;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
 import org.json.JSONException;
