@@ -12,7 +12,6 @@ import com.github.fozruk.streamcheckerguitest.plugins.base.Stream;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.plugins.base.PluginLoader;
-import com.github.fozruk.streamcheckerguitest.vlcgui.chat.*;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.StreamWindow;
 import com.github.fozruk.streamcheckerguitest.util.Util;
