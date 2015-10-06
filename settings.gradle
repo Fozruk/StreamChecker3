@@ -1,4 +1,4 @@
-rootProject.name = 'TestJavaFX'
+rootProject.name = 'StreamcheckerGuiTest'
 
 include 'streamchecker'
 include 'javalivestreamerwrapper'

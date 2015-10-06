@@ -1,5 +1,9 @@
-package com.github.fozruk.streamcheckerguitest;
+package com.github.fozruk.streamcheckerguitest.streamlistgui.ui;
 
+import com.github.fozruk.streamcheckerguitest.BalloonTipManager;
+import com.github.fozruk.streamcheckerguitest.Main;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistenceManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -10,21 +14,24 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.net.URL;
 
-public class MainWindow extends Application {
+public class StreamListUI extends Application {
 
 
-    private static final Logger logger = Logger.getLogger(AddChannelForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddChannelForm
+            .class);;
     private static TrayIcon trayIcon;
     private static Stage primaryStage;
-    public static  BalloonTipManager ballonManager;
+    public static BalloonTipManager ballonManager;
 
 
     public static void startMainWindow() {
@@ -39,9 +46,11 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.primaryStage = primaryStage;
+        StreamListUI.primaryStage = primaryStage;
 
-        javax.swing.SwingUtilities.invokeLater(this::createTrayIcon);
+        //javax.swing.SwingUtilities.invokeLater(this::createTrayIcon);
+
+        createTrayIcon();
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL location = Main.class.getClass().getResource("/fxml/sample.fxml");
@@ -60,7 +69,7 @@ public class MainWindow extends Application {
         primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                logger.trace("Focus event " + observable + " " + oldValue + " " + newValue);
+                LOGGER.trace("Focus event " + observable + " " + oldValue + " " + newValue);
                 if (!newValue) {
                     primaryStage.hide();
                 }
@@ -73,12 +82,12 @@ public class MainWindow extends Application {
             java.awt.Toolkit.getDefaultToolkit();
             // app requires system tray support, just exit if there is no support.
             if (!java.awt.SystemTray.isSupported()) {
-                System.out.println("No system tray support, application exiting.");
+                LOGGER.error("No system tray support, application exiting.");
                 Platform.exit();
             }
 
             SystemTray tray = SystemTray.getSystemTray();
-            Image icon = ImageIO.read(MainWindow.class.getResourceAsStream("/pictures/quader.png"));
+            Image icon = ImageIO.read(StreamListUI.class.getResourceAsStream("/pictures/quader.png"));
             trayIcon = new TrayIcon(icon);
             trayIcon.setImageAutoSize(true);
             trayIcon.addMouseListener(new MouseAdapter() {
@@ -86,49 +95,64 @@ public class MainWindow extends Application {
                 public void mouseClicked(MouseEvent e) {
                     // TODO Auto-generated method stub
                     super.mouseClicked(e);
-                    logger.debug("dddd");
+                    LOGGER.debug("dddd");
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            logger.debug("Gonna show MainWindow, in thread");
-                            Platform.runLater(MainWindow.this::showStage);
+                            LOGGER.debug("Gonna show StreamListUI, in thread");
+                            Platform.runLater(StreamListUI.this::showStage);
                         }
                     });
                 }
             });
 
-            logger.debug("Add TrayIcon to tray");
+            LOGGER.debug("Add TrayIcon to tray");
             tray.add(trayIcon);
-            this.ballonManager = new BalloonTipManager(trayIcon);
+            ballonManager = new BalloonTipManager(trayIcon);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        Platform.runLater(StreamListUI.this::showStage);
+
     }
 
     public void showStage() {
-        primaryStage.show();
         Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         Point mouse = MouseInfo.getPointerInfo().getLocation();
 
         int taskBarHeight = scrnSize.height - winSize.height + 10;
         int taskBarWidth = scrnSize.width - winSize.width + 10;
+        LOGGER.debug("TaskbarHeight: " + taskBarHeight);
+        LOGGER.debug("TaskBarWidth: " + taskBarWidth);
+
         double dektopheight = Toolkit.getDefaultToolkit().getScreenSize()
                 .getHeight();
         double desktopwidth = Toolkit.getDefaultToolkit().getScreenSize()
                 .getWidth();
 
+        LOGGER.debug("Desktop Height: " + dektopheight);
+        LOGGER.debug("Desktop Width: " + desktopwidth);
+
         double winWidth = winSize.getWidth();
+        LOGGER.debug("WinWidth: " + winWidth);
 
 
         int locationX = (int) MouseInfo.getPointerInfo().getLocation().getX();
         if (locationX + primaryStage.getWidth() > desktopwidth)
             locationX = (int) (desktopwidth - primaryStage.getWidth());
 
+
+
         MouseLocation mouseLocation = getMouseLocation(scrnSize);
+
+        LOGGER.debug("MouseLocation: " + mouseLocation);
+
         TaskbarStare state = getTaskbarLocation(scrnSize, winSize);
+
+        LOGGER.debug("TaskbarState: " + state);
 
         double positionX = 0;
         double positionY = 0;
@@ -150,13 +174,18 @@ public class MainWindow extends Application {
             positionY = taskBarHeight;
         }
 
+
         primaryStage.setY(positionY);
         primaryStage.setX(positionX);
 
+        //primaryStage.setY(MouseInfo.getPointerInfo().getLocation().getY());
+        //primaryStage.setX(MouseInfo.getPointerInfo().getLocation().getX());
         outOfBoundsCheck(scrnSize);
 
-        logger.debug("Window displayed at X: " + primaryStage.getX() + " Y: "
+        LOGGER.debug("Window displayed at X: " + primaryStage.getX() + " Y: "
                 + primaryStage.getY());
+
+        primaryStage.show();
 
     }
 
@@ -179,10 +208,21 @@ public class MainWindow extends Application {
 
     private TaskbarStare getTaskbarLocation(Dimension screenSize,
                                             Rectangle windowSize) {
-        if (screenSize.getWidth() != windowSize.getWidth())
-            return TaskbarStare.Vertical;
-        else
-            return TaskbarStare.Horizontal;
+
+        try {
+            if(PersistedSettingsManager.getInstance().getOs() == PersistenceManager.OperatingSystem.Windows)
+            {
+                if (screenSize.getWidth() != windowSize.getWidth())
+                    return TaskbarStare.Vertical;
+                else
+                    return TaskbarStare.Horizontal;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return TaskbarStare.Horizontal;
+
     }
 
     private void outOfBoundsCheck(Dimension screensize)

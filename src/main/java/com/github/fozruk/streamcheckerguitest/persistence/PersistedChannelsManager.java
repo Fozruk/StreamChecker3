@@ -1,7 +1,7 @@
 package com.github.fozruk.streamcheckerguitest.persistence;
 
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
-import com.github.fozruk.streamcheckerguitest.Controller;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.controller.Controller;
 
 import java.io.*;
 import java.util.ArrayList;

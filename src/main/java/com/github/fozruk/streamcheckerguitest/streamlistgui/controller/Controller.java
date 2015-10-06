@@ -1,4 +1,4 @@
-package com.github.fozruk.streamcheckerguitest;
+package com.github.fozruk.streamcheckerguitest.streamlistgui.controller;
 
 import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
@@ -9,6 +9,10 @@ import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.AddChannelForm;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.StreamListUI;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.StreamPanel;
+import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedChannelsManager;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.google.common.collect.ComparisonChain;
@@ -26,14 +30,15 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.effect.BoxBlur;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,11 +47,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.github.fozruk.streamcheckerguitest.AddChannelForm.Channel;
+import static com.github.fozruk.streamcheckerguitest.streamlistgui.ui.AddChannelForm.Channel;
 
 public class Controller implements Initializable, IOverview, IChannelobserver {
 
-    private static final Logger logger = Logger.getLogger(Controller.class);
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
 
     private static Controller currentInstance;
     @FXML
@@ -71,9 +76,24 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
     private Button exitButton;
     @FXML
     private Label label;
+    @FXML
+    private GridPane settings;
 
+    //Settings buttons
+    @FXML
+    private Button settingsBack;
+    @FXML
+    private Button settingsOk;
+    @FXML
+    private Button settingsLivestreamer;
+    @FXML
+    private Button settingsVlc;
+    @FXML
+    private TextField settingsTextfiledVlc;
+    @FXML
+    private TextField settingsTextfiledLivestreamer;
 
-    private ObservableList<StreamPane> list;
+    private ObservableList<StreamPanel> list;
     private PersistedSettingsManager settingsManager;
     private PersistedChannelsManager channelPersistanceManager;
     private StreamcheckerController controller;
@@ -92,31 +112,45 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                fadeout(grid);
+                Controller.this.settings.setVisible(true);
+                Controller.this.listView.setEffect(new GaussianBlur(30.0));
+                fadeIn(settings);
 
+                try {
+                    settingsTextfiledLivestreamer.setText(PersistedSettingsManager.getInstance().getLivestremer().getAbsolutePath());
+                    settingsTextfiledVlc.setText(PersistedSettingsManager.getInstance().getVideoPlayer().getAbsolutePath());
+                } catch (PropertyKeyNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-        list.addListener(new ListChangeListener<StreamPane>() {
+        list.addListener(new ListChangeListener<StreamPanel>() {
             @Override
-            public void onChanged(Change<? extends StreamPane> c) {
+            public void onChanged(Change<? extends StreamPanel> c) {
             }
         });
 
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                fadeOut(settings);
                 Controller.this.grid.setVisible(true);
                 Controller.this.listView.setEffect(new GaussianBlur(30.0));
                 fadeIn(grid);
             }
         });
 
+
         addChannelBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 logger.trace("Add AbstractChannel Back Event fired");
-                fadeOutAddNewChannel();
-                resetGaussianBlur();
+                fadeOut(grid);
+                resetEffect(listView);
             }
         });
 
@@ -127,6 +161,10 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             }
         });
 
+        settingsBack.setOnAction((e) -> {
+            fadeOut(settings);
+            resetEffect(listView);
+        });
 
         AddChannelForm form = new AddChannelForm(Channel.Twitch);
         form.getImage().setImage(new Image(Controller.class.getResourceAsStream("/pictures/twitch-logo-black.png")));
@@ -151,14 +189,14 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
 
         this.controller = new StreamcheckerController(this);
-        this.currentInstance = this;
+        currentInstance = this;
 
         //Load all persisted Channels
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    settingsManager = new PersistedSettingsManager();
+                    settingsManager = PersistedSettingsManager.getInstance();
                     channelPersistanceManager = new PersistedChannelsManager();
 
                     logger.debug("Load Persisted Channels...");
@@ -180,16 +218,21 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                     e.printStackTrace();
                 }
 
-                list.sort(comparator);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        list.sort(comparator);
+                    }
+                });
             }
         }).start();
 
 
     }
 
-    public void resetGaussianBlur()
+    public void resetEffect(Node node)
     {
-        Controller.this.listView.setEffect(null);
+        node.setEffect(null);
     }
 
     public void createChannel(AbstractChannel abstractChannel) {
@@ -204,7 +247,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     @Override
     public void addChannel(IChannel channel) {
-        StreamPane pane = new StreamPane(channel);
+        StreamPanel pane = new StreamPanel(channel);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -216,7 +259,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     @Override
     public void updateDataInChannelViewFor(IChannel channel) {
-        for (StreamPane channelObject : list) {
+        for (StreamPanel channelObject : list) {
             if (channel.equals(channelObject.getChannel())) {
                 channelObject.updateLabels();
                 break;
@@ -226,7 +269,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     @Override
     public void deleteChannelViewFor(IChannel channel) throws NoSuchChannelViewInOverviewException {
-        for (StreamPane channelObject : list) {
+        for (StreamPanel channelObject : list) {
             if (channel.equals(channelObject.getChannel())) {
                 list.remove(channelObject);
                 return;
@@ -261,9 +304,9 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
 
 
-    public void fadeOutAddNewChannel() {
-        fadeout(grid);
-        Controller.this.grid.setVisible(false);
+    public void fadeOut(Node node) {
+        fadeout(node);
+        node.setVisible(false);
     }
 
     public PersistedSettingsManager getSettingsManager() {
@@ -283,16 +326,21 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 list.sort(comparator);
             }
         });
-        MainWindow.ballonManager.addMessageToQueue(message);
+        StreamListUI.ballonManager.addMessageToQueue(message);
+    }
+
+    @Override
+    public void receiveStatusString(String message) {
+
     }
 
     public void hideWindow() {
-        MainWindow.getPrimaryStage().hide();
+        StreamListUI.getPrimaryStage().hide();
     }
 
-    private Comparator<StreamPane> comparator = new Comparator<StreamPane>() {
+    private Comparator<StreamPanel> comparator = new Comparator<StreamPanel>() {
         @Override
-        public int compare(StreamPane o1, StreamPane o2) {
+        public int compare(StreamPanel o1, StreamPanel o2) {
             return ComparisonChain.start().compare(!o1.getChannel()
                     .isOnline(), !o2.getChannel().isOnline()).compare(o1
                     .getChannel().getChannelName().toLowerCase(), o2.getChannel()
@@ -300,4 +348,6 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                     .result();
         }
     };
+
+
 }

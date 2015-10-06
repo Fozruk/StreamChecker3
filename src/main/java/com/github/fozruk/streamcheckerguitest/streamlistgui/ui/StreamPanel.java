@@ -1,11 +1,13 @@
-package com.github.fozruk.streamcheckerguitest;
+package com.github.fozruk.streamcheckerguitest.streamlistgui.ui;
 
 import com.github.epilepticz.JavaLivestreamerWrapper.ILivestreamerObserver;
-import com.github.epilepticz.JavaLivestreamerWrapper.LivestreamerWrapper;
 import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
+import com.github.epilepticz.streamchecker.exception.CreateChannelException;
+import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.controller.Controller;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
-import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,21 +22,22 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.pircbotx.exception.IrcException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * Created by philipp.hentschel on 19.05.15.
  */
-public class StreamPane extends StackPane implements ILivestreamerObserver {
+public class StreamPanel extends StackPane implements ILivestreamerObserver {
 
-    private static final Logger logger = Logger.getLogger(StreamPane.class);
+    private static final Logger logger = LoggerFactory.getLogger(StreamPanel.class);
 
     @FXML
     private Label name;
@@ -83,13 +86,14 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
 
     private IChannel channel;
 
-    public StreamPane(IChannel channel) {
+    public StreamPanel(IChannel channel) {
 
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/fxml/Stream.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
+
 
 
         try {
@@ -99,6 +103,7 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
         }
 
         this.channel = channel;
+        watchButton.setDisable(false);
 
         updateLabels();
 
@@ -113,10 +118,10 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             @Override
             public void handle(MouseEvent event) {
                 logger.trace("Mouse event");
-                if (!channel.isOnline())
-                    watchButton.setDisable(true);
-                else
-                    watchButton.setDisable(false);
+                //if (!channel.isOnline())
+                    //watchButton.setDisable(true);
+                //else
+                    //watchButton.setDisable(false);
                 panes.setEffect(new GaussianBlur(20));
                 stackPane.setVisible(true);
             }
@@ -147,13 +152,19 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    PersistedSettingsManager manager = Controller.getCurrentController().getSettingsManager();
-                    LivestreamerWrapper wrapper = new LivestreamerWrapper(manager.getLivestremer(), manager.getVideoPlayer());
-                    wrapper.addObserver(StreamPane.this);
-                    wrapper.startLivestreamerWithURL(new URL(channel.getChannelLink()), "source");
-                } catch (MalformedURLException e) {
+                    VlcLivestreamController gui = new VlcLivestreamController
+                            (channel);
+                } catch (IOException e) {
                     e.printStackTrace();
                 } catch (PropertyKeyNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IrcException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (CreateChannelException e) {
+                    e.printStackTrace();
+                } catch (ReadingWebsiteFailedException e) {
                     e.printStackTrace();
                 } finally {
                     Controller.getCurrentController().hideWindow();
@@ -193,10 +204,10 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
         });
 
         if (channel.getChannelLink().toLowerCase().contains("twitch")) {
-            imagelol.setImage(new Image(StreamPane.class.getResourceAsStream("/pictures/twitch.png")));
+            imagelol.setImage(new Image(StreamPanel.class.getResourceAsStream("/pictures/twitch.png")));
 
         } else {
-            imagelol.setImage(new Image(StreamPane.class.getResourceAsStream("/pictures/hitbox.png")));
+            imagelol.setImage(new Image(StreamPanel.class.getResourceAsStream("/pictures/hitbox.png")));
 
         }
 
@@ -222,13 +233,13 @@ public class StreamPane extends StackPane implements ILivestreamerObserver {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                StreamPane.this.name.setText(channel.getChannelName());
-                StreamPane.this.name.setMinWidth(Region.USE_PREF_SIZE);
-                StreamPane.this.name.setMaxWidth(Region.USE_PREF_SIZE);
-                StreamPane.this.uptime.setText(channel.getUptime());
-                StreamPane.this.viewers.setText(String.valueOf(channel.getViewerAmount()));
-                StreamPane.this.isOnline.setText(channel.isOnline() ? "Online" : "Offline");
-                StreamPane.this.isOnline.setStyle((!channel.isOnline() ?
+                StreamPanel.this.name.setText(channel.getChannelName());
+                StreamPanel.this.name.setMinWidth(Region.USE_PREF_SIZE);
+                StreamPanel.this.name.setMaxWidth(Region.USE_PREF_SIZE);
+                StreamPanel.this.uptime.setText(channel.getUptime());
+                StreamPanel.this.viewers.setText(String.valueOf(channel.getViewerAmount()));
+                StreamPanel.this.isOnline.setText(channel.isOnline() ? "Online" : "Offline");
+                StreamPanel.this.isOnline.setStyle((!channel.isOnline() ?
                         "-fx-text-fill: #d18080;" : "-fx-text-fill: #80d181"));
 
             }

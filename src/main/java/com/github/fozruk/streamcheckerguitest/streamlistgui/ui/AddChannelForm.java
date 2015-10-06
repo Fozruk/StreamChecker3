@@ -1,9 +1,10 @@
-package com.github.fozruk.streamcheckerguitest;
+package com.github.fozruk.streamcheckerguitest.streamlistgui.ui;
 
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.AbstractChannel;
+import com.github.fozruk.streamcheckerguitest.streamlistgui.controller.Controller;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
@@ -23,7 +24,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +36,8 @@ import java.util.ResourceBundle;
  */
 public class AddChannelForm extends StackPane implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(AddChannelForm.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddChannelForm
+            .class);
 
     private Channel channeltype;
     @FXML
@@ -205,5 +208,5 @@ public class AddChannelForm extends StackPane implements Initializable {
         return image;
     }
 
-    public static enum Channel {Twitch, Hitbox}
+    public enum Channel {Twitch, Hitbox}
 }
