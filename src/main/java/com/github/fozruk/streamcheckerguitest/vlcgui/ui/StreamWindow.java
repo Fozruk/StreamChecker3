@@ -3,7 +3,7 @@ package com.github.fozruk.streamcheckerguitest.vlcgui.ui;
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
-import com.github.fozruk.streamcheckerguitest.chat.twitch.ChatBuffer;
+import com.github.fozruk.streamcheckerguitest.chat.ChatBuffer;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.sampleCanvas;
 import org.json.JSONException;

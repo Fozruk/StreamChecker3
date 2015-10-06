@@ -1,4 +1,4 @@
-rootProject.name = 'StreamcheckerGuiTest'
+rootProject.name = 'Streamchecker3'
 
 include 'streamchecker'
 include 'javalivestreamerwrapper'
