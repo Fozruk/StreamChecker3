@@ -20,7 +20,6 @@ public class Main {
 
         LOG.info("JAVAFX Version: " + com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
         LOG.info("Stramchecker started");
-
         StreamListUI.startMainWindow();
         LOG.info("Streamchecker closed");
     }

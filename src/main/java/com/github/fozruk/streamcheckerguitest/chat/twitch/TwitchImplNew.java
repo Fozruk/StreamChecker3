@@ -66,7 +66,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
 
         this.channel = channel;
         this.username = (PersistedSettingsManager.getInstance().getValue
-                ("username"));
+                ("TwitchTV.username"));
 
 
         String json = WebUtils.readContentFrom(new URL("http://api.twitch" +
@@ -88,7 +88,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
                 .setServerPort(Integer.parseInt(serverIp[1]))
                 .addListener(this)
                 .setServerPassword(PersistedSettingsManager.getInstance()
-                        .getValue("token")).buildConfiguration();
+                        .getValue("TwitchTV.token")).buildConfiguration();
 
 
         botThread = new Thread(new Runnable() {
@@ -232,7 +232,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
     @Override
     public void start() throws IOException, ReadingWebsiteFailedException, JSONException {
         this.username = (PersistedSettingsManager.getInstance().getValue
-                ("username"));
+                ("TwitchTV.username"));
 
         String json = WebUtils.readContentFrom(new URL(TWITCH_IRC_GROUP_SERVER));
 
@@ -250,7 +250,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
                 .setServerPort(Integer.parseInt(serverIp[1]))
                 .addListener(this)
                 .setServerPassword(PersistedSettingsManager.getInstance()
-                        .getValue("token")).buildConfiguration();
+                        .getValue("TwitchTV.token")).buildConfiguration();
 
 
         botThread = new Thread(new Runnable() {

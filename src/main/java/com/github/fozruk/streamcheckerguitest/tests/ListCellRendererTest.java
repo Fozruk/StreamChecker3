@@ -1,13 +1,17 @@
 package com.github.fozruk.streamcheckerguitest.tests;
 
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
+import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
+import com.github.epilepticz.streamchecker.model.channel.impl.MockChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
+import com.github.fozruk.streamcheckerguitest.chat.test.NonsenseGenerator;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.*;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ListCellRenderer;
 import junit.framework.TestCase;
+import org.json.JSONException;
 import org.junit.Test;
 import org.pircbotx.exception.IrcException;
 
@@ -23,18 +27,29 @@ public class ListCellRendererTest extends TestCase {
 
 
     @Test
-    public void teststuff()  {
+    public void teststuff() throws ReadingWebsiteFailedException, IOException, JSONException, IrcException, CreateChannelException, PropertyKeyNotFoundException, InterruptedException {
 
         IChannel mockChannel = null;
         //try {
 
         printmem();
-            DefaultListModel model = new DefaultListModel();
-            ChatWindow window = new ChatWindow(model,new ListCellRenderer());
-            for(int i = 0; i<40000;i++)
-            {
-                model.addElement(new ChatMessage("test"));
-            }
+            VlcLivestreamController controller = new VlcLivestreamController
+                    (new MockChannel());
+        // StreamWindow window = new StreamWindow(controller);
+
+       // controller.getStreamWindow().getChatWindow().setCellRenderer(null);
+
+        NonsenseGenerator gen = new NonsenseGenerator();
+        for(int i = 0; i<100000 ; i++)
+        {
+            controller._onMessage(new ChatMessage(gen.makeHeadline()));
+            Thread.sleep(10);
+        }
+
+
+
+        Thread.sleep(10000);
+
         printmem();
 
 //        printmem();

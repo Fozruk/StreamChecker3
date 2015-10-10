@@ -36,5 +36,8 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="Gradle: org.reflections:reflections:0.9.10" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.javassist:javassist:3.18.2-GA" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.code.findbugs:annotations:2.0.1" level="project" />
   </component>
 </module>

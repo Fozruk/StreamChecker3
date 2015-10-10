@@ -9,6 +9,8 @@ import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
 import com.github.epilepticz.streamchecker.view.interf.IOverview;
+import com.github.fozruk.streamcheckerguitest.plugins.base.PluginLoader;
+import com.github.fozruk.streamcheckerguitest.settings.StreamPlatformSettings;
 import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.AddChannelForm;
 import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.StreamListUI;
 import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.StreamPanel;
@@ -27,25 +29,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static com.github.fozruk.streamcheckerguitest.streamlistgui.ui.AddChannelForm.Channel;
 
@@ -93,10 +90,15 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
     @FXML
     private TextField settingsTextfiledLivestreamer;
 
+    @FXML
+    private TabPane tabPane;
+
     private ObservableList<StreamPanel> list;
     private PersistedSettingsManager settingsManager;
     private PersistedChannelsManager channelPersistanceManager;
     private StreamcheckerController controller;
+    private List<StreamPlatformSettings> chatSettingsList = new ArrayList<>();
+    private PersistedSettingsManager manager;
 
     public static Controller getCurrentController() {
         return currentInstance;
@@ -106,7 +108,12 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
     // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
-
+        try {
+            this.manager = PersistedSettingsManager
+                    .getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         list = FXCollections.observableArrayList();
 
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -120,6 +127,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 try {
                     settingsTextfiledLivestreamer.setText(PersistedSettingsManager.getInstance().getLivestremer().getAbsolutePath());
                     settingsTextfiledVlc.setText(PersistedSettingsManager.getInstance().getVideoPlayer().getAbsolutePath());
+                    loadChannels();
                 } catch (PropertyKeyNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -166,6 +174,16 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             resetEffect(listView);
         });
 
+        settingsOk.setOnAction((e) -> {
+            try {
+                saveSettings();
+                fadeOut(settings);
+                resetEffect(listView);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+
         AddChannelForm form = new AddChannelForm(Channel.Twitch);
         form.getImage().setImage(new Image(Controller.class.getResourceAsStream("/pictures/twitch-logo-black.png")));
 
@@ -176,17 +194,6 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
 
         label.setTextFill(Paint.valueOf("#5e5e5e"));
-
-
-
-
-        listView.setItems(list);
-
-
-
-
-
-
 
         this.controller = new StreamcheckerController(this);
         currentInstance = this;
@@ -226,8 +233,33 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 });
             }
         }).start();
+        listView.setItems(list);
+        loadChannels();
 
 
+
+
+    }
+
+    private void saveSettings() throws IOException {
+        manager.saveSetting("livestreamer",settingsTextfiledLivestreamer.getText());
+        manager.saveSetting("videoPlayer",settingsTextfiledVlc.getText());
+        chatSettingsList.forEach((e) -> {
+            try {
+                System.out.println(e.getUsername());
+                String name = e.getUsername();
+                CharSequence pw = e.getPassword();
+                if (!(name == null || pw == null)) {
+                    String classname = e.getPlatformName().getSimpleName()
+                            .replace("Channel_Gui", "");
+                    manager.saveSetting(classname+".username", name);
+                    manager.saveSetting(classname+".token", pw.toString());
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+        manager.flush();
     }
 
     public void resetEffect(Node node)
@@ -348,6 +380,32 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                     .result();
         }
     };
+
+
+    //Settings
+    private void loadChannels()
+    {
+        chatSettingsList.clear();
+        tabPane.getTabs().clear();
+        Reflections reflections = new Reflections("com.github.fozruk.streamcheckerguitest.plugins");
+        Set<Class<? extends PluginLoader>> allClasses =
+                reflections.getSubTypesOf(PluginLoader.class);
+
+        allClasses.iterator().forEachRemaining(s -> {
+            String className = s.getSimpleName().replace("Channel_Gui","");
+            String pw = manager.getValue(className + ".token");
+            String username = manager.getValue(className + ".username");
+            //ui.addStreamPortalSetting(s, username, pw);
+            Tab temp = new Tab();
+            temp.setText(className);
+            StreamPlatformSettings l = new StreamPlatformSettings(s);
+            l.setUsername(username);
+            l.setPassword(pw);
+            temp.setContent(l);
+            chatSettingsList.add(l);
+            tabPane.getTabs().add(temp);
+        });
+    }
 
 
 }

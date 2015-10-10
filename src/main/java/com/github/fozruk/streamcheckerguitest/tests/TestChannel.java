@@ -17,7 +17,7 @@ public class TestChannel implements IChannel {
 
     @Override
     public String getChannelLink() {
-        return "";
+        return "http://twitch.tv/riotgames";
     }
 
     @Override

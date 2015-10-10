@@ -28,8 +28,11 @@ public class PersistedSettingsManager extends PersistenceManager {
     }
 
     public static PersistedSettingsManager getInstance() throws IOException {
-        if(manager == null)
+        if(manager == null) {
             manager = new PersistedSettingsManager();
+            manager.loadSettings();
+        }
+
         return manager;
     }
 
@@ -39,7 +42,9 @@ public class PersistedSettingsManager extends PersistenceManager {
         stream.close();
     }
 
-
+    public void saveSetting(String key,String value) throws IOException {
+        settings.setProperty(key, value);
+    }
 
     public File getLivestremer() throws PropertyKeyNotFoundException {
         String property = settings.getProperty("livestreamer");
@@ -69,12 +74,8 @@ public class PersistedSettingsManager extends PersistenceManager {
         return property;
     }
 
-    public void save() throws JSONException {
-        JSONObject settings = new JSONObject();
-        settings.put("videoPlayer","test");
-        settings.put("livestreamer","test");
-
+    public void flush() throws IOException {
+        OutputStream stream = new FileOutputStream(SETTINGS_FILE);
+        settings.store(stream, "");
     }
-
-
 }

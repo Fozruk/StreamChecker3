@@ -42,6 +42,7 @@
                 </GridPane>
             <GridPane id="modalMenu" fx:id="settings" alignment="CENTER_LEFT" blendMode="SRC_OVER" cache="true" cacheHint="DEFAULT" depthTest="DISABLE" focusTraversable="false" mouseTransparent="false" opacity="0.0" style=" -fx-border-radius: 5;" styleClass="background" visible="false">
                <children>
+                  <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="3" />
                   <Label fx:id="label1" alignment="CENTER" text="Settings" textFill="#5e5e5e" GridPane.halignment="CENTER">
                      <effect>
                         <DropShadow />
@@ -50,7 +51,7 @@
                         <Font size="48.0" />
                      </font>
                   </Label>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
                      <children>
                         <Button fx:id="settingsOk" mnemonicParsing="false" text="OK" />
                         <Button fx:id="settingsBack" mnemonicParsing="false" text="Back" />
@@ -75,6 +76,7 @@
                <rowConstraints>
                   <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                   <RowConstraints fillHeight="false" maxHeight="277.0" minHeight="10.0" prefHeight="277.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
                </rowConstraints>
