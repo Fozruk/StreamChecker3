@@ -79,7 +79,7 @@ public class VlcLivestreamController implements ChatObserver {
 
     private void startChat() throws ReadingWebsiteFailedException, JSONException, IOException {
         stream.getChat().setObserver(this);
-        stream.getChat().start();
+        stream.getChat();
     }
 
     //ResizeableList Stuffs

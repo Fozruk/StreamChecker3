@@ -85,7 +85,10 @@ public class ChatBuffer {
                 double dreisatz = receivedMessages / (timediff);
                 double messagesPerSec = dreisatz * 1000;
                 stats.addAverage(messagesPerSec);
-                LOGGER.info("Messages per Second for this tick: " + new DecimalFormat("#.##").format(messagesPerSec));
+                LOGGER.info("[Timediff: "+timediff+"]Messages per Second for this " +
+                        "tick: " +
+                        new
+                        DecimalFormat("#.##").format(messagesPerSec));
                 max = messagesPerSec > max ? messagesPerSec : max;
                 streamListWindow.getTabbedPane().setTitleAt(0,   new DecimalFormat("#.##")
                         .format(stats.getAverage()) + " Avg - " +
