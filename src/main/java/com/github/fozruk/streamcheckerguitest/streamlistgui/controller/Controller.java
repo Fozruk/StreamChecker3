@@ -119,10 +119,9 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                fadeout(grid);
-                Controller.this.settings.setVisible(true);
                 Controller.this.listView.setEffect(new GaussianBlur(30.0));
                 fadeIn(settings);
+                fadeOut(grid);
 
                 try {
                     settingsTextfiledLivestreamer.setText(PersistedSettingsManager.getInstance().getLivestremer().getAbsolutePath());
@@ -146,7 +145,6 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             @Override
             public void handle(ActionEvent event) {
                 fadeOut(settings);
-                Controller.this.grid.setVisible(true);
                 Controller.this.listView.setEffect(new GaussianBlur(30.0));
                 fadeIn(grid);
             }
@@ -158,6 +156,8 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             public void handle(ActionEvent event) {
                 logger.trace("Add AbstractChannel Back Event fired");
                 fadeOut(grid);
+                System.out.println(grid.isVisible());
+                System.out.println(settings.isVisible());
                 resetEffect(listView);
             }
         });
@@ -171,6 +171,8 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
         settingsBack.setOnAction((e) -> {
             fadeOut(settings);
+            System.out.println(grid.isVisible());
+            System.out.println(settings.isVisible());
             resetEffect(listView);
         });
 
@@ -322,13 +324,8 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
     }
 
-    private void fadeout(Node node) {
-        FadeTransition ft = new FadeTransition(Duration.millis(100), node);
-        ft.setToValue(0.0);
-        ft.play();
-    }
-
     private void fadeIn(Node node) {
+        node.setVisible(true);
         FadeTransition ft = new FadeTransition(Duration.millis(100), node);
         ft.setToValue(1.0);
         ft.play();
@@ -337,7 +334,9 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
 
     public void fadeOut(Node node) {
-        fadeout(node);
+        FadeTransition ft = new FadeTransition(Duration.millis(100), node);
+        ft.setToValue(0.0);
+        ft.play();
         node.setVisible(false);
     }
 
@@ -395,7 +394,6 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             String className = s.getSimpleName().replace("Channel_Gui","");
             String pw = manager.getValue(className + ".token");
             String username = manager.getValue(className + ".username");
-            //ui.addStreamPortalSetting(s, username, pw);
             Tab temp = new Tab();
             temp.setText(className);
             StreamPlatformSettings l = new StreamPlatformSettings(s);
