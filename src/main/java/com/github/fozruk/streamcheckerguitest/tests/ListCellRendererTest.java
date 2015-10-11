@@ -39,16 +39,9 @@ public class ListCellRendererTest extends TestCase {
 
        // controller.getStreamWindow().getChatWindow().setCellRenderer(null);
 
-        NonsenseGenerator gen = new NonsenseGenerator();
-        for(int i = 0; i<100000 ; i++)
-        {
-            controller._onMessage(new ChatMessage(gen.makeHeadline()));
-            Thread.sleep(10);
-        }
 
 
-
-        Thread.sleep(10000);
+        Thread.sleep(10000000);
 
         printmem();
 

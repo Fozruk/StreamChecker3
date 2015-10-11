@@ -1,21 +1,21 @@
 package com.github.fozruk.streamcheckerguitest.vlcgui.controller;
 
 
-
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.exception.UpdateChannelException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.fozruk.streamcheckerguitest.chat.ChatObserver;
 import com.github.fozruk.streamcheckerguitest.chat.MessageHighlighter;
-import com.github.fozruk.streamcheckerguitest.plugins.base.Stream;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.plugins.base.PluginLoader;
+import com.github.fozruk.streamcheckerguitest.plugins.base.Stream;
+import com.github.fozruk.streamcheckerguitest.util.Util;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.StreamWindow;
-import com.github.fozruk.streamcheckerguitest.util.Util;
 import org.json.JSONException;
+import org.pircbotx.exception.IrcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,24 +24,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.pircbotx.exception.IrcException;
 
 public class VlcLivestreamController implements ChatObserver {
 
+    public static final MessageHighlighter highligter = new
+            MessageHighlighter(new ArrayList(Arrays.asList("f0zruk", "fozruk")));
     private static final Logger LOGGER = LoggerFactory.getLogger
             (VlcLivestreamController.class);
+    private static final String PLUGIN_PACKAGE_PATH = "com.github.fozruk" +
+            ".streamcheckerguitest.plugins.";
     private StreamWindow streamWindow;
     private PersistedSettingsManager persistenceManager =
             PersistedSettingsManager.getInstance();
     private boolean isLoaded;
     private boolean shutdownRequest;
-    private static final String PLUGIN_PACKAGE_PATH = "com.github.fozruk" +
-            ".streamcheckerguitest.plugins.";
-
     private Stream stream;
-
-    public static final MessageHighlighter highligter = new
-            MessageHighlighter(new ArrayList(Arrays.asList("f0zruk","fozruk")));
     private boolean loaded;
 
     public VlcLivestreamController(IChannel channel) throws IOException,
@@ -50,7 +47,7 @@ public class VlcLivestreamController implements ChatObserver {
 
         PluginLoader loader = null;
         try {
-            loader = (PluginLoader) Class.forName(PLUGIN_PACKAGE_PATH+channel.getClass()
+            loader = (PluginLoader) Class.forName(PLUGIN_PACKAGE_PATH + channel.getClass()
                     .getSimpleName() +
                     "_Gui")
                     .newInstance();
@@ -67,7 +64,7 @@ public class VlcLivestreamController implements ChatObserver {
         } catch (UpdateChannelException e) {
             Util.printExceptionToMessageDialog(e);
         }
-        if(shutdownRequest)
+        if (shutdownRequest)
             this.stopWindow();
     }
 
@@ -90,11 +87,11 @@ public class VlcLivestreamController implements ChatObserver {
     }
 
     public void sendMessage(String message) {
-        stream.getChat()._sendMessage(stream.getChannel().getChannelName(), message);
+        if(message.length() != 0)
+            stream.getChat()._sendMessage(stream.getChannel().getChannelName(), message);
     }
 
-    public String getUsername()
-    {
+    public String getUsername() {
         return stream.getChat().getUsername();
     }
 
@@ -107,12 +104,10 @@ public class VlcLivestreamController implements ChatObserver {
 
     public void stopWindow() {
 
-        if(loaded)
-        {
+        if (loaded) {
             stream.getPlayer().onShutdown(0);
             stream.getChat().disconnect();
-        } else
-        {
+        } else {
             LOGGER.info("Shutdown Request detected, gonna stop all processes " +
                     "if window is loaded complemetely.");
             shutdownRequest = true;
@@ -123,13 +118,11 @@ public class VlcLivestreamController implements ChatObserver {
 
     //Player stuffs
 
-    public void setVolume(int volume)
-    {
+    public void setVolume(int volume) {
         stream.getPlayer().setVolume(volume);
     }
 
-    public void toggleFullscreen()
-    {
+    public void toggleFullscreen() {
         stream.getPlayer().toggleFullScreen();
     }
 
@@ -138,13 +131,11 @@ public class VlcLivestreamController implements ChatObserver {
         return stream.getChat().getUserList();
     }
 
-    public void setFullscreen()
-    {
+    public void setFullscreen() {
         stream.getPlayer().toggleFullScreen();
     }
 
-    public StreamWindow getStreamWindow()
-    {
+    public StreamWindow getStreamWindow() {
         return this.streamWindow;
     }
 

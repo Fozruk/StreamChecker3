@@ -6,6 +6,7 @@ import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver
 import com.github.fozruk.streamcheckerguitest.chat.ChatBuffer;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.sampleCanvas;
+import javafx.scene.input.KeyCode;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataListener;
@@ -105,6 +107,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         slider.setPreferredSize(new Dimension(100, 26));
         slider.setMaximumSize(new Dimension(70, 26));
         slider.addChangeListener((e) -> controller.setVolume(slider.getValue()));
+        slider.setName("Volume");
         JPanel basePane = new JPanel();
         basePane.setBorder(new EmptyBorder(5, 5, 5, 5));
         basePane.setLayout(new BorderLayout(0, 0));
@@ -200,13 +203,31 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         JPanel sendMessagesPane = new JPanel();
         sendMessagesPane.setMaximumSize(new Dimension(32767, 50));
         panel_1.add(sendMessagesPane, BorderLayout.SOUTH);
-        sendMessagesPane.setLayout(new BoxLayout(sendMessagesPane, BoxLayout.X_AXIS));
+        sendMessagesPane.setLayout(new BoxLayout(sendMessagesPane, BoxLayout.Y_AXIS));
+
+        JPanel firstPane = new JPanel();
+        JPanel secondPane = new JPanel();
+
+        sendMessagesPane.add(firstPane);
+        sendMessagesPane.add(secondPane);
+        firstPane.setLayout(new BoxLayout(firstPane, BoxLayout.X_AXIS));
+        secondPane.setLayout(new BoxLayout(secondPane,BoxLayout.X_AXIS));
 
         textField = new JTextField();
-        textField.setBorder(null);
-
-        sendMessagesPane.add(textField);
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                if(e.getKeyCode() == 10)
+                {
+                    controller.sendMessage(textField.getText());
+                    textField.setText("");
+                }
+            }
+        });
+        firstPane.add(textField);
         textField.setColumns(10);
+
 
         JButton sendMessageButton = new JButton("Send");
         sendMessageButton.setVerticalAlignment(SwingConstants.TOP);
@@ -222,11 +243,12 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
             appendChatMessage(person);
         });
-        sendMessagesPane.add(sendMessageButton);
+        firstPane.add(sendMessageButton);
 
         toggleAutoscrollBox = new JCheckBox("");
         toggleAutoscrollBox.setActionCommand("");
         toggleAutoscrollBox.setSelected(true);
+        toggleAutoscrollBox.setText("Autoscroll");
         toggleAutoscrollBox.addActionListener((e) -> {
             if (toggleAutoscrollBox.isSelected()) {
                 addAutoScroll();
@@ -234,8 +256,8 @@ public class StreamWindow extends JFrame implements IChannelobserver {
                 removeAutoScroll();
             }
         });
-        sendMessagesPane.add(toggleAutoscrollBox);
-        sendMessagesPane.add(slider);
+        secondPane.add(toggleAutoscrollBox);
+        secondPane.add(slider);
         setVisible(true);
         toFront();
         setTitle("Loading Channel Data....");
@@ -258,7 +280,8 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
 
         chatSpeed = new JSpinner(new SpinnerNumberModel(250,1,2000,1));
-        sendMessagesPane.add(chatSpeed);
+        chatSpeed.setName("Buffer");
+        secondPane.add(chatSpeed);
         chatSpeed.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
