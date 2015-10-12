@@ -61,6 +61,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
         {
             LOGGER.info("Whisper Server NULL, gonna connect...");
             whisperServer = new TwitchImplNew();
+            whisperServer.start();
             whisperServer.setObserver(this);
         }
 
