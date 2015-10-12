@@ -46,7 +46,9 @@ public class ChatBuffer {
             if(!currentlyCollecting)
             {
                 currentlyCollecting = true;
-                new Thread(new CollectThread()).start();
+                Thread temp = new Thread(new CollectThread());
+                temp.setName("Chatbuffer Thread");
+                temp.start();
             }
             getCurrentList().add(message);
         }
