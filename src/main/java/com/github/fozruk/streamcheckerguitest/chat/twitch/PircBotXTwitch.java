@@ -17,7 +17,7 @@ public class PircBotXTwitch extends PircBotX {
 
     private Configuration conf;
     private Thread botThread;
-    private IServerCallback callback;
+    private String channelname;
     private ChatObserver observer;
 
     /**
@@ -25,10 +25,10 @@ public class PircBotXTwitch extends PircBotX {
      *
      * @param configuration
      */
-    public PircBotXTwitch(Configuration configuration,IServerCallback
-            callback) {
+    public PircBotXTwitch(Configuration configuration,String channelname
+            ) {
         super(configuration);
-        this.callback = callback;
+        this.channelname = channelname;
     }
 
     public void shutdown()
@@ -40,8 +40,8 @@ public class PircBotXTwitch extends PircBotX {
 
     public void  start()
     {
-        Thread botThread = new Thread();
-        botThread.setName("test");
+        Thread botThread;
+
         botThread = new Thread(() -> {
             try {
                 startBot();
@@ -51,19 +51,7 @@ public class PircBotXTwitch extends PircBotX {
             }
         });
 
-        botThread.setName("PircBotX-Thread: Connected to ");
+        botThread.setName("Chat " + channelname);
         botThread.start();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //Request these Commands to activate additional features like Whisper
-        // Messages and extended chat messages
-        sendRaw().rawLine("CAP REQ :twitch.tv/tags");
-        sendRaw().rawLine("CAP REQ :twitch.tv/commands");
-        if(callback != null)
-            callback.connected();
     }
 }

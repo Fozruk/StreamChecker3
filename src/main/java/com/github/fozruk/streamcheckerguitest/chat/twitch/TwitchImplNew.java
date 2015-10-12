@@ -28,8 +28,8 @@ import java.util.ArrayList;
 /**
  * Created by Philipp on 12.08.2015.
  */
-public class TwitchImplNew extends ListenerAdapter implements IChat,
-        IServerCallback {
+public class TwitchImplNew extends ListenerAdapter implements IChat
+{
 
     private String token;
     private String username;
@@ -109,6 +109,17 @@ public class TwitchImplNew extends ListenerAdapter implements IChat,
     }
 
     @Override
+    public void onConnect(ConnectEvent event) throws Exception {
+        super.onConnect(event);
+        event.getBot().sendRaw().rawLine("CAP REQ :twitch.tv/tags");
+        event.getBot().sendRaw().rawLine("CAP REQ :twitch" +
+                ".tv/commands");
+
+        event.getBot().sendRaw().rawLine("JOIN #" + channel.getChannelName()
+                .toLowerCase());
+    }
+
+    @Override
     public void disconnect() {
         //bot.stopBotReconnect();
         bot.shutdown();
@@ -168,7 +179,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat,
                 .setServerPort(Integer.parseInt(serverIp[1]))
                 .addListener(this)
                 .setServerPassword(token).buildConfiguration();
-        bot = new PircBotXTwitch(conf,this);
+        bot = new PircBotXTwitch(conf,channel.getChannelName());
         bot.start();
     }
 
@@ -193,13 +204,8 @@ public class TwitchImplNew extends ListenerAdapter implements IChat,
                     .addListener(this)
                     .setServerPassword(PersistedSettingsManager.getInstance()
                             .getValue("TwitchTV.token")).buildConfiguration();
-            whisperServer = new PircBotXTwitch(conf,null);
+            whisperServer = new PircBotXTwitch(conf,"WhisperServer");
             whisperServer.start();
         }
-    }
-
-    @Override
-    public void connected() {
-        bot.sendRaw().rawLine("JOIN #" + channel.getChannelName().toLowerCase());
     }
 }
