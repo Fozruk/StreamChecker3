@@ -8,6 +8,7 @@ import com.github.fozruk.streamcheckerguitest.chat.IChat;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
 import com.github.fozruk.streamcheckerguitest.util.Util;
+import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.*;
 import org.slf4j.Logger;
 import org.json.JSONArray;
@@ -27,105 +28,34 @@ import java.util.ArrayList;
 /**
  * Created by Philipp on 12.08.2015.
  */
-public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserver {
+public class TwitchImplNew extends ListenerAdapter implements IChat,
+        IServerCallback {
 
+    private String token;
     private String username;
     private PircBotXTwitch bot;
     IChannel channel;
     private ChatObserver observer;
-    Thread botThread;
-    private static TwitchImplNew whisperServer;
+    private static PircBotXTwitch whisperServer;
     private static final Logger LOGGER = LoggerFactory.getLogger(TwitchImplNew.class);
     private static ArrayList<TwitchImplNew> whisperObserver = new ArrayList<>();
 
     private static final String TWITCH_IRC_GROUP_SERVER= "http://tmi.twitch" +
             ".tv/servers?cluster=group";
 
-
-    public static void main(String[] args) throws IOException, IrcException, InterruptedException, ReadingWebsiteFailedException, JSONException {
-
-    }
-
-    private TwitchImplNew() {
-
-    }
-
     public TwitchImplNew(IChannel channel) throws
             IOException,
             IrcException,
             ReadingWebsiteFailedException, JSONException {
 
-
-
-        if(whisperServer == null)
-        {
-            LOGGER.info("Whisper Server NULL, gonna connect...");
-            whisperServer = new TwitchImplNew();
-            whisperServer.start();
-            whisperServer.setObserver(this);
-        }
-
-        this.channel = channel;
         this.username = (PersistedSettingsManager.getInstance().getValue
                 ("TwitchTV.username"));
 
+        this.token = PersistedSettingsManager.getInstance()
+                .getValue("TwitchTV.token");
 
-        String json = WebUtils.readContentFrom(new URL("http://api.twitch" +
-                ".tv/api/channels/"+channel.getChannelName()+"/chat_properties"));
-
-        JSONObject jsonObject = new JSONObject(json);
-
-        JSONArray array = jsonObject.getJSONArray("chat_servers");
-
-        String[] serverIp = array.get(0).toString().split(":");
-
-
-
-        LOGGER.info("Connecting to: " + serverIp[0] + ":" + serverIp[1]);
-
-        Configuration conf = new Configuration.Builder().setName(username)
-                .setServerHostname(serverIp[0]).setEncoding
-                (Charset.forName("UTF-8"))
-                .setServerPort(Integer.parseInt(serverIp[1]))
-                .addListener(this)
-                .setServerPassword(PersistedSettingsManager.getInstance()
-                        .getValue("TwitchTV.token")).buildConfiguration();
-
-
-        botThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                bot = new PircBotXTwitch(conf);
-
-                try {
-                    bot.startBot();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (IrcException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
-
-        botThread.setName("PircBotX-Thread - " + channel.getChannelName());
-
-
-        botThread.start();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        whisperObserver.add(this);
-        bot.sendRaw().rawLine("CAP REQ :twitch.tv/tags");
-        bot.sendRaw().rawLine("CAP REQ :twitch.tv/commands");
-        bot.sendRaw().rawLine("JOIN #" + channel.getChannelName().toLowerCase());
-
+        this.channel = channel;
+        startWhisperServerIfNeeded();
     }
 
     //Hier kommen IRC Messages an
@@ -134,8 +64,6 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
         super.onUnknown(event);
         observer._onMessage(new ChatMessage(event.getLine()));
     }
-
-    
 
     //Hier kommen User Messages an
     @Override
@@ -148,29 +76,17 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
 
     }
 
-    //    @Override
-//    public void onNotice(NoticeEvent event) throws Exception {
-//        super.onNotice(event);
-//        System.out.println("test");
-//    }
-
     @Override
     public void onDisconnect(DisconnectEvent event) throws Exception {
         super.onDisconnect(event);
             observer._onMessage(new ChatMessage("Server", "Disconnected"));
     }
 
-//    @Override
-//    public void onPrivateMessage(PrivateMessageEvent event) throws Exception {
-//        super.onPrivateMessage(event);
-//        System.out.println(event.getMessage());
-//    }
-
     @Override
     public void _sendMessage(String channelname, String message) {
         if(message.startsWith("/w"))
         {
-            whisperServer.bot.sendRaw().rawLine("PRIVMSG #"+channelname+" :"+message);
+            whisperServer.sendRaw().rawLine("PRIVMSG #"+channelname+" :"+message);
         }else
         {
             bot.sendRaw().rawLine("PRIVMSG #"+channelname+" :"+message);
@@ -200,6 +116,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
         LOGGER.debug("Observers for Whisper: " + whisperObserver.size());
     }
 
+    //TODO in andere Klasse auslagern
     @Override
     public String[] getUserList() throws MalformedURLException,
             ReadingWebsiteFailedException, JSONException {
@@ -230,79 +147,59 @@ public class TwitchImplNew extends ListenerAdapter implements IChat, ChatObserve
         return chatter.toArray(stockArr);
     }
 
+    /**
+     * Starts the Bot
+     * @throws IOException
+     * @throws ReadingWebsiteFailedException
+     * @throws JSONException
+     */
     @Override
     public void start() throws IOException, ReadingWebsiteFailedException, JSONException {
-        this.username = (PersistedSettingsManager.getInstance().getValue
-                ("TwitchTV.username"));
-
-        String json = WebUtils.readContentFrom(new URL(TWITCH_IRC_GROUP_SERVER));
+        String json = WebUtils.readContentFrom(new URL("http://api.twitch" +
+                ".tv/api/channels/"+channel.getChannelName()+"/chat_properties"));
 
         JSONObject jsonObject = new JSONObject(json);
-
-        JSONArray array = jsonObject.getJSONArray("servers");
-
+        JSONArray array = jsonObject.getJSONArray("chat_servers");
         String[] serverIp = array.get(0).toString().split(":");
-
         LOGGER.info("Connecting to: " + serverIp[0] + ":" + serverIp[1]);
-
         Configuration conf = new Configuration.Builder().setName(username)
                 .setServerHostname(serverIp[0]).setEncoding
                         (Charset.forName("UTF-8"))
                 .setServerPort(Integer.parseInt(serverIp[1]))
                 .addListener(this)
-                .setServerPassword(PersistedSettingsManager.getInstance()
-                        .getValue("TwitchTV.token")).buildConfiguration();
-
-
-        botThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                bot = new PircBotXTwitch(conf);
-                try {
-                    bot.startBot();
-                } catch (IOException | IrcException e )
-                {
-                    Util.printExceptionToMessageDialog(e);
-                }
-            }
-        });
-
-        botThread.setName("PircBotX-Thread: Connected to WhisperServer - " +
-                serverIp[0]);
-
-        botThread.start();
-
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //Request these Commands to activate additional features like Whisper
-        // Messages and extended chat messages
-        bot.sendRaw().rawLine("CAP REQ :twitch.tv/tags");
-        bot.sendRaw().rawLine("CAP REQ :twitch.tv/commands");
-    }
-
-
-    //Whisperserver Event
-
-    @Override
-    public void _onMessage(ChatMessage message) {
-        LOGGER.info("Whisper message: " + message.getMessage());
-        for(TwitchImplNew temp : whisperObserver)
-            temp.observer._onMessage(message);
-    }
-
-    @Override
-    public void _onDisconnect() {
-        LOGGER.info("Whisper server disconnected");
+                .setServerPassword(token).buildConfiguration();
+        bot = new PircBotXTwitch(conf,this);
+        bot.start();
     }
 
     public void setObserver(ChatObserver observer)
     {
         this.observer = observer;
+    }
+
+    private void startWhisperServerIfNeeded() throws ReadingWebsiteFailedException, JSONException, IOException {
+        if(whisperServer == null)
+        {
+            LOGGER.info("Whisper Server NULL, gonna connect...");
+            String json = WebUtils.readContentFrom(new URL(TWITCH_IRC_GROUP_SERVER));
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray array = jsonObject.getJSONArray("servers");
+            String[] serverIp = array.get(0).toString().split(":");
+            LOGGER.info("Connecting to: " + serverIp[0] + ":" + serverIp[1]);
+            Configuration conf = new Configuration.Builder().setName(username)
+                    .setServerHostname(serverIp[0]).setEncoding
+                            (Charset.forName("UTF-8"))
+                    .setServerPort(Integer.parseInt(serverIp[1]))
+                    .addListener(this)
+                    .setServerPassword(PersistedSettingsManager.getInstance()
+                            .getValue("TwitchTV.token")).buildConfiguration();
+            whisperServer = new PircBotXTwitch(conf,null);
+            whisperServer.start();
+        }
+    }
+
+    @Override
+    public void connected() {
+        bot.sendRaw().rawLine("JOIN #" + channel.getChannelName().toLowerCase());
     }
 }

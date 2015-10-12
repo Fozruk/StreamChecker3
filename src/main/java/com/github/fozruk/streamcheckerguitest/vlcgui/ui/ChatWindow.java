@@ -34,6 +34,7 @@ public class ChatWindow extends ResizeableList {
                 {
                     DefaultListModel model = (DefaultListModel) ChatWindow.this.getModel();
                     SwingUtilities.invokeLater(()->model.removeElementAt(0));
+                    SwingUtilities.invokeLater(()->model.removeElementAt(1));
                 }
                 /*LOGGER.debug("Chat element length " + ChatWindow.this
                         .getModel().getSize());*/

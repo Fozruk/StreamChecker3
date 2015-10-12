@@ -12,6 +12,7 @@ import java.awt.*;
 public class ListCellRenderer extends JLabel implements javax.swing.ListCellRenderer {
 
     private JList list;
+    private boolean odd;
 
     public ListCellRenderer()
     {
@@ -54,6 +55,7 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
             setBackground(new Color(0x1E, 0x1E, 0x1E));
             setForeground(new Color(150, 150, 150));
         }
+        odd = !odd;
 
 
         if(VlcLivestreamController.highligter.shallBeHighlighted(person.getMessage()))
