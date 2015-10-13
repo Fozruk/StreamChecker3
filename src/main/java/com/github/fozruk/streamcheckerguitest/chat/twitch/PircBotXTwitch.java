@@ -47,7 +47,7 @@ public class PircBotXTwitch extends PircBotX {
                 startBot();
             } catch (IOException | IrcException e )
             {
-                Util.printExceptionToMessageDialog(e);
+                Util.printExceptionToMessageDialog("OOPS",e);
             }
         });
 

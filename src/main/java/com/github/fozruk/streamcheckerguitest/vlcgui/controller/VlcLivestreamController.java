@@ -47,10 +47,7 @@ public class VlcLivestreamController implements ChatObserver {
 
         PluginLoader loader = null;
         try {
-            loader = (PluginLoader) Class.forName(PLUGIN_PACKAGE_PATH + channel.getClass()
-                    .getSimpleName() +
-                    "_Gui")
-                    .newInstance();
+            loader = loadPlugin(channel);
             loader.create(channel);
             this.stream = loader.returnObject();
             stream.getChannel().addObserver(streamWindow);
@@ -60,12 +57,19 @@ public class VlcLivestreamController implements ChatObserver {
             this.loaded = true;
         } catch (InstantiationException | ClassCastException |
                 IllegalAccessException | ClassNotFoundException e) {
-            Util.printExceptionToMessageDialog(e);
+            Util.printExceptionToMessageDialog("OOOPS",e);
         } catch (UpdateChannelException e) {
-            Util.printExceptionToMessageDialog(e);
+            Util.printExceptionToMessageDialog("Something is wrong with your Proxy/Internetconnection :< ",e);
         }
         if (shutdownRequest)
             this.stopWindow();
+    }
+
+    private PluginLoader loadPlugin(IChannel channel) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        return (PluginLoader) Class.forName(PLUGIN_PACKAGE_PATH + channel.getClass()
+                .getSimpleName() +
+                "_Gui")
+                .newInstance();
     }
 
     private void startPlayer() throws IOException {

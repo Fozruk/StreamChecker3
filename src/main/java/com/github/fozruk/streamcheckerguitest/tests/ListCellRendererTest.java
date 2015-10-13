@@ -34,7 +34,7 @@ public class ListCellRendererTest extends TestCase {
 
         printmem();
             VlcLivestreamController controller = new VlcLivestreamController
-                    (new MockChannel());
+                    (new TwitchTVChannel("nyu_tv"));
         // StreamWindow window = new StreamWindow(controller);
 
        // controller.getStreamWindow().getChatWindow().setCellRenderer(null);

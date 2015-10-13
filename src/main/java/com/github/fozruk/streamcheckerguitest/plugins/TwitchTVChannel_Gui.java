@@ -28,11 +28,11 @@ public class TwitchTVChannel_Gui implements PluginLoader {
         try {
             chat = new TwitchImplNew(channel);
             stream = new Stream(channel,chat,new VlcPlayer());
+            stream.quality = new String[]{"source"};
         } catch (IOException | IrcException | ReadingWebsiteFailedException |
                 JSONException | PropertyKeyNotFoundException e) {
-            Util.printExceptionToMessageDialog(e);
+            Util.printExceptionToMessageDialog("OOPS",e);
         }
-        stream.quality = new String[]{"source"};
     }
 
     @Override
