@@ -79,4 +79,8 @@ public class ChatMessage {
         this.color = color;
         this.username = user;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

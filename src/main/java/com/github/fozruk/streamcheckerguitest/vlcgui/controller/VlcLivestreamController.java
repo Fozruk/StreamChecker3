@@ -40,6 +40,7 @@ public class VlcLivestreamController implements ChatObserver {
     private boolean shutdownRequest;
     private Stream stream;
     private boolean loaded;
+    private String bufferedMessage;
 
     public VlcLivestreamController(IChannel channel) throws IOException,
             IrcException, PropertyKeyNotFoundException, ReadingWebsiteFailedException, CreateChannelException, JSONException {
@@ -87,8 +88,10 @@ public class VlcLivestreamController implements ChatObserver {
     }
 
     public void sendMessage(String message) {
-        if(message.length() != 0)
+        if(message.length() != 0) {
+            this.bufferedMessage = message;
             stream.getChat()._sendMessage(stream.getChannel().getChannelName(), message);
+        }
     }
 
     public String getUsername() {

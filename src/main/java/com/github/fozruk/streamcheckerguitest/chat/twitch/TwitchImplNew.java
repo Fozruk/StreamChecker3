@@ -8,6 +8,7 @@ import com.github.fozruk.streamcheckerguitest.chat.IChat;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
 import com.github.fozruk.streamcheckerguitest.util.Util;
+import com.google.common.collect.ImmutableMap;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.*;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  * Created by Philipp on 12.08.2015.
@@ -42,6 +44,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
 
     private static final String TWITCH_IRC_GROUP_SERVER= "http://tmi.twitch" +
             ".tv/servers?cluster=group";
+    private String tempmessage;
 
     public TwitchImplNew(IChannel channel) throws
             IOException,
@@ -62,7 +65,20 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
     @Override
     public void onUnknown(UnknownEvent event) throws Exception {
         super.onUnknown(event);
-        observer._onMessage(new ChatMessage(event.getLine()));
+        if(event.getLine().contains("USERSTATE")) {
+            ChatMessage msg = new ChatMessage(tempmessage);
+            msg.setUsername("Fozruk");
+            observer._onMessage(msg);
+        }
+        else if(event.getLine().contains("WHISPER"))
+        {
+            ChatMessage msg = new ChatMessage(event.getLine());
+            msg.setUsername( "WHIPSER -> " + this.getUsername());
+            observer._onMessage(msg);
+        } else {
+            observer._onMessage(new ChatMessage(event.getLine()));
+        }
+
     }
 
     //Hier kommen User Messages an
@@ -89,6 +105,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
             whisperServer.sendRaw().rawLine("PRIVMSG #"+channelname+" :"+message);
         }else
         {
+            this.tempmessage = message;
             bot.sendRaw().rawLine("PRIVMSG #"+channelname+" :"+message);
         }
     }
@@ -122,7 +139,9 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
     @Override
     public void disconnect() {
         //bot.stopBotReconnect();
-        bot.shutdown();
+        //bot.shutdown();
+        LOGGER.info("Gonna quit from the Server, bye!");
+        bot.sendIRC().quitServer();
         whisperObserver.remove(this);
         LOGGER.debug("Observers for Whisper: " + whisperObserver.size());
     }
