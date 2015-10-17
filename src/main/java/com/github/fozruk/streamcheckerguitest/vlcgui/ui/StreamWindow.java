@@ -218,8 +218,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                if(e.getKeyCode() == 10)
-                {
+                if (e.getKeyCode() == 10) {
                     controller.sendMessage(textField.getText());
                     textField.setText("");
                 }
@@ -282,6 +281,16 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         chatSpeed = new JSpinner(new SpinnerNumberModel(250,1,2000,1));
         chatSpeed.setName("Buffer");
         secondPane.add(chatSpeed);
+
+        JButton restart = new JButton("Restart");
+        restart.addActionListener((e) -> {
+            try {
+                controller.restartLivestreamer();
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            }
+        });
+        secondPane.add(restart);
         chatSpeed.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

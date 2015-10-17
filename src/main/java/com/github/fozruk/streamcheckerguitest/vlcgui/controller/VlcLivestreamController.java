@@ -79,6 +79,12 @@ public class VlcLivestreamController implements ChatObserver {
                 stream.quality[0]);
     }
 
+    public void restartLivestreamer() throws MalformedURLException {
+        stream.getPlayer().restart(new URL(stream.getChannel()
+                .getChannelLink()),
+                stream.quality[0]);
+    }
+
     private void startChat() throws ReadingWebsiteFailedException, JSONException, IOException {
         stream.getChat().setObserver(this);
         stream.getChat().start();

@@ -103,10 +103,22 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
 
     @Override
     public void onShutdown(int exitcode) {
-
+        mediaIsPlaying = false;
         livestreamer.killProcess();
         canvas.livestreamerClosed();
         player.stop();
+    }
+
+    public void restart(URL url,String quality)
+    {
+        livestreamer.killProcess();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        canvas.appendMessage("Restarting Livestreamer");
+        livestreamer.startLiveStreamerAsServer(url,quality,this);
     }
 
     @Override
