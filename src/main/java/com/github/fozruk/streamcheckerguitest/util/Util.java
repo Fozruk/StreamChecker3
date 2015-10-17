@@ -9,10 +9,10 @@ import java.io.StringWriter;
  */
 public class Util {
 
-    public static void printExceptionToMessageDialog(Exception e) {
+    public static void printExceptionToMessageDialog(String message,Exception e) {
         StringWriter writer = new StringWriter();
         PrintWriter r = new PrintWriter(writer);
         e.printStackTrace(r);
-        JOptionPane.showMessageDialog(null, writer.toString(), "ERROR", 0);
+        JOptionPane.showMessageDialog(null,message + "\n" + writer.toString(), "ERROR", 0);
     }
 }

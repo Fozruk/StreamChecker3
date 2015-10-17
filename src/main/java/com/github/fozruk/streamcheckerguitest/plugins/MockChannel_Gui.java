@@ -25,7 +25,7 @@ public class MockChannel_Gui implements PluginLoader {
             chat = new MockChat();
             stream = new Stream(channel,chat,new VlcPlayer());
         } catch (IOException | PropertyKeyNotFoundException e) {
-            Util.printExceptionToMessageDialog(e);
+            Util.printExceptionToMessageDialog("OOPS",e);
         }
         stream.quality = new String[]{"source"};
     }

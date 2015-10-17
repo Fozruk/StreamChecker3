@@ -24,7 +24,7 @@ public abstract class PersistenceManager {
             APPDATA_FOLDER = new File(System.getenv("APPDATA"));
         } else if (os.indexOf("mac") >= 0) {
             this.setOs(OperatingSystem.Mac);
-            APPDATA_FOLDER = new File(System.getenv("APPDATA"));
+            APPDATA_FOLDER = new File(System.getProperty("user.home"));
         } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") >= 0) {
             this.setOs(OperatingSystem.Linux);
             APPDATA_FOLDER = new File("/home/"+ System.getProperty("user.name")

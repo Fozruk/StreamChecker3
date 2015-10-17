@@ -96,6 +96,7 @@ public class StreamListUI extends Application {
                     // TODO Auto-generated method stub
                     super.mouseClicked(e);
                     LOGGER.debug("dddd");
+
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
