@@ -5,6 +5,9 @@ import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamCon
 import javax.swing.*;
 import javax.swing.text.View;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Created by Philipp on 12.08.2015.
@@ -98,5 +101,6 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
         super.finalize();
         System.out.println("xd");
     }
+
 
 }

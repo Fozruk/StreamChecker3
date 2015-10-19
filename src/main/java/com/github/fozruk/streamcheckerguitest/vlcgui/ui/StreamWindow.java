@@ -283,13 +283,14 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         secondPane.add(chatSpeed);
 
         JButton restart = new JButton("Restart");
-        restart.addActionListener((e) -> {
+        Runnable restartLivestreamer = () -> {
             try {
                 controller.restartLivestreamer();
-            } catch (MalformedURLException e1) {
-                e1.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
-        });
+        };
+        restart.addActionListener((e) -> new Thread(restartLivestreamer).start());
         secondPane.add(restart);
         chatSpeed.addChangeListener(new ChangeListener() {
             @Override

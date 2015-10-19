@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by Philipp on 04.10.2015.
@@ -24,6 +26,7 @@ public class ChatWindow extends ResizeableList {
     public ChatWindow(DefaultListModel model, ListCellRenderer cellRenderer) {
         super(model, cellRenderer);
         addScrollListener();
+        addMouseListener(new PopClickListener());
     }
     private void addScrollListener()
     {
