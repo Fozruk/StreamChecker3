@@ -88,20 +88,7 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
 
     public StreamPanel(IChannel channel) {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/fxml/Stream.fxml"));
-
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-
+        loadFxml();
         this.channel = channel;
         watchButton.setDisable(false);
 
@@ -227,6 +214,20 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
             }
         });
 
+    }
+
+    private synchronized void loadFxml() {
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                getClass().getResource("/fxml/Stream.fxml"));
+
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     public void updateLabels() {

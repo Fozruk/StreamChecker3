@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" fx:id="anchor" type="StackPane"
          xmlns="http://javafx.com/javafx/8">
-    <children>
+
         <GridPane fx:id="panes" alignment="CENTER" hgap="6.0">
             <children>
                 <Label fx:id="name" alignment="CENTER" graphicTextGap="3.0"
@@ -123,5 +123,5 @@
                 </HBox>
             </children>
         </StackPane>
-    </children>
+
 </fx:root>
