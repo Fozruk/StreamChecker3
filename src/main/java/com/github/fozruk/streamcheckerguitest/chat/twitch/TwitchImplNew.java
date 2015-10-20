@@ -146,6 +146,8 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
         LOGGER.debug("Observers for Whisper: " + whisperObserver.size());
     }
 
+
+
     //TODO in andere Klasse auslagern
     @Override
     public String[] getUserList() throws MalformedURLException,
@@ -206,6 +208,8 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
     {
         this.observer = observer;
     }
+
+
 
     private void startWhisperServerIfNeeded() throws ReadingWebsiteFailedException, JSONException, IOException {
         if(whisperServer == null)

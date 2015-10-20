@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
@@ -176,8 +175,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         viewerListPane.setMaximumSize(new Dimension(300, 10000));
         viewerListPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        ListCellRenderer cellRenderChat = new com.github.fozruk
-                .streamcheckerguitest.vlcgui.ui.ListCellRenderer();
+        ListCellRenderer cellRenderChat = new ListCellRenderer();
 
         chatWindow = new ChatWindow(chatListModel,cellRenderChat);
 
@@ -287,6 +285,12 @@ public class StreamWindow extends JFrame implements IChannelobserver {
             try {
                 controller.restartLivestreamer();
             } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ReadingWebsiteFailedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         };
