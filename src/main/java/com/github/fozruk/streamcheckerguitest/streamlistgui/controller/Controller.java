@@ -17,6 +17,7 @@ import com.github.fozruk.streamcheckerguitest.streamlistgui.ui.StreamPanel;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedChannelsManager;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.github.fozruk.streamcheckerguitest.vlcgui.ui.FileChooser;
 import com.google.common.collect.ComparisonChain;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -40,6 +41,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -185,6 +187,26 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 e1.printStackTrace();
             }
         });
+
+        //TODO make platform independent
+        settingsLivestreamer.setOnAction((e) -> {
+            FileChooser chooser = new FileChooser("livestreamer.exe");
+            File file = chooser.getLocationWithFileChooser();
+            if(file != null)
+                settingsTextfiledLivestreamer.setText(file.getAbsolutePath());
+        });
+
+        settingsVlc.setOnAction((e) -> {
+            FileChooser chooser = new FileChooser("vlc.exe");
+            File file = chooser.getLocationWithFileChooser();
+            if(file != null)
+                settingsTextfiledVlc.setText(file.getAbsolutePath());
+        });
+
+
+
+
+
 
         AddChannelForm form = new AddChannelForm(Channel.Twitch);
         form.getImage().setImage(new Image(Controller.class.getResourceAsStream("/pictures/twitch-logo-black.png")));
