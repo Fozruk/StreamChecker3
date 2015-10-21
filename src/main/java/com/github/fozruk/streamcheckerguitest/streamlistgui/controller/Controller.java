@@ -223,6 +223,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         currentInstance = this;
 
         //Load all persisted Channels
+        //TODO generischer machen
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -243,9 +244,12 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                         } catch (CreateChannelException e) {
                             e.printStackTrace();
                         }
+                        Thread.sleep(100);
                     }
 
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
