@@ -320,13 +320,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
     @Override
     public void addChannel(IChannel channel) {
         StreamPanel pane = new StreamPanel(channel);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
                 list.add(pane);
-            }
-        });
-
     }
 
     @Override
@@ -429,7 +423,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 reflections.getSubTypesOf(PluginLoader.class);
 
         allClasses.iterator().forEachRemaining(s -> {
-            String className = s.getSimpleName().replace("Channel_Gui","");
+            String className = s.getSimpleName().replace("Channel_Gui", "");
             String pw = manager.getValue(className + ".token");
             String username = manager.getValue(className + ".username");
             Tab temp = new Tab();
@@ -438,8 +432,10 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             l.setUsername(username);
             l.setPassword(pw);
             temp.setContent(l);
-            chatSettingsList.add(l);
-            tabPane.getTabs().add(temp);
+            Platform.runLater(() -> {
+                chatSettingsList.add(l);
+                tabPane.getTabs().add(temp);
+            });
         });
     }
 

@@ -20,25 +20,7 @@ import java.util.Map;
  */
 public class PersistedChannelsManager extends PersistenceManager {
 
-
     public PersistedChannelsManager() throws IOException {
-
-    }
-
-    public List<String> getPersistedChannels() throws IOException {
-        List<String> channelList = new ArrayList<>();
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(STREAMS_FILE));
-            String streamURL = null;
-
-            while ((streamURL = reader.readLine()) != null) {
-                channelList.add(streamURL);
-            }
-        } finally {
-            reader.close();
-        }
-        return channelList;
     }
 
     public void saveChannel(IChannel channel) throws IOException {
@@ -55,7 +37,7 @@ public class PersistedChannelsManager extends PersistenceManager {
             JSONArray array = channels.get(classpath);
             if(array == null)
             {
-                channels.put(classpath,new JSONArray());
+                channels.put(classpath,array = new JSONArray());
             }
             array.put(channel.getChannelName());
         }
@@ -69,11 +51,13 @@ public class PersistedChannelsManager extends PersistenceManager {
 
         FileWriter file = new FileWriter(STREAMS_FILE);
         try {
-            file.write(persistedchannels.toString());
+            file.write(persistedchannels.toString(1));
 
         } catch (IOException e) {
             e.printStackTrace();
 
+        } catch (JSONException e) {
+            e.printStackTrace();
         } finally {
             file.flush();
             file.close();
@@ -91,15 +75,6 @@ public class PersistedChannelsManager extends PersistenceManager {
      * @throws IOException
      */
     public void deleteChannel() throws IOException {
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(STREAMS_FILE));
-            for (IChannel channel : Controller.getCurrentController().getAddedChannels()) {
-                writer.write(channel.getChannelLink() + "\n");
-                writer.flush();
-            }
-        } finally {
-            writer.close();
-        }
+       saveChannelwithJson();
     }
 }
