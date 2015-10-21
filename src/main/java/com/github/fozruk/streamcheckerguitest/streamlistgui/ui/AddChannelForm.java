@@ -4,6 +4,7 @@ import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.AbstractChannel;
+import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.fozruk.streamcheckerguitest.streamlistgui.controller.Controller;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -28,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,7 +41,7 @@ public class AddChannelForm extends StackPane implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(AddChannelForm
             .class);
 
-    private Channel channeltype;
+    private String channeltype;
     @FXML
     private ImageView image;
     @FXML
@@ -53,7 +55,7 @@ public class AddChannelForm extends StackPane implements Initializable {
     @FXML
     private TextField inputField;
 
-    public AddChannelForm(Channel type) {
+    public AddChannelForm(String type) {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/fxml/addChannelForm.fxml"));
 
@@ -123,26 +125,25 @@ public class AddChannelForm extends StackPane implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 // logger.trace(modalMenu_backButton + " click event triggered.");
+
                 try {
-
-                    switch (channeltype) {
-                        case Hitbox:
-                            AbstractChannel hitboxChannel = new HitboxTVChannel(AddChannelForm.this.inputField.getText());
-                            Controller.getCurrentController().createChannel(hitboxChannel);
-                            Controller.getCurrentController().getChannelPersistanceManager().saveChannel(hitboxChannel);
-                            break;
-
-                        case Twitch:
-                            AbstractChannel abstractChannel = new TwitchTVChannel(AddChannelForm.this.inputField.getText());
-                            Controller.getCurrentController().createChannel(abstractChannel);
-                            Controller.getCurrentController().getChannelPersistanceManager().saveChannel(abstractChannel);
-                            break;
-                    }
-
-
-                } catch (CreateChannelException e) {
-                    e.printStackTrace();
+                    IChannel channel;
+                    Class classs = Class.forName(AddChannelForm.this.channeltype);
+                    channel = (IChannel) classs.getConstructor(String.class).newInstance(AddChannelForm.this.inputField.getText());
+                    Controller.getCurrentController().createChannel(channel);
+                    Controller.getCurrentController()
+                            .getChannelPersistanceManager().saveChannel(channel);
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 } finally {
                     AddChannelForm.this.inputField.setText("");

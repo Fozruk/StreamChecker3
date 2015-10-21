@@ -212,15 +212,12 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 settingsTextfiledVlc.setText(file.getAbsolutePath());
         });
 
+        //Add Streamplatform plugins
 
-
-
-
-
-        AddChannelForm form = new AddChannelForm(Channel.Twitch);
+        AddChannelForm form = new AddChannelForm(TwitchTVChannel.class.getCanonicalName());
         form.getImage().setImage(new Image(Controller.class.getResourceAsStream("/pictures/twitch-logo-black.png")));
 
-        AddChannelForm form2 = new AddChannelForm(Channel.Hitbox);
+        AddChannelForm form2 = new AddChannelForm(HitboxTVChannel.class.getCanonicalName());
         form2.getImage().setImage(new Image(Controller.class.getResourceAsStream("/pictures/hitboxlogogreen.png")));
         grid.add(form, 0, 1);
         grid.add(form2, 0, 2);
@@ -307,7 +304,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         node.setEffect(null);
     }
 
-    public void createChannel(AbstractChannel abstractChannel) {
+    public void createChannel(IChannel abstractChannel) {
         abstractChannel.addObserver(this);
         controller.createChannel(abstractChannel);
     }
