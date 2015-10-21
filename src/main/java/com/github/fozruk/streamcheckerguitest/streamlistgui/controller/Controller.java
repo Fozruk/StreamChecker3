@@ -106,6 +106,10 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
         return currentInstance;
     }
 
+    public static void setCurrentController(Controller con) {
+        Controller.currentInstance = con;
+    }
+
     @Override
     // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {

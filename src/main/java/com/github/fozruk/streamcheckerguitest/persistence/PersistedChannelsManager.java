@@ -7,6 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +53,7 @@ public class PersistedChannelsManager extends PersistenceManager {
         }
     }
 
-    private void saveChannelwithJson() throws IOException {
+    public void saveChannelwithJson() throws IOException {
         JSONObject persistedchannels = new JSONObject();
         Map<String,JSONArray> channels = new HashMap<>();
         IChannel[] currentlyDisplayedChannels = Controller.getCurrentController().getAddedChannels();
@@ -83,6 +86,11 @@ public class PersistedChannelsManager extends PersistenceManager {
             file.flush();
             file.close();
         }
+    }
+
+    public JSONObject loadPersistedChannels() throws IOException, JSONException {
+        String text = new String(Files.readAllBytes(Paths.get(STREAMS_FILE.getAbsolutePath())), StandardCharsets.UTF_8);
+        return new JSONObject(text);
     }
 
     /**
