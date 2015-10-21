@@ -37,12 +37,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
@@ -232,45 +237,48 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
             @Override
             public void run() {
                 try {
-                    settingsManager = PersistedSettingsManager.getInstance();
-                    channelPersistanceManager = new PersistedChannelsManager();
-
-                    logger.debug("Load Persisted Channels...");
-                    List<String> list = channelPersistanceManager.getPersistedChannels();
-
-                    for (String temp : list) {
-                        try {
-                            IChannel channel = null;
-                            if (temp.toLowerCase().contains("twitch.tv"))
-                                createChannel(new TwitchTVChannel(temp.substring(temp.lastIndexOf("/") + 1)));
-                            else if (temp.toLowerCase().contains("hitbox.tv"))
-                                createChannel(new HitboxTVChannel(temp.substring(temp.lastIndexOf("/") + 1)));
-                        } catch (CreateChannelException e) {
-                            e.printStackTrace();
-                        }
-                        Thread.sleep(100);
-                    }
-
+                    loadChannels2();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
-
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        list.sort(comparator);
-                    }
-                });
             }
         }).start();
+    }
+
+    private void loadChannels2() throws JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException, IOException {
+        // settingsManager = PersistedSettingsManager.getInstance();
+        channelPersistanceManager = new PersistedChannelsManager();
+        logger.debug("Load Persisted Channels...");
+        JSONObject channel = channelPersistanceManager
+                .loadPersistedChannels();
+
+        Iterator keys = channel.keys();
+        while(keys.hasNext())
+        {
+            String key = (String) keys.next();
+            JSONArray chatimplclasspath = channel.getJSONArray(key);
+            Class impl = Class.forName(key);
+            for(int i =0;i<chatimplclasspath.length();i++)
+            {
+                createChannel((AbstractChannel) impl.getDeclaredConstructor
+                        (String.class).newInstance(chatimplclasspath.get(i)));
+            }
+        }
+        Platform.runLater(() -> list.sort(comparator));
         listView.setItems(list);
         loadChannels();
-
-
-
-
     }
 
     private void saveSettings() throws IOException {

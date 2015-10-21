@@ -42,15 +42,7 @@ public class PersistedChannelsManager extends PersistenceManager {
     }
 
     public void saveChannel(IChannel channel) throws IOException {
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(STREAMS_FILE, true));
-            writer.write(channel.getChannelLink() + "\n");
-            writer.flush();
-            writer.close();
-        } finally {
-            writer.close();
-        }
+        saveChannelwithJson();
     }
 
     public void saveChannelwithJson() throws IOException {
