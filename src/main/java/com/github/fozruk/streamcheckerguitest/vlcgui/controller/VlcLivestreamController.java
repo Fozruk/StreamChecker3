@@ -53,10 +53,11 @@ public class VlcLivestreamController implements ChatObserver {
             loader = loadPlugin(channel);
             loader.create(channel);
             this.stream = loader.returnObject();
+            stream.getChannel().refreshData();
             stream.getChannel().addObserver(streamWindow);
             startPlayer();
             startChat();
-            stream.getChannel().refreshData();
+
             this.loaded = true;
         } catch (InstantiationException | ClassCastException |
                 IllegalAccessException | ClassNotFoundException e) {

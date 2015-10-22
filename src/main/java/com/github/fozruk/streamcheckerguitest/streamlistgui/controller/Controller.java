@@ -395,7 +395,7 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
     }
 
     public void hideWindow() {
-        StreamListUI.getPrimaryStage().hide();
+        Platform.runLater(() -> StreamListUI.getPrimaryStage().hide());
     }
 
     private Comparator<StreamPanel> comparator = new Comparator<StreamPanel>() {

@@ -138,24 +138,31 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
         watchVlc.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                try {
-                    VlcLivestreamController gui = new VlcLivestreamController
-                            (channel);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (PropertyKeyNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IrcException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (CreateChannelException e) {
-                    e.printStackTrace();
-                } catch (ReadingWebsiteFailedException e) {
-                    e.printStackTrace();
-                } finally {
-                    Controller.getCurrentController().hideWindow();
-                }
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            VlcLivestreamController gui = new VlcLivestreamController
+                                    (channel);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (PropertyKeyNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IrcException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (CreateChannelException e) {
+                            e.printStackTrace();
+                        } catch (ReadingWebsiteFailedException e) {
+                            e.printStackTrace();
+                        } finally {
+                            Controller.getCurrentController().hideWindow();
+                        }
+                    }
+                });
+                thread.setName("VLC Thread - " + channel.getChannelName());
+                thread.start();
             }
         });
 
