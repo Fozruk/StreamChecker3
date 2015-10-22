@@ -67,7 +67,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
         super.onUnknown(event);
         if(event.getLine().contains("USERSTATE")) {
             ChatMessage msg = new ChatMessage(tempmessage);
-            msg.setUsername("Fozruk");
+            msg.setUsername(username);
             observer._onMessage(msg);
         }
         else if(event.getLine().contains("WHISPER"))
