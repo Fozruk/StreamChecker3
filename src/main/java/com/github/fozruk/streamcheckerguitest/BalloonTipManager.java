@@ -87,9 +87,20 @@ public class BalloonTipManager {
                             "--icon=dialog-information"};
                             Runtime.getRuntime().exec(cmd);
                         }
-                    }else
+                    }else if(PersistedSettingsManager.getInstance().getOs() == PersistenceManager.OperatingSystem.Mac)
                     {
-                        trayIcon.displayMessage("Info", builder.toString(), TrayIcon.MessageType.INFO);
+                        String queued = "Channel update:\n "+ queuedStrings.toString().replace("\n"," ");
+
+                            //String temp = "/usr/bin/notify-send 'Info' '"+xd+"' --icon=dialog-information";
+                            String[] cmd = { "terminal-notifier",
+                                    "-message",
+                                    queued,
+                                    "-title",
+                                    "Info"};
+
+                            Runtime.getRuntime().exec(cmd);
+
+                        //terminal-notifier -message 'hi' -title 'hi'
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
