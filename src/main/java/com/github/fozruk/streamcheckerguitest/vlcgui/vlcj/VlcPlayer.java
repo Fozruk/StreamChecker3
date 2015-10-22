@@ -55,8 +55,9 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
         persistenceManager = PersistedSettingsManager.getInstance();
         this.LIVESTREAMERPATH = persistenceManager.getLivestremer();
         this.VLCPATH =  persistenceManager.getVideoPlayer();
-        String temp = VLCPATH.getAbsolutePath().replace("vlc.exe", "");
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:\\Program Files\\VideoLAN\\VLC");
+        NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), this
+                .VLCPATH.getAbsolutePath());
 
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(),
                 LibVlc.class);

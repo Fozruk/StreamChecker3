@@ -14,12 +14,10 @@ import com.github.fozruk.streamcheckerguitest.plugins.base.Stream;
 import com.github.fozruk.streamcheckerguitest.util.Util;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.StreamWindow;
+import org.jibble.pircbot.IrcException;
 import org.json.JSONException;
-import org.pircbotx.exception.IrcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,21 +33,19 @@ public class VlcLivestreamController implements ChatObserver {
     private static final String PLUGIN_PACKAGE_PATH = "com.github.fozruk" +
             ".streamcheckerguitest.plugins.";
     private StreamWindow streamWindow;
-    private PersistedSettingsManager persistenceManager =
-            PersistedSettingsManager.getInstance();
+    private PersistedSettingsManager persistenceManager;
     private boolean isLoaded;
     private boolean shutdownRequest;
     private Stream stream;
     private boolean loaded;
     private String bufferedMessage;
 
-    public VlcLivestreamController(IChannel channel) throws IOException,
-            IrcException, PropertyKeyNotFoundException, ReadingWebsiteFailedException, CreateChannelException, JSONException {
-
-        this.streamWindow = new StreamWindow(this);
-
+    public VlcLivestreamController(IChannel channel) throws
+            PropertyKeyNotFoundException, CreateChannelException {
         PluginLoader loader = null;
         try {
+            this.streamWindow = new StreamWindow(this);
+            persistenceManager = PersistedSettingsManager.getInstance();
             loader = loadPlugin(channel);
             loader.create(channel);
             this.stream = loader.returnObject();
@@ -57,13 +53,13 @@ public class VlcLivestreamController implements ChatObserver {
             stream.getChannel().addObserver(streamWindow);
             startPlayer();
             startChat();
-
             this.loaded = true;
-        } catch (InstantiationException | ClassCastException |
-                IllegalAccessException | ClassNotFoundException e) {
-            Util.printExceptionToMessageDialog("OOOPS",e);
         } catch (UpdateChannelException e) {
-            Util.printExceptionToMessageDialog("Something is wrong with your Proxy/Internetconnection :< ",e);
+            Util.printExceptionToMessageDialog("Something is wrong with your Proxy/Internetconnection :< ", e);
+        } catch (ClassNotFoundException | InstantiationException| IllegalAccessException e) {
+            LOGGER.error("Tried to use Plugin which does not exist", e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         if (shutdownRequest)
             this.stopWindow();
@@ -91,9 +87,15 @@ public class VlcLivestreamController implements ChatObserver {
         startChat();
     }
 
-    private void startChat() throws ReadingWebsiteFailedException, JSONException, IOException {
+    private void startChat() {
         stream.getChat().setObserver(this);
-        stream.getChat().start();
+        try {
+            stream.getChat().start();
+        } catch (IOException | ReadingWebsiteFailedException | JSONException e) {
+            LOGGER.error("Error while starting chat",e);
+            _onMessage(new ChatMessage("An Error occured while starting chat," +
+                    " please restart and check log files"));
+        }
     }
 
     //ResizeableList Stuffs

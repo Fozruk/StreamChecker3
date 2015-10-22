@@ -23,14 +23,14 @@ public class TwitchTVChannel_Gui implements PluginLoader {
 
 
     @Override
-    public void create(IChannel channel){
+    public void create(IChannel channel) throws PropertyKeyNotFoundException {
         IChat chat = null;
         try {
             chat = new TwitchImplNew(channel);
             stream = new Stream(channel,chat,new VlcPlayer());
             stream.quality = new String[]{"source"};
         } catch (IOException | IrcException | ReadingWebsiteFailedException |
-                JSONException | PropertyKeyNotFoundException e) {
+                JSONException e) {
             Util.printExceptionToMessageDialog("OOPS",e);
         }
     }

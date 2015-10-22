@@ -5,6 +5,7 @@ import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.streamlistgui.controller.Controller;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
@@ -27,6 +28,7 @@ import org.pircbotx.exception.IrcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
@@ -142,19 +144,22 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
                     @Override
                     public void run() {
                         try {
+                            PersistedSettingsManager
+                            manager = PersistedSettingsManager.getInstance();
+                            manager.getVideoPlayer();
+                            manager.getLivestremer();
                             VlcLivestreamController gui = new VlcLivestreamController
                                     (channel);
+
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (PropertyKeyNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IrcException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "Please type " +
+                                            "in valid paths for livestreamer " +
+                                            "and vlc", "Settings missing.",
+                                    JOptionPane.ERROR_MESSAGE);
                         } catch (CreateChannelException e) {
-                            e.printStackTrace();
-                        } catch (ReadingWebsiteFailedException e) {
                             e.printStackTrace();
                         } finally {
                             Controller.getCurrentController().hideWindow();

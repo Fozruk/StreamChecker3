@@ -49,7 +49,7 @@ public class PersistedSettingsManager extends PersistenceManager {
     public File getLivestremer() throws PropertyKeyNotFoundException {
         String property = settings.getProperty("livestreamer");
         File livestreamer = null;
-        if (property != null) {
+        if (property != null && !property.equals("")) {
             livestreamer = new File(property);
         } else {
             throw new PropertyKeyNotFoundException();
@@ -60,7 +60,7 @@ public class PersistedSettingsManager extends PersistenceManager {
     public File getVideoPlayer() throws PropertyKeyNotFoundException {
         String property = settings.getProperty("videoPlayer");
         File livestreamer = null;
-        if (property != null) {
+        if (property != null && !property.equals("")) {
             livestreamer = new File(property);
         } else {
             throw new PropertyKeyNotFoundException();

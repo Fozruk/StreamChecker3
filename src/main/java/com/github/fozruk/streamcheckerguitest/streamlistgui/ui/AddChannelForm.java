@@ -131,8 +131,7 @@ public class AddChannelForm extends StackPane implements Initializable {
                     Class classs = Class.forName(AddChannelForm.this.channeltype);
                     channel = (IChannel) classs.getConstructor(String.class).newInstance(AddChannelForm.this.inputField.getText());
                     Controller.getCurrentController().createChannel(channel);
-                    Controller.getCurrentController()
-                            .getChannelPersistanceManager().saveChannel(channel);
+                    Controller.getCurrentController().getChannelPersistanceManager().saveChannel(channel);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {

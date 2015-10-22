@@ -141,7 +141,8 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
         //bot.stopBotReconnect();
         //bot.shutdown();
         LOGGER.info("Gonna quit from the Server, bye!");
-        bot.sendIRC().quitServer();
+        if(bot.isConnected())
+            bot.sendIRC().quitServer();
         whisperObserver.remove(this);
         LOGGER.debug("Observers for Whisper: " + whisperObserver.size());
     }
