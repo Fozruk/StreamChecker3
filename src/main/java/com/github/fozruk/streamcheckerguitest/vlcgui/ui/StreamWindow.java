@@ -255,8 +255,6 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         });
         secondPane.add(toggleAutoscrollBox);
         secondPane.add(slider);
-        setVisible(true);
-        toFront();
         setTitle("Loading Channel Data....");
         addAutoScroll();
 
@@ -301,6 +299,11 @@ public class StreamWindow extends JFrame implements IChannelobserver {
             public void stateChanged(ChangeEvent e) {
                 chatBuffer.setDelay((Integer) chatSpeed.getValue());
             }
+        });
+
+        SwingUtilities.invokeLater(()->{
+            setVisible(true);
+            toFront();
         });
 
     }
