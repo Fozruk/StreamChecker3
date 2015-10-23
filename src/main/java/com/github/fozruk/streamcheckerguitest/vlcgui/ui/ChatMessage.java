@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Created by Philipp on 13.08.2015.
@@ -57,7 +58,7 @@ public class ChatMessage {
         hour = rightNow.get(Calendar.HOUR_OF_DAY);
         minute = rightNow.get(Calendar.MINUTE);
         this.username = "Notification";
-        this.message = raw;
+        this.message = StringEscapeUtils.escapeHtml4(raw);
     }
 
     public ChatMessage(String user, String message)
@@ -66,7 +67,7 @@ public class ChatMessage {
         hour = rightNow.get(Calendar.HOUR_OF_DAY);
         minute = rightNow.get(Calendar.MINUTE);
         this.username = user;
-        this.message = message;
+        this.message = StringEscapeUtils.escapeHtml4(message);;
     }
 
     public ChatMessage(String user,String color,String message)
@@ -75,7 +76,7 @@ public class ChatMessage {
         hour = rightNow.get(Calendar.HOUR_OF_DAY);
         minute = rightNow.get(Calendar.MINUTE);
 
-        this.message = message;
+        this.message = StringEscapeUtils.escapeHtml4(message);;
         this.color = color;
         this.username = user;
     }
