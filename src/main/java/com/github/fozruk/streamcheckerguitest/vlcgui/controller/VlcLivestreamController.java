@@ -89,6 +89,8 @@ public class VlcLivestreamController implements ChatObserver {
             String[] strings = Util.getErrorStacktraceAsStringArray(e);
             for(String s : strings)
                 streamWindow.getVlcPlayerCanvas().appendMessage(s);
+            streamWindow.getVlcPlayerCanvas().appendMessage("");
+            streamWindow.getVlcPlayerCanvas().appendMessage("Installing the 64 Bit VLC Player might fix the problem.");
         }
     }
 
