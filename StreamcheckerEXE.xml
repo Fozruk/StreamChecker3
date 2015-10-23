@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar></jar>
+  <outfile>E:\philipp\Programmieren\Streamchecker3\build\libs\Streamcheck0r.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine>-Xmx100m -Xms100m</cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>E:\philipp\desktop\icon.ico</icon>
+  <classPath>
+    <mainClass>com.github.fozruk.streamcheckerguitest.Main</mainClass>
+    <cp>com.github.fozruk.streamcheckerguitest.Main</cp>
+  </classPath>
+  <jre>
+    <path></path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion>1.7.0_10</minVersion>
+    <maxVersion>1.8.0_0</maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.0.0.0</fileVersion>
+    <txtFileVersion>1.0</txtFileVersion>
+    <fileDescription>XDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</fileDescription>
+    <copyright>XDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</copyright>
+    <productVersion>1.0.0.0</productVersion>
+    <txtProductVersion>1.0</txtProductVersion>
+    <productName>Streamcheck0r</productName>
+    <companyName></companyName>
+    <internalName>Streamchecker</internalName>
+    <originalFilename>Streamchecker.exe</originalFilename>
+  </versionInfo>
+  <messages>
+    <startupErr>ERROR XDDDDDDDDDDDDDDDD</startupErr>
+    <bundledJreErr>This application was configured to use a bundled Java Runtime Environment but the runtime is missing or corrupted.</bundledJreErr>
+    <jreVersionErr>This application requires a Java Runtime Environment</jreVersionErr>
+    <launcherErr>The registry refers to a nonexistent Java Runtime Environment installation or the runtime is corrupted.</launcherErr>
+    <instanceAlreadyExistsMsg>An application instance is already running.</instanceAlreadyExistsMsg>
+  </messages>
+</launch4jConfig>
