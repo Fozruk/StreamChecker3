@@ -17,14 +17,7 @@ public class HitboxTVChannel_Gui implements PluginLoader {
 
     @Override
     public void create(IChannel channel){
-        try {
-            stream = new Stream(channel,null,new VlcPlayer());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (PropertyKeyNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        stream = new Stream(channel,null,new VlcPlayer());
         stream.quality = new String[]{"best"};
     }
 

@@ -51,6 +51,7 @@ public class VlcLivestreamController implements ChatObserver {
             this.stream = loader.returnObject();
             stream.getChannel().refreshData();
             stream.getChannel().addObserver(streamWindow);
+            streamWindow.getVlcPlayerCanvas().appendMessage("Init....");
             startChat();
             startPlayer();
             this.loaded = true;
@@ -74,8 +75,21 @@ public class VlcLivestreamController implements ChatObserver {
 
     private void startPlayer() throws IOException {
         stream.getPlayer().setCanvas(this.streamWindow.getVlcPlayerCanvas());
-        stream.getPlayer().play(new URL(stream.getChannel().getChannelLink()),
-                stream.quality[0]);
+        try {
+            stream.getPlayer().play(new URL(stream.getChannel().getChannelLink()),
+                    stream.quality[0]);
+        } catch (Exception e) {
+           LOGGER.error(e.getMessage(),e);
+            String[] strings = Util.getStacktraceAsStringArray(e);
+            for(String s : strings)
+                streamWindow.getVlcPlayerCanvas().appendMessage(s);
+        } catch(UnsatisfiedLinkError e)
+        {
+            LOGGER.error(e.getMessage(),e);
+            String[] strings = Util.getErrorStacktraceAsStringArray(e);
+            for(String s : strings)
+                streamWindow.getVlcPlayerCanvas().appendMessage(s);
+        }
     }
 
     public void restartLivestreamer() throws IOException, ReadingWebsiteFailedException, JSONException {

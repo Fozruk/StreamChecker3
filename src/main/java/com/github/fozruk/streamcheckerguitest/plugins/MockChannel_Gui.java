@@ -23,16 +23,7 @@ public class MockChannel_Gui implements PluginLoader {
         IChat chat = null;
         VlcPlayer player = null;
         chat = new MockChat();
-        try {
-            player = new VlcPlayer();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (PropertyKeyNotFoundException e) {
-            e.printStackTrace();
-        } catch(UnsatisfiedLinkError e)
-        {
-            e.printStackTrace();
-        }
+        player = new VlcPlayer();
         stream = new Stream(channel,chat,player);
         stream.quality = new String[]{"source"};
     }

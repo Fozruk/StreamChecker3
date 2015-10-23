@@ -23,7 +23,7 @@ public class TwitchTVChannel_Gui implements PluginLoader {
 
 
     @Override
-    public void create(IChannel channel) throws PropertyKeyNotFoundException {
+    public void create(IChannel channel) {
         IChat chat = null;
         try {
             chat = new TwitchImplNew(channel);

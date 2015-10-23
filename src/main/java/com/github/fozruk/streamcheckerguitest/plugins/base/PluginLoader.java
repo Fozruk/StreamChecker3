@@ -7,6 +7,6 @@ import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundExcep
  * Created by Philipp on 05.10.2015.
  */
 public interface PluginLoader {
-    void create(IChannel name) throws PropertyKeyNotFoundException;
+    void create(IChannel name);
     Stream returnObject();
 }
