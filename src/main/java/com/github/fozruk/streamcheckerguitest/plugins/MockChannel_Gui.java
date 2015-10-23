@@ -21,12 +21,19 @@ public class MockChannel_Gui implements PluginLoader {
     @Override
     public void create(IChannel channel) {
         IChat chat = null;
+        VlcPlayer player = null;
+        chat = new MockChat();
         try {
-            chat = new MockChat();
-            stream = new Stream(channel,chat,new VlcPlayer());
-        } catch (IOException | PropertyKeyNotFoundException e) {
-            Util.printExceptionToMessageDialog("OOPS",e);
+            player = new VlcPlayer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (PropertyKeyNotFoundException e) {
+            e.printStackTrace();
+        } catch(UnsatisfiedLinkError e)
+        {
+            e.printStackTrace();
         }
+        stream = new Stream(channel,chat,player);
         stream.quality = new String[]{"source"};
     }
 

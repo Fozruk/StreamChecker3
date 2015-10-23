@@ -44,6 +44,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -199,17 +200,22 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
 
         //TODO make platform independent
         settingsLivestreamer.setOnAction((e) -> {
-            FileChooser chooser = new FileChooser("livestreamer.exe");
-            File file = chooser.getLocationWithFileChooser();
-            if(file != null)
-                settingsTextfiledLivestreamer.setText(file.getAbsolutePath());
+            SwingUtilities.invokeLater(()->{
+                FileChooser chooser = new FileChooser("livestreamer.exe");
+                File file = chooser.getLocationWithFileChooser();
+                if(file != null)
+                    settingsTextfiledLivestreamer.setText(file.getAbsolutePath());
+            });
         });
 
         settingsVlc.setOnAction((e) -> {
-            FileChooser chooser = new FileChooser("vlc.exe");
-            File file = chooser.getLocationWithFileChooser();
-            if(file != null)
-                settingsTextfiledVlc.setText(file.getAbsolutePath());
+            SwingUtilities.invokeLater(()->
+            {
+                FileChooser chooser = new FileChooser("vlc.exe");
+                File file = chooser.getLocationWithFileChooser();
+                if(file != null)
+                    settingsTextfiledVlc.setText(file.getAbsolutePath());
+            });
         });
 
         //Add Streamplatform plugins

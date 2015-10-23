@@ -51,8 +51,8 @@ public class VlcLivestreamController implements ChatObserver {
             this.stream = loader.returnObject();
             stream.getChannel().refreshData();
             stream.getChannel().addObserver(streamWindow);
-            startPlayer();
             startChat();
+            startPlayer();
             this.loaded = true;
         } catch (UpdateChannelException e) {
             Util.printExceptionToMessageDialog("Something is wrong with your Proxy/Internetconnection :< ", e);
