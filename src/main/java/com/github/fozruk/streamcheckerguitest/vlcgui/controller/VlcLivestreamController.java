@@ -51,8 +51,9 @@ public class VlcLivestreamController implements ChatObserver {
             this.stream = loader.returnObject();
             stream.getChannel().refreshData();
             stream.getChannel().addObserver(streamWindow);
-            startPlayer();
+            streamWindow.getVlcPlayerCanvas().appendMessage("Init....");
             startChat();
+            startPlayer();
             this.loaded = true;
         } catch (UpdateChannelException e) {
             Util.printExceptionToMessageDialog("Something is wrong with your Proxy/Internetconnection :< ", e);
@@ -74,8 +75,23 @@ public class VlcLivestreamController implements ChatObserver {
 
     private void startPlayer() throws IOException {
         stream.getPlayer().setCanvas(this.streamWindow.getVlcPlayerCanvas());
-        stream.getPlayer().play(new URL(stream.getChannel().getChannelLink()),
-                stream.quality[0]);
+        try {
+            stream.getPlayer().play(new URL(stream.getChannel().getChannelLink()),
+                    stream.quality[0]);
+        } catch (Exception e) {
+           LOGGER.error(e.getMessage(),e);
+            String[] strings = Util.getStacktraceAsStringArray(e);
+            for(String s : strings)
+                streamWindow.getVlcPlayerCanvas().appendMessage(s);
+        } catch(UnsatisfiedLinkError e)
+        {
+            LOGGER.error(e.getMessage(),e);
+            String[] strings = Util.getErrorStacktraceAsStringArray(e);
+            for(String s : strings)
+                streamWindow.getVlcPlayerCanvas().appendMessage(s);
+            streamWindow.getVlcPlayerCanvas().appendMessage("");
+            streamWindow.getVlcPlayerCanvas().appendMessage("Installing the 64 Bit VLC Player might fix the problem.");
+        }
     }
 
     public void restartLivestreamer() throws IOException, ReadingWebsiteFailedException, JSONException {

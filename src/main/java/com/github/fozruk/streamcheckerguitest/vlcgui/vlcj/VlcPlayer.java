@@ -37,8 +37,8 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
     boolean mediaIsPlaying;
     private PersistedSettingsManager persistenceManager;
 
-    private final File LIVESTREAMERPATH;
-    private final File VLCPATH;
+    private  File LIVESTREAMERPATH;
+    private  File VLCPATH;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VlcPlayer
             .class);
@@ -46,12 +46,21 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
     /**
      * The vlcj direct rendering media player component.
      */
-    private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
+    private  EmbeddedMediaPlayerComponent mediaPlayerComponent;
 
 
 
 
-    public VlcPlayer() throws IOException, PropertyKeyNotFoundException {
+    public VlcPlayer() {
+
+    }
+
+    public void setCanvas(sampleCanvas canvas)
+    {
+        this.canvas = canvas;
+    }
+
+    public void play(URL url,String quality) throws PropertyKeyNotFoundException, IOException {
         persistenceManager = PersistedSettingsManager.getInstance();
         this.LIVESTREAMERPATH = persistenceManager.getLivestremer();
         this.VLCPATH =  persistenceManager.getVideoPlayer();
@@ -77,15 +86,7 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
         this.livestreamer = new ServerLivestreamer(LIVESTREAMERPATH,VLCPATH,
                 this);
         this.livestreamer.addObserver(this);
-    }
 
-    public void setCanvas(sampleCanvas canvas)
-    {
-        this.canvas = canvas;
-    }
-
-    public void play(URL url,String quality)
-    {
         this.livestreamer.startLiveStreamerAsServer(url, quality, this);
     }
 

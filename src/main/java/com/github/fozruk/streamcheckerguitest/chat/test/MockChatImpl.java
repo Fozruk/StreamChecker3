@@ -1,7 +1,6 @@
 package com.github.fozruk.streamcheckerguitest.chat.test;
 
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
-import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.fozruk.streamcheckerguitest.chat.ChatObserver;
 import com.github.fozruk.streamcheckerguitest.chat.IChat;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
@@ -9,13 +8,16 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Random;
 
 /**
- * Created by Philipp on 07.10.2015.
+ * Created by philipp.hentschel on 23.10.15.
  */
-public class MockChat implements IChat {
-
+public class MockChatImpl implements IChat {
     private ChatObserver observer;
+    private Thread thread;
+    private boolean running;
+    private NonsenseGenerator gen = new NonsenseGenerator();
 
     @Override
     public void _sendMessage(String channelname, String message) {
@@ -40,7 +42,7 @@ public class MockChat implements IChat {
 
     @Override
     public void disconnect() {
-
+        running = false;
     }
 
     @Override
@@ -51,10 +53,31 @@ public class MockChat implements IChat {
     @Override
     public void start() throws IOException, ReadingWebsiteFailedException, JSONException {
 
+        running = true;
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(running)
+                {
+                    int randomnumber = 2 + new Random().nextInt(5);
+                    try {
+                        Thread.sleep(randomnumber*100);
+                        observer._onMessage(new ChatMessage("User",gen.makeText(randomnumber)));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
+
+
     }
 
     @Override
     public void setObserver(ChatObserver observer) {
-
+        this.observer = observer;
     }
 }
+
+
