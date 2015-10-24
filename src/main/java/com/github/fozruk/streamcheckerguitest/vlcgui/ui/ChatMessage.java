@@ -16,6 +16,11 @@ public class ChatMessage {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatMessage.class);
     private String message;
     private String channelname;
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     private String color;
     private String username;
     int hour;

@@ -20,6 +20,7 @@ import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -88,8 +89,36 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
         ChatMessage message = new ChatMessage(event.getUser().getNick(),event
                 .getTags()
                 .get("color"),event.getMessage());
+        String isMod = event.getV3Tags().get("user-type");
+        LOGGER.debug("USER TYPE: " + isMod);
+        if(isMod.equals("mod")) {
+            message.setColor("#000000");
+            message.setUsername(addFontbg("[MOD] " + event.getUser().getNick
+                    ()));
+        }
+        if(isMod.equals("global_mod")) {
+            message.setColor("#000000");
+            message.setUsername(addFontbg("[GLOBAL MOD] " + event.getUser()
+                    .getNick()));
+        }
+        if(isMod.equals("admin")) {
+            message.setColor("#000000");
+            message.setUsername(addFontbg("[ADMIN] " + event.getUser()
+                    .getNick()));
+        }
+        if(isMod.equals("staff")) {
+            message.setColor("#000000");
+            message.setUsername(addFontbg("[STAFF] " + event.getUser()
+                    .getNick()));
+        }
         observer._onMessage(message);
+    }
 
+    private String addFontbg(String s)
+    {
+
+        return "<FONT \n" +
+                "style=\"BACKGROUND-COLOR:#a54242\">"+s+"</FONT>";
     }
 
     @Override

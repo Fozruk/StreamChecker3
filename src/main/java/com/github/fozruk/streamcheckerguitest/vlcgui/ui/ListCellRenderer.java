@@ -61,7 +61,8 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
         odd = !odd;
 
 
-        if(VlcLivestreamController.highligter.shallBeHighlighted(person.getMessage()))
+        if(VlcLivestreamController.highligter.shallBeHighlighted(person
+                .getMessage()))
         {
             setBackground(Color.green.darker().darker());
         }
