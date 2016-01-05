@@ -61,7 +61,7 @@ public class MockChatImpl implements IChat {
                 {
                     int randomnumber = 2 + new Random().nextInt(5);
                     try {
-                        Thread.sleep(randomnumber*100);
+                        Thread.sleep(randomnumber*2000);
                         observer._onMessage(new ChatMessage("User",gen.makeText(randomnumber)));
                     } catch (InterruptedException e) {
                         e.printStackTrace();

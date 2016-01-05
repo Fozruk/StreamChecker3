@@ -2,20 +2,14 @@ package com.github.fozruk.streamcheckerguitest.tests;
 
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
-import com.github.epilepticz.streamchecker.model.channel.impl.MockChannel;
-import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
-import com.github.fozruk.streamcheckerguitest.chat.test.NonsenseGenerator;
 import com.github.fozruk.streamcheckerguitest.exception.PropertyKeyNotFoundException;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
-import com.github.fozruk.streamcheckerguitest.vlcgui.ui.*;
-import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ListCellRenderer;
 import junit.framework.TestCase;
 import org.json.JSONException;
 import org.junit.Test;
 import org.pircbotx.exception.IrcException;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.text.NumberFormat;
 
@@ -34,7 +28,8 @@ public class ListCellRendererTest extends TestCase {
 
         printmem();
             VlcLivestreamController controller = new VlcLivestreamController
-                    (new TwitchTVChannel("nyu_tv"));
+                    (new MockChannel());
+
         // StreamWindow window = new StreamWindow(controller);
 
        // controller.getStreamWindow().getChatWindow().setCellRenderer(null);
@@ -46,7 +41,7 @@ public class ListCellRendererTest extends TestCase {
         printmem();
 
 //        printmem();
-//            mockChannel = new TestChannel();
+//            mockChannel = new MockChannel();
 //            VlcLivestreamController mockController = new VlcLivestreamController
 //                    (mockChannel);
 //            //StreamWindow mockWindow = new StreamWindow(mockController);

@@ -9,7 +9,7 @@ import java.net.URL;
 /**
  * Created by Philipp on 04.10.2015.
  */
-public class TestChannel implements IChannel {
+public class MockChannel implements IChannel {
     @Override
     public int getViewerAmount() {
         return 0;
