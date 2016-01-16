@@ -6,18 +6,14 @@ import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver
 import com.github.fozruk.streamcheckerguitest.chat.ChatBuffer;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.sampleCanvas;
-import javafx.scene.input.KeyCode;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -35,20 +31,14 @@ public class StreamWindow extends JFrame implements IChannelobserver {
     //VLC
     private sampleCanvas vlcPlayerCanvas;
 
-    public ChatWindow getChatWindow() {
-        return chatWindow;
-    }
-
     //ResizeableList
     private ChatWindow chatWindow;
     private JScrollPane chatWindowScrollPane;
     private DefaultListModel<ChatMessage> chatListModel;
     private JTextField textField;
     private JCheckBox toggleAutoscrollBox;
-    private ListDataListener listdataListener;
     private DefaultListModel<String> viewerlist;
     private JSpinner chatSpeed;
-
     private ChatBuffer chatBuffer;
 
 
@@ -337,28 +327,14 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         setTitle(message);
     }
 
-
-
-    @Override
-    public void dispose() {
-        super.dispose();
-       // chatBuffer.stop();
-        chatListModel.removeListDataListener(listdataListener);
-    }
-
     //Design
-
     //UI Design Stuffs
 
     public static void LookAndFeel(Color c) {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-
-
-
                     UIManager.setLookAndFeel(info.getClassName());
-
                     UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".background", new javax.swing.plaf.ColorUIResource(myColor));
                     UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.cellRenderChat\"[Disabled].textForeground", new javax.swing.plaf.ColorUIResource(myColor));
                     UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\"[Selected].background", new javax.swing.plaf.ColorUIResource(c));
@@ -366,8 +342,6 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
                     UIManager.getLookAndFeelDefaults().put("ComboBox[Editable+Focused].backgroundPainter",
                             new MenubarPainter(c, c.brighter()));
-
-
                     UIManager.getLookAndFeelDefaults().put("ComboBox.disabledBackground", new javax.swing.plaf.ColorUIResource(Color.BLACK));
                     UIManager.put("TextField.background", myColor);
                     UIManager.put("TextField.foreground", Color.LIGHT_GRAY);
@@ -388,8 +362,6 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
                     UIManager.getLookAndFeelDefaults().put("FileChooser.background", new javax.swing.plaf.ColorUIResource(myColor));
                     UIManager.getLookAndFeelDefaults().put("nimbusLightBackground", new javax.swing.plaf.ColorUIResource(myColor));
-
-
                     UIManager.getLookAndFeelDefaults().put("background", new javax.swing.plaf.ColorUIResource(myColor));
                     UIManager.getLookAndFeelDefaults().put("menuText", new javax.swing.plaf.ColorUIResource(Color.LIGHT_GRAY));
                     UIManager.getLookAndFeelDefaults().put("textForeground", new javax.swing.plaf.ColorUIResource(fontColor));

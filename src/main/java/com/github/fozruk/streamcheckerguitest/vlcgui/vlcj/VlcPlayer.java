@@ -65,14 +65,6 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), this
                 .VLCPATH);
 
-        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(),
-                LibVlc.class);
-        LibXUtil.initialise();
-        JFrame frame = new JFrame("Win32 Full Screen Strategy");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocation(100, 100);
-        frame.setSize(1200, 800);
-
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
         player = mediaPlayerComponent.getMediaPlayer();
 
