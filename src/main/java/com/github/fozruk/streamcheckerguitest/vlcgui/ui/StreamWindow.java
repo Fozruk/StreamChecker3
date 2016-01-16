@@ -27,6 +27,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
     private final ViewerList viewerList;
 
     private JSlider slider = new JSlider(0, 200);
+    private JSplitPane splitPane;
 
     //VLC
     private sampleCanvas vlcPlayerCanvas;
@@ -54,6 +55,8 @@ public class StreamWindow extends JFrame implements IChannelobserver {
     //Controller
     VlcLivestreamController controller;
 
+    private boolean isInFullscreen;
+
     AdjustmentListener listener = ((e) -> e.getAdjustable().setValue(e.getAdjustable().getMaximum()));
 
     static
@@ -73,6 +76,9 @@ public class StreamWindow extends JFrame implements IChannelobserver {
     }
 
     private final JTabbedPane tabbedPane;
+    private Point savedLocation;
+    private Rectangle savedBounds;
+    private Dimension savedSize;
 
     /**
      * Create the frame.
@@ -100,7 +106,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
 
 
-        JSplitPane splitPane = new JSplitPane();
+        splitPane = new JSplitPane();
         basePane.add(splitPane, BorderLayout.CENTER);
 
         vlcPlayerCanvas = new sampleCanvas();
@@ -506,6 +512,53 @@ public class StreamWindow extends JFrame implements IChannelobserver {
             e.printStackTrace();
         }
 
+    }
+
+    public void setCanvasToFullscreen() {
+        if(!isInFullscreen)
+        {
+
+            this.savedBounds = (Rectangle) this.getBounds().clone();
+
+            isInFullscreen = true;
+            this.splitPane.getRightComponent().setVisible(false);
+            this.setAlwaysOnTop(true);
+            getCurrentScreen().setFullScreenWindow(this);
+            this.revalidate();
+            getVlcPlayerCanvas().revalidate();
+            this.chatWindow.revalidate();
+        } else
+        {
+            this.isInFullscreen = false;
+            this.splitPane.getRightComponent().setVisible(true);
+            this.setAlwaysOnTop(false);
+            getCurrentScreen().setFullScreenWindow(null);
+            this.setBounds(this.savedBounds);
+        }
+        //this.pack();
+
+    }
+
+    private GraphicsDevice getCurrentScreen()
+    {
+
+        GraphicsConfiguration config = this.getGraphicsConfiguration();
+        GraphicsDevice myScreen = config.getDevice();
+
+        GraphicsEnvironment ge = GraphicsEnvironment
+                .getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = ge.getScreenDevices();
+
+        GraphicsDevice myDevice = null;
+
+        for (int i = 0; i < gs.length; i++) {
+            if (gs[i].equals(myScreen))
+            {
+                myDevice = gs[i];
+                return myDevice;
+            }
+        }
+        return null;
     }
 
     private static class MenubarPainter implements Painter<JComponent> {

@@ -18,6 +18,8 @@ import org.jibble.pircbot.IrcException;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -160,7 +162,7 @@ public class VlcLivestreamController implements ChatObserver {
     }
 
     public void toggleFullscreen() {
-        stream.getPlayer().toggleFullScreen();
+        SwingUtilities.invokeLater(() -> streamWindow.setCanvasToFullscreen());
     }
 
 
