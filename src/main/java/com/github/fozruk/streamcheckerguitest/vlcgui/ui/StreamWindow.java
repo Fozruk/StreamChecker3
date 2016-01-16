@@ -14,11 +14,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Arrays;
 
 public class StreamWindow extends JFrame implements IChannelobserver {
 
@@ -108,6 +110,9 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
         splitPane = new JSplitPane();
         basePane.add(splitPane, BorderLayout.CENTER);
+        basePane.setBorder(null);
+        splitPane.setBorder(null);
+
 
         vlcPlayerCanvas = new sampleCanvas();
 
@@ -260,6 +265,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         });
 
         splitPane.setResizeWeight(0.9);
+
 
         this.setIconImage(ImageIO.read(getClass().getResource("/pictures/IconJframe.png")));
 
@@ -524,6 +530,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
             this.splitPane.getRightComponent().setVisible(false);
             this.setAlwaysOnTop(true);
             getCurrentScreen().setFullScreenWindow(this);
+            makeDividerVisible(false);
             this.revalidate();
             getVlcPlayerCanvas().revalidate();
             this.chatWindow.revalidate();
@@ -531,12 +538,26 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         {
             this.isInFullscreen = false;
             this.splitPane.getRightComponent().setVisible(true);
-            this.setAlwaysOnTop(false);
+            makeDividerVisible(true);
             getCurrentScreen().setFullScreenWindow(null);
+            this.setAlwaysOnTop(false);
             this.setBounds(this.savedBounds);
+            this.revalidate();
+            getVlcPlayerCanvas().revalidate();
+            this.chatWindow.revalidate();
         }
         //this.pack();
 
+    }
+
+    private void makeDividerVisible(boolean b) {
+        Arrays.stream(splitPane.getComponents()).forEach((i) -> {
+            if(i instanceof BasicSplitPaneDivider)
+            {
+                BasicSplitPaneDivider temp = (BasicSplitPaneDivider) i;
+                temp.setVisible(b);
+            }
+        });
     }
 
     private GraphicsDevice getCurrentScreen()
