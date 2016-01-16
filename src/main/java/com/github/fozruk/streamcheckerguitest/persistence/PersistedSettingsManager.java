@@ -46,26 +46,28 @@ public class PersistedSettingsManager extends PersistenceManager {
         settings.setProperty(key, value);
     }
 
-    public File getLivestremer() throws PropertyKeyNotFoundException {
+    public String getLivestreamerPath() throws PropertyKeyNotFoundException {
         String property = settings.getProperty("livestreamer");
         File livestreamer = null;
         if (property != null && !property.equals("")) {
             livestreamer = new File(property);
         } else {
-            throw new PropertyKeyNotFoundException();
+            return "livestreamer";
+            //throw new PropertyKeyNotFoundException();
         }
-        return livestreamer;
+        return livestreamer.getAbsolutePath();
     }
 
-    public File getVideoPlayer() throws PropertyKeyNotFoundException {
+    public String getVideoPlayerPath() throws PropertyKeyNotFoundException {
         String property = settings.getProperty("videoPlayer");
         File livestreamer = null;
         if (property != null && !property.equals("")) {
             livestreamer = new File(property);
         } else {
-            throw new PropertyKeyNotFoundException();
+            return "vlc";
+            //throw new PropertyKeyNotFoundException();
         }
-        return livestreamer;
+        return livestreamer.getAbsolutePath();
     }
 
     public String getValue(String value)

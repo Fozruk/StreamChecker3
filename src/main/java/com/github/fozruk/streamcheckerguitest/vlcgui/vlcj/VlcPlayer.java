@@ -14,13 +14,10 @@ import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import uk.co.caprica.vlcj.player.embedded.FullScreenStrategy;
-import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import uk.co.caprica.vlcj.runtime.x.LibXUtil;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -37,8 +34,8 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
     boolean mediaIsPlaying;
     private PersistedSettingsManager persistenceManager;
 
-    private  File LIVESTREAMERPATH;
-    private  File VLCPATH;
+    private  String LIVESTREAMERPATH;
+    private  String VLCPATH;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VlcPlayer
             .class);
@@ -62,11 +59,11 @@ public class VlcPlayer implements IServerOberserver,ILivestreamerObserver {
 
     public void play(URL url,String quality) throws PropertyKeyNotFoundException, IOException {
         persistenceManager = PersistedSettingsManager.getInstance();
-        this.LIVESTREAMERPATH = persistenceManager.getLivestremer();
-        this.VLCPATH =  persistenceManager.getVideoPlayer();
+        this.LIVESTREAMERPATH = persistenceManager.getLivestreamerPath();
+        this.VLCPATH =  persistenceManager.getVideoPlayerPath();
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:\\Program Files\\VideoLAN\\VLC");
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), this
-                .VLCPATH.getAbsolutePath());
+                .VLCPATH);
 
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(),
                 LibVlc.class);

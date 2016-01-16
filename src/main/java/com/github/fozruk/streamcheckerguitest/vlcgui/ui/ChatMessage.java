@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class ChatMessage {
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatMessage.class);
     private String message;
     private String channelname;
@@ -27,9 +26,7 @@ public class ChatMessage {
     int minute;
 
     public String getUsername() {
-
         return username;
-
     }
 
     public String getColor() {
@@ -80,7 +77,6 @@ public class ChatMessage {
         Calendar rightNow = Calendar.getInstance();
         hour = rightNow.get(Calendar.HOUR_OF_DAY);
         minute = rightNow.get(Calendar.MINUTE);
-
         this.message = StringEscapeUtils.escapeHtml4(message);;
         this.color = color;
         this.username = user;

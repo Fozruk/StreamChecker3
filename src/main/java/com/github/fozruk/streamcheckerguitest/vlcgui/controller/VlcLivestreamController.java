@@ -140,7 +140,7 @@ public class VlcLivestreamController implements ChatObserver {
     }
 
     public void stopWindow() {
-
+        //TODO null checks to be sure to call both methods
         if (loaded) {
             stream.getPlayer().onShutdown(0);
             stream.getChat().disconnect();

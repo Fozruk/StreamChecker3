@@ -3,7 +3,6 @@ package com.github.fozruk.streamcheckerguitest.streamlistgui.ui;
 import com.github.epilepticz.JavaLivestreamerWrapper.ILivestreamerObserver;
 import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
-import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
 import com.github.fozruk.streamcheckerguitest.streamlistgui.controller.Controller;
@@ -23,8 +22,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import org.json.JSONException;
-import org.pircbotx.exception.IrcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -146,8 +143,8 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
                         try {
                             PersistedSettingsManager
                             manager = PersistedSettingsManager.getInstance();
-                            manager.getVideoPlayer();
-                            manager.getLivestremer();
+                            manager.getVideoPlayerPath();
+                            manager.getLivestreamerPath();
                             VlcLivestreamController gui = new VlcLivestreamController
                                     (channel);
 

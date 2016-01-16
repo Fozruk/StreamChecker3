@@ -1,11 +1,8 @@
 package com.github.fozruk.streamcheckerguitest.vlcgui.ui;
 
-import javafx.scene.Node;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
-import java.io.FileWriter;
 
 /**
  * Created by Philipp on 20.10.2015.

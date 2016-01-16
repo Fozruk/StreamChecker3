@@ -1,7 +1,6 @@
 package com.github.fozruk.streamcheckerguitest.streamlistgui.controller;
 
 import com.github.epilepticz.streamchecker.controller.StreamcheckerController;
-import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.exception.NoSuchChannelViewInOverviewException;
 import com.github.epilepticz.streamchecker.model.channel.impl.AbstractChannel;
 import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
@@ -47,12 +46,9 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
-
-import static com.github.fozruk.streamcheckerguitest.streamlistgui.ui.AddChannelForm.Channel;
 
 public class Controller implements Initializable, IOverview, IChannelobserver {
 
@@ -136,8 +132,8 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
                 fadeOut(grid);
 
                 try {
-                    settingsTextfiledLivestreamer.setText(PersistedSettingsManager.getInstance().getLivestremer().getAbsolutePath());
-                    settingsTextfiledVlc.setText(PersistedSettingsManager.getInstance().getVideoPlayer().getAbsolutePath());
+                    settingsTextfiledLivestreamer.setText(PersistedSettingsManager.getInstance().getLivestreamerPath());
+                    settingsTextfiledVlc.setText(PersistedSettingsManager.getInstance().getVideoPlayerPath());
                     loadChannels();
                 } catch (PropertyKeyNotFoundException e) {
                     e.printStackTrace();
