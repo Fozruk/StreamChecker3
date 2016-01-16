@@ -54,9 +54,6 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
     private Label isOnline;
 
     @FXML
-    private StackPane anchor;
-
-    @FXML
     private ImageView imagelol;
 
     @FXML
@@ -100,7 +97,7 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
             }
         });
 
-        anchor.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+        addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 logger.trace("Mouse event");
@@ -113,7 +110,7 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
             }
         });
 
-        anchor.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+        addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 logger.trace("Mouse event");
@@ -227,7 +224,7 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
 
     private synchronized void loadFxml() {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/fxml/Stream.fxml"));
+                getClass().getResource("/fxml/streamComponent.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
