@@ -146,7 +146,8 @@ public class HitboxImpl extends WebSocketClient implements IChat {
                 os.flush();
             }
             try (DataInputStream is = new DataInputStream(connection.getInputStream ())) {
-                token = new JSONObject(is.readLine()).get("authToken").toString();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                token = new JSONObject(reader.readLine()).get("authToken").toString();
                 System.out.println(token);
             }
         }catch (Exception e){
