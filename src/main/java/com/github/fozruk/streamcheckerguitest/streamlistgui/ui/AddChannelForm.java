@@ -1,9 +1,5 @@
 package com.github.fozruk.streamcheckerguitest.streamlistgui.ui;
 
-import com.github.epilepticz.streamchecker.exception.CreateChannelException;
-import com.github.epilepticz.streamchecker.model.channel.impl.HitboxTVChannel;
-import com.github.epilepticz.streamchecker.model.channel.impl.TwitchTVChannel;
-import com.github.epilepticz.streamchecker.model.channel.impl.AbstractChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.fozruk.streamcheckerguitest.streamlistgui.controller.Controller;
 import javafx.animation.FadeTransition;
@@ -73,85 +69,55 @@ public class AddChannelForm extends StackPane implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        image.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                logger.trace("Entered Event");
-                if (grid.getOpacity() != 1.0) {
-                    mouseOverEffect();
-                }
+        image.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            logger.trace("Entered Event");
+            if (grid.getOpacity() != 1.0) {
+                mouseOverEffect();
             }
         });
 
-        image.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                logger.trace("Entered Event");
-                if (grid.getOpacity() != 1.0) {
-                    image.setEffect(null);
-                    deleteMouseOverEffect();
-                }
+        image.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            logger.trace("Entered Event");
+            if (grid.getOpacity() != 1.0) {
+                image.setEffect(null);
+                deleteMouseOverEffect();
             }
         });
 
-        image.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mousePresed();
-            }
+        image.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> mousePresed());
+
+        image.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+            mouseReleased();
+            fadeIn(grid);
+            fadeout(image);
+            image.setVisible(false);
         });
 
-        image.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseReleased();
-                fadeIn(grid);
-                fadeout(image);
-                image.setVisible(false);
-            }
+        cancelButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+            logger.trace("CancelButton event fired");
+            image.setVisible(true);
+            fadeout(grid);
+            fadeIn(image);
         });
 
-        cancelButton.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                logger.trace("CancelButton event fired");
+        addButton.setOnAction(event -> {
+            // logger.trace(modalMenu_backButton + " click event triggered.");
+
+            try {
+                IChannel channel;
+                Class classs = Class.forName(AddChannelForm.this.channeltype);
+                channel = (IChannel) classs.getConstructor(String.class).newInstance(AddChannelForm.this.inputField.getText());
+                Controller.getCurrentController().createChannel(channel);
+                Controller.getCurrentController().getChannelPersistanceManager().saveChannel(channel);
+            } catch (IOException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                AddChannelForm.this.inputField.setText("");
                 image.setVisible(true);
+                image.setOpacity(0.5);
                 fadeout(grid);
-                fadeIn(image);
-            }
-        });
-
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                // logger.trace(modalMenu_backButton + " click event triggered.");
-
-                try {
-                    IChannel channel;
-                    Class classs = Class.forName(AddChannelForm.this.channeltype);
-                    channel = (IChannel) classs.getConstructor(String.class).newInstance(AddChannelForm.this.inputField.getText());
-                    Controller.getCurrentController().createChannel(channel);
-                    Controller.getCurrentController().getChannelPersistanceManager().saveChannel(channel);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } finally {
-                    AddChannelForm.this.inputField.setText("");
-                    image.setVisible(true);
-                    image.setOpacity(0.5);
-                    fadeout(grid);
-                    Button btn = (Button) AddChannelForm.this.getParent().lookup("#addChannelBack");
-                    btn.fire();
-                }
+                Button btn = (Button) AddChannelForm.this.getParent().lookup("#addChannelBack");
+                btn.fire();
             }
         });
 
