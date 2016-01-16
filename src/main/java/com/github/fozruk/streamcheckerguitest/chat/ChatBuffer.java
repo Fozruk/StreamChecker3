@@ -1,7 +1,8 @@
 package com.github.fozruk.streamcheckerguitest.chat;
 
+import com.github.fozruk.streamcheckerguitest.chat.chatstatistic.ChatStatistic;
+import com.github.fozruk.streamcheckerguitest.chat.chatstatistic.ChatStatisticEventListener;
 import com.github.fozruk.streamcheckerguitest.vlcgui.ui.ChatMessage;
-import com.github.fozruk.streamcheckerguitest.vlcgui.ui.StreamWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,16 +23,16 @@ public class ChatBuffer {
     DefaultListModel model;
     private int delay = 250;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatBuffer.class);
-    private StreamWindow streamListWindow;
     private Date latest;
     private MessageStats stats;
     private double max = 0;
+    private ChatStatisticEventListener chatEventListener;
 
 
-    public ChatBuffer(DefaultListModel<ChatMessage> model,StreamWindow streamListWindow)
+    public ChatBuffer(DefaultListModel<ChatMessage> model,ChatStatisticEventListener listener)
         {
             this.model = model;
-            this.streamListWindow = streamListWindow;
+            this.chatEventListener = listener;
             this.latest = new Date();
             this.stats = new MessageStats();
         }
@@ -82,21 +83,25 @@ public class ChatBuffer {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
+
                 double receivedMessages = temp.size();
                 double timediff = new Date().getTime() - latest.getTime();
-                double dreisatz = receivedMessages / (timediff);
-                double messagesPerSec = dreisatz * 1000;
+                double tick = receivedMessages / (timediff);
+                double messagesPerSec = tick * 1000;
+                max = messagesPerSec > max ? messagesPerSec : max;
                 stats.addAverage(messagesPerSec);
-                LOGGER.info("[Timediff: "+timediff+"]Messages per Second for this " +
+
+                if (messagesPerSec > max) {
+                    max = messagesPerSec;
+                }
+
+                ChatStatistic stat = new ChatStatistic(receivedMessages,timediff,max,stats.getAverage());
+
+                chatEventListener.onChatStatisticEvent(stat);
+                LOGGER.debug("[Timediff: "+timediff+"]Messages per Second for this " +
                         "tick: " +
                         new
                         DecimalFormat("#.##").format(messagesPerSec));
-                max = messagesPerSec > max ? messagesPerSec : max;
-                streamListWindow.getTabbedPane().setTitleAt(0,   new DecimalFormat("#.##")
-                        .format(stats.getAverage()) + " Avg - " +
-                        new DecimalFormat("#.##").format(messagesPerSec) + " " +
-                        " Tick " +  new DecimalFormat("#.##").format(max) + "" +
-                        " max");
                 temp.clear();
                 latest = new Date();
                 currentlyCollecting = false;

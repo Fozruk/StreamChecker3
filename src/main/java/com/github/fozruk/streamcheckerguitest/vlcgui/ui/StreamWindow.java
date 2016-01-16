@@ -82,10 +82,6 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         }
     }
 
-    public JTabbedPane getTabbedPane() {
-        return tabbedPane;
-    }
-
     private final JTabbedPane tabbedPane;
 
     /**
@@ -271,7 +267,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
         this.setIconImage(ImageIO.read(getClass().getResource("/pictures/IconJframe.png")));
 
-        chatBuffer = new ChatBuffer(chatListModel,this);
+        chatBuffer = new ChatBuffer(chatListModel,chatWindow);
 
 
         chatSpeed = new JSpinner(new SpinnerNumberModel(250,1,2000,1));
