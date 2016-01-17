@@ -6,8 +6,11 @@ import com.github.fozruk.streamcheckerguitest.persistence.PersistenceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
+import java.awt.TrayIcon;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Philipp on 01.08.2015.
@@ -27,9 +30,9 @@ public class BalloonTipManager {
         this.trayIcon = trayIcon;
     }
 
-    public synchronized void addMessageToQueue(String message)
+    public synchronized void addMessageToQueue(String message, boolean isOnline)
     {
-        queuedStrings.append(message + "\n");
+        queuedStrings.append(message + ":" + isOnline + "\n");
         logger.debug("New String added to Queue: " + message);
         if(activeThread == null)
             showMessage();
@@ -77,7 +80,7 @@ public class BalloonTipManager {
 
                     } else if(PersistedSettingsManager.getInstance().getOs() == PersistenceManager.OperatingSystem.Linux)
                     {
-                        for(String xd : queuedStrings.toString().split("\n"))
+                        /*for(String xd : queuedStrings.toString().split("\n"))
                         {
                             //String temp = "/usr/bin/notify-send 'Info' '"+xd+"' --icon=dialog-information";
                             String[] cmd = { "/usr/bin/notify-send",
@@ -86,7 +89,17 @@ public class BalloonTipManager {
                                     xd,
                             "--icon=dialog-information"};
                             Runtime.getRuntime().exec(cmd);
-                        }
+                        }*/
+
+                        String[] cmd = { "/usr/bin/notify-send",
+                                "-t",
+                                "10000",
+                                "Streamchecker Info",
+                                generateMessage(queuedStrings.toString()),
+                                "--icon=dialog-information"};
+                        Runtime.getRuntime().exec(cmd);
+
+
                     }else if(PersistedSettingsManager.getInstance().getOs() == PersistenceManager.OperatingSystem.Mac)
                     {
                         String queued = "Channel update:\n "+ queuedStrings.toString().replace("\n"," ");
@@ -114,5 +127,37 @@ public class BalloonTipManager {
 
         activeThread.setName("BalloonTipThread");
         activeThread.start();
+    }
+
+    private String generateMessage(String string)
+    {
+        List<String> onlineChannels= new ArrayList<>();
+        List<String> offlineChannels = new ArrayList<>();
+
+        String[] channels = string.split("\n");
+        Arrays.stream(channels).forEach((channel) -> {
+            String[] temp = channel.split(":");
+            if(temp[1].equals("false"))
+                offlineChannels.add(temp[0]);
+            else
+                onlineChannels.add(temp[0]);
+        });
+
+        StringBuilder builder = new StringBuilder();
+        if(onlineChannels.size() > 0)
+        {
+            builder.append("Online \n");
+            onlineChannels.forEach((channel) -> builder.append("\\t" + channel + "\n"));
+        }
+
+        //todo remove last newline
+        if(offlineChannels.size() > 0)
+        {
+            builder.append("Offline \n");
+            offlineChannels.forEach((channel) -> builder.append("\\t" +channel + "\n" ));
+        }
+
+
+        return builder.toString();
     }
 }
