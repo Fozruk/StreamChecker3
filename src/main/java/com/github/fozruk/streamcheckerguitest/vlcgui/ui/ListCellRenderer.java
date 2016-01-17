@@ -51,12 +51,12 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
 
         if(index % 2 == 0)
         {
-            setBackground(new Color(23, 23, 23));
-            setForeground(new Color(150, 150, 150));
+            setBackground(UIManager.getColor ( "Panel.background" ));
+            //setForeground(new Color(150, 150, 150));
         } else
         {
-            setBackground(new Color(0x1E, 0x1E, 0x1E));
-            setForeground(new Color(150, 150, 150));
+           setBackground(this.darker(UIManager.getColor ( "Panel.background")));
+            //setForeground(new Color(150, 150, 150));
         }
         odd = !odd;
 
@@ -101,6 +101,10 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
     protected void finalize() throws Throwable {
         super.finalize();
         System.out.println("xd");
+    }
+
+    public Color darker(Color color) {
+        return new Color(Math.max((int)((double)color.getRed() * 0.9D), 0), Math.max((int)((double)color.getGreen() * 0.9D), 0), Math.max((int)((double)color.getBlue() * 0.9D), 0), color.getAlpha());
     }
 
 
