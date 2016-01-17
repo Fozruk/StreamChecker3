@@ -83,6 +83,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
                     st = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
                 }
                 UIManager.setLookAndFeel(st);
+                UIManager.put("Slider.paintValue", false);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
@@ -124,7 +125,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         slider.setPreferredSize(new Dimension(100, 26));
         slider.setMaximumSize(new Dimension(70, 26));
         slider.addChangeListener((e) -> controller.setVolume(slider.getValue()));
-        slider.setName("Volume");
+
         JPanel basePane = new JPanel();
         basePane.setBorder(new EmptyBorder(5, 5, 5, 5));
         basePane.setLayout(new BorderLayout(0, 0));

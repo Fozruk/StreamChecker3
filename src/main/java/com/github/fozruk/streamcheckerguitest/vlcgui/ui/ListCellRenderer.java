@@ -42,7 +42,7 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
                  "color="+person
                  .getColor()+">" +
                  person.getUsername() +
-                 "</font><br><font color=#e7e7e7>" + person.getMessage() +
+                 "</font><br><font color="+String.format("#%06x", UIManager.getColor("Button.foreground").getRGB() & 0x00FFFFFF) +">" + person.getMessage() +
                  "</font></body></html>");
 
         this.setPreferredSize(getPreferredSize());
