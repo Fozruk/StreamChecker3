@@ -266,7 +266,6 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         toggleAutoscrollBox = new JCheckBox("");
         toggleAutoscrollBox.setActionCommand("");
         toggleAutoscrollBox.setSelected(true);
-        toggleAutoscrollBox.setText("Autoscroll");
         toggleAutoscrollBox.addActionListener((e) -> {
             if (toggleAutoscrollBox.isSelected()) {
                 addAutoScroll();
