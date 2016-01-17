@@ -73,7 +73,25 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
 
             //LookAndFeel(Color.black);
+            try {
+                String st = UIManager.getSystemLookAndFeelClassName();
+                LOGGER.debug("Look and Feel String name: " + st);
 
+                if(st.equals("javax.swing.plaf.metal.MetalLookAndFeel"))
+                {
+                    LOGGER.warn("Metal Look and Feel detected, try to apply GTK Theme");
+                    st = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+                }
+                UIManager.setLookAndFeel(st);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
 
 
 
@@ -92,18 +110,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
      */
     public StreamWindow(VlcLivestreamController controller) throws IOException {
 
-        try {
-            String st = UIManager.getSystemLookAndFeelClassName();
-            UIManager.setLookAndFeel(st);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
