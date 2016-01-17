@@ -150,11 +150,13 @@ public class BalloonTipManager {
             onlineChannels.forEach((channel) -> builder.append("\\t" + channel + "\n"));
         }
 
+        //todo remove last newline
         if(offlineChannels.size() > 0)
         {
             builder.append("Offline \n");
-            offlineChannels.forEach((channel) -> builder.append("\\t" +channel ));
+            offlineChannels.forEach((channel) -> builder.append("\\t" +channel + "\n" ));
         }
+
 
         return builder.toString();
     }
