@@ -381,14 +381,14 @@ public class Controller implements Initializable, IOverview, IChannelobserver {
     }
 
     @Override
-    public void recieveNotification(IChannel sender, String message) {
+    public void recieveNotification(IChannel sender, boolean isOnline) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 list.sort(comparator);
             }
         });
-        StreamListUI.ballonManager.addMessageToQueue(message);
+        StreamListUI.ballonManager.addMessageToQueue(sender.getChannelName(),isOnline);
     }
 
     @Override

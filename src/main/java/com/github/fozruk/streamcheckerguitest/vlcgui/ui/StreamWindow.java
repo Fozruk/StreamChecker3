@@ -330,7 +330,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
     }
 
     @Override
-    public void recieveNotification(IChannel sender, String message) {
+    public void recieveNotification(IChannel sender, boolean isOnline) {
 
     }
 
