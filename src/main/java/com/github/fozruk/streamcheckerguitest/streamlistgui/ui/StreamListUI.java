@@ -71,7 +71,7 @@ public class StreamListUI extends Application {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 LOGGER.trace("Focus event " + observable + " " + oldValue + " " + newValue);
                 if (!newValue) {
-                    primaryStage.hide();
+                    //primaryStage.hide();
                 }
             }
         });

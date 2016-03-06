@@ -1,7 +1,9 @@
 package com.github.fozruk.streamcheckerguitest.streamlistgui.ui;
 
 import com.github.epilepticz.JavaLivestreamerWrapper.ILivestreamerObserver;
+import com.github.epilepticz.JavaLivestreamerWrapper.LivestreamerWrapper;
 import com.github.epilepticz.JavaLivestreamerWrapper.SortOfMessage;
+import com.github.epilepticz.JavaLivestreamerWrapper.StdinLivestreamer;
 import com.github.epilepticz.streamchecker.exception.CreateChannelException;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
@@ -30,6 +32,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Created by philipp.hentschel on 19.05.15.
@@ -79,6 +82,9 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
 
     @FXML
     private StackPane stackPane;
+
+    @FXML
+    private Button vlcButton;
 
     private IChannel channel;
 
@@ -162,6 +168,24 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
                 });
                 thread.setName("VLC Thread - " + channel.getChannelName());
                 thread.start();
+            }
+        });
+
+        vlcButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    PersistedSettingsManager
+                            manager = PersistedSettingsManager.getInstance();
+                    new StdinLivestreamer(manager.getLivestreamerPath(), manager.getVideoPlayerPath())
+                            .startLivestreamerWithURL(new URL(channel
+                                    .getChannelLink()),
+                            "best");
+                } catch (PropertyKeyNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

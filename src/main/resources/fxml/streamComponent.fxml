@@ -94,7 +94,10 @@
                 </HBox>
                 <HBox fx:id="buttonBox1" alignment="CENTER" spacing="11.0" visible="false">
                     <children>
-                        <Button fx:id="watchVlc" mnemonicParsing="false" text="VLC" />
+                        <Button fx:id="watchVlc" mnemonicParsing="false"
+                                text="Gui" />
+                        <Button fx:id="vlcButton" mnemonicParsing="false"
+                                text="Native VLC"/>
                         <Button fx:id="watchBrowser" mnemonicParsing="false" text="Brauser" />
                     </children>
                 </HBox>

@@ -88,7 +88,7 @@ public class VlcLivestreamController implements ChatObserver {
         } catch(UnsatisfiedLinkError e)
         {
             LOGGER.error(e.getMessage(),e);
-            String[] strings = Util.getErrorStacktraceAsStringArray(e);
+            String[] strings = Util.getStacktraceAsStringArray(e);
             for(String s : strings)
                 streamWindow.getVlcPlayerCanvas().appendMessage(s);
             streamWindow.getVlcPlayerCanvas().appendMessage("");

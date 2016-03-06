@@ -18,15 +18,7 @@ public class Util {
         JOptionPane.showMessageDialog(null,message + "\n" + writer.toString(), "ERROR", 0);
     }
 
-    public static String[] getStacktraceAsStringArray(Exception e)
-    {
-        StringWriter writer = new StringWriter();
-        PrintWriter r = new PrintWriter(writer);
-        e.printStackTrace(r);
-        return writer.toString().split("\n");
-    }
-
-    public static String[] getErrorStacktraceAsStringArray(Error e)
+    public static String[] getStacktraceAsStringArray(Throwable e)
     {
         StringWriter writer = new StringWriter();
         PrintWriter r = new PrintWriter(writer);
