@@ -54,4 +54,9 @@ public class MockChannel implements IChannel {
     public void removeObserver(IChannelobserver observer) {
 
     }
+
+    @Override
+    public String getGameTitle() {
+        return null;
+    }
 }

@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import java.awt.*;
 import java.awt.event.*;
@@ -43,6 +44,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
     private DefaultListModel<String> viewerlist;
     private JSpinner chatSpeed;
     private ChatBuffer chatBuffer;
+    private final Font FONT = new JLabel().getFont();
 
 
     //Colors for Look and Feel
@@ -74,6 +76,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
             //LookAndFeel(Color.black);
             try {
+                setUIFont (new javax.swing.plaf.FontUIResource(new Font("Lucida Grande",Font.PLAIN, 9)));
                 String st = UIManager.getSystemLookAndFeelClassName();
                 LOGGER.debug("Look and Feel String name: " + st);
 
@@ -475,6 +478,21 @@ public class StreamWindow extends JFrame implements IChannelobserver {
 
         public void paint(Graphics2D g, JComponent object, int width, int heigth) {
             g.drawImage(path, 0, 0, object.getWidth(), object.getHeight(), null);
+        }
+    }
+
+    private static void setUIFont(javax.swing.plaf.FontUIResource f)
+    {
+        java.util.Enumeration keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements())
+        {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof javax.swing.plaf.FontUIResource)
+            {
+                System.out.println(value.toString());
+                UIManager.put(key, f);
+            }
         }
     }
 }

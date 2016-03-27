@@ -51,6 +51,9 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
     private Label uptime;
 
     @FXML
+    private Label gametitle;
+
+    @FXML
     private GridPane panes;
 
     @FXML
@@ -272,6 +275,7 @@ public class StreamPanel extends StackPane implements ILivestreamerObserver {
                 StreamPanel.this.isOnline.setText(channel.isOnline() ? "Online" : "Offline");
                 StreamPanel.this.isOnline.setStyle((!channel.isOnline() ?
                         "-fx-text-fill: #d18080;" : "-fx-text-fill: #80d181"));
+                StreamPanel.this.gametitle.setText(channel.getGameTitle());
 
             }
         });

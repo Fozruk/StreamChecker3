@@ -35,10 +35,7 @@ public class ListCellRenderer extends JLabel implements javax.swing.ListCellRend
         setAlignmentY(0);
 
          setText("<html><body><font " +
-                 "color=\"#8c8c8c\">"+person.getTime()+"</font><font-" +
-                 " " +
-                 "family:'Helvetica Neue', Helvetica, Arial, " +
-                 "sans-serif><font " +
+                 "color=\"#8c8c8c\">"+person.getTime()+"</font><font " +
                  "color="+person
                  .getColor()+">" +
                  person.getUsername() +
