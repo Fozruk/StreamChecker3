@@ -76,7 +76,7 @@ public class BalloonTipManager {
                 try {
                     if(PersistedSettingsManager.getInstance().getOs() == PersistenceManager.OperatingSystem.Windows)
                     {
-                        trayIcon.displayMessage("Info", builder.toString(), TrayIcon.MessageType.INFO);
+                        trayIcon.displayMessage("Info", generateMessage(builder.toString()).replace("\\t",""), TrayIcon.MessageType.INFO);
 
                     } else if(PersistedSettingsManager.getInstance().getOs() == PersistenceManager.OperatingSystem.Linux)
                     {

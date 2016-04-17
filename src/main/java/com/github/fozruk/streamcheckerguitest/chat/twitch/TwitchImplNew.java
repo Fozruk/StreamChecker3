@@ -59,7 +59,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
                 .getValue("TwitchTV.token");
 
         this.channel = channel;
-        startWhisperServerIfNeeded();
+        //startWhisperServerIfNeeded();
     }
 
     //Hier kommen IRC Messages an
@@ -131,7 +131,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
     public void _sendMessage(String channelname, String message) {
         if(message.startsWith("/w"))
         {
-            whisperServer.sendRaw().rawLine("PRIVMSG #"+channelname+" :"+message);
+            bot.sendRaw().rawLine("PRIVMSG #"+channelname+" :"+message);
         }else
         {
             this.tempmessage = message;

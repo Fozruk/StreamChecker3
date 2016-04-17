@@ -8,6 +8,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
@@ -32,7 +34,7 @@ public class StreamListUI extends Application {
     private static TrayIcon trayIcon;
     private static Stage primaryStage;
     public static BalloonTipManager ballonManager;
-
+    public Boolean isfocused;
 
     public static void startMainWindow() {
         launch();
@@ -67,12 +69,11 @@ public class StreamListUI extends Application {
         primaryStage.setScene(scene);
         Platform.setImplicitExit(false);
         primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 LOGGER.trace("Focus event " + observable + " " + oldValue + " " + newValue);
-                if (!newValue) {
-                    //primaryStage.hide();
-                }
+                StreamListUI.this.isfocused = newValue;
             }
         });
     }
