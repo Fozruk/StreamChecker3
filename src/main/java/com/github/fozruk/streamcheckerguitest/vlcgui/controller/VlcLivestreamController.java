@@ -54,8 +54,8 @@ public class VlcLivestreamController implements ChatObserver {
             stream.getChannel().refreshData();
             stream.getChannel().addObserver(streamWindow);
             streamWindow.getVlcPlayerCanvas().appendMessage("Init....");
-            startChat();
             startPlayer();
+            startChat();
             this.loaded = true;
         } catch (UpdateChannelException e) {
             Util.printExceptionToMessageDialog("Something is wrong with your Proxy/Internetconnection :< ", e);
@@ -106,14 +106,21 @@ public class VlcLivestreamController implements ChatObserver {
     }
 
     private void startChat() {
-        stream.getChat().setObserver(this);
-        try {
-            stream.getChat().start();
-        } catch (IOException | ReadingWebsiteFailedException | JSONException e) {
-            LOGGER.error("Error while starting chat",e);
-            _onMessage(new ChatMessage("An Error occured while starting chat," +
-                    " please restart and check log files"));
+        if(stream.getChat() != null)
+        {
+            stream.getChat().setObserver(this);
+            try {
+                stream.getChat().start();
+            } catch (IOException | ReadingWebsiteFailedException | JSONException e) {
+                LOGGER.error("Error while starting chat",e);
+                _onMessage(new ChatMessage("An Error occured while starting chat," +
+                        " please restart and check log files"));
+            }
+        } else
+        {
+            LOGGER.warn("No Chat impl found");
         }
+
     }
 
     //ResizeableList Stuffs

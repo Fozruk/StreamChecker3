@@ -74,28 +74,28 @@ public class StreamWindow extends JFrame implements IChannelobserver {
                 ("/pics/ButtonPressed.png"));
 
 
-            //LookAndFeel(Color.black);
-            try {
-                setUIFont (new javax.swing.plaf.FontUIResource(new Font("Lucida Grande",Font.PLAIN, 9)));
-                String st = UIManager.getSystemLookAndFeelClassName();
-                LOGGER.debug("Look and Feel String name: " + st);
-
-                if(st.equals("javax.swing.plaf.metal.MetalLookAndFeel"))
-                {
-                    LOGGER.warn("Metal Look and Feel detected, try to apply GTK Theme");
-                    st = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-                }
-                UIManager.setLookAndFeel(st);
-                UIManager.put("Slider.paintValue", false);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (UnsupportedLookAndFeelException e) {
-                e.printStackTrace();
-            }
+            LookAndFeel(Color.black);
+//            try {
+////                setUIFont (new javax.swing.plaf.FontUIResource(new Font("Lucida Grande",Font.PLAIN, 9)));
+////                String st = UIManager.getSystemLookAndFeelClassName();
+////                LOGGER.debug("Look and Feel String name: " + st);
+////
+////                if(st.equals("javax.swing.plaf.metal.MetalLookAndFeel"))
+////                {
+////                    LOGGER.warn("Metal Look and Feel detected, try to apply GTK Theme");
+////                    st = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+////                }
+////                UIManager.setLookAndFeel(st);
+////                UIManager.put("Slider.paintValue", false);
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            } catch (InstantiationException e) {
+//                e.printStackTrace();
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            } catch (UnsupportedLookAndFeelException e) {
+//                e.printStackTrace();
+//            }
 
 
 
@@ -373,9 +373,173 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-
-
                     UIManager.setLookAndFeel(info.getClassName());
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\".background", new javax.swing.plaf.ColorUIResource(myColor));
+                    UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.cellRenderChat\"[Disabled].textForeground", new javax.swing.plaf.ColorUIResource(myColor));
+                    UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\"[Selected].background", new javax.swing.plaf.ColorUIResource(c));
+                    UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.cellRenderChat\"[Selected].background", new javax.swing.plaf.ColorUIResource(c));
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox[Editable+Focused].backgroundPainter",
+                            new MenubarPainter(c, c.brighter()));
+                    UIManager.getLookAndFeelDefaults().put("ComboBox.disabledBackground", new javax.swing.plaf.ColorUIResource(Color.BLACK));
+                    UIManager.put("TextField.background", myColor);
+                    UIManager.put("TextField.foreground", Color.LIGHT_GRAY);
+
+                    UIManager.put("ToolBar.background", c);
+                    UIManager.getLookAndFeelDefaults().put("FileChooser.listViewBackground", myColor);
+
+                    UIManager.put("Viewport.background", myColor);
+                    UIManager.put("Viewport.foreground", Color.LIGHT_GRAY);
+
+
+                    UIManager.getLookAndFeelDefaults().put("FileChooser.background", myColor);
+                    UIManager.getLookAndFeelDefaults().put("List.Background", myColor);
+                    UIManager.getLookAndFeelDefaults().put("FileChooser[Enabled].backgroundPainter",
+                            new MenubarPainter(myColor.brighter(), myColor));
+                    UIManager.getLookAndFeelDefaults().put("MenuBar[Enabled].backgroundPainter",
+                            new MenubarPainter(new Color(127, 255, 191)));
+
+                    UIManager.getLookAndFeelDefaults().put("FileChooser.background", new javax.swing.plaf.ColorUIResource(myColor));
+                    UIManager.getLookAndFeelDefaults().put("nimbusLightBackground", new javax.swing.plaf.ColorUIResource(myColor));
+                    UIManager.getLookAndFeelDefaults().put("background", new javax.swing.plaf.ColorUIResource(myColor));
+                    UIManager.getLookAndFeelDefaults().put("menuText", new javax.swing.plaf.ColorUIResource(Color.LIGHT_GRAY));
+                    UIManager.getLookAndFeelDefaults().put("textForeground", new javax.swing.plaf.ColorUIResource(fontColor));
+                    UIManager.getLookAndFeelDefaults().put("Menu.background", new javax.swing.plaf.ColorUIResource(myColor));
+                    UIManager.getLookAndFeelDefaults().put("MenuBar.background", new javax.swing.plaf.ColorUIResource(myColor));
+                    UIManager.getLookAndFeelDefaults().put("Button[Enabled].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_NORMAL));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Disabled].textForeground",
+                            new javax.swing.plaf.ColorUIResource(myColor));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Focused].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_NORMAL));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Focused+MouseOver].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_HOVER));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[MouseOver].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_HOVER));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Default+Focused+MouseOver].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_HOVER));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Default+Focused].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_NORMAL));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Default+MouseOver].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_HOVER));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Pressed].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_PRESSED));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Default+Pressed].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_PRESSED));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Default+Focused+Pressed].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_PRESSED));
+
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Focused+Pressed].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_PRESSED));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Disabled].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_NORMAL));
+
+                    UIManager.getLookAndFeelDefaults().put("Button[Default].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_NORMAL));
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox[Enabled].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_NORMAL));
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox[MouseOver].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_HOVER));
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox[Focused+Pressed].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_PRESSED));
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox[MouseOver].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_HOVER));
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox[Focused+MouseOver].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_HOVER));
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox[Focused].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_NORMAL));
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox.background", Color.RED);
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox:\"ComboBox.listRenderer\"[Selected].background",
+                            new javax.swing.plaf.ColorUIResource(myColor));
+
+
+                    UIManager.getLookAndFeelDefaults().put("ComboBox[Disabled].backgroundPainter",
+                            new ImagePainter(new Color(127, 255, 191), BUTTON_NORMAL));
+
+                    UIManager.getLookAndFeelDefaults().put("ScrollBar:ScrollBarThumb[Enabled].backgroundPainter",
+                            new MenubarPainter(new Color(127, 255, 191).brighter().brighter()));
+
+                    UIManager.getLookAndFeelDefaults().put("ScrollBar:ScrollBarThumb[MouseOver].backgroundPainter",
+                            new MenubarPainter(new Color(127, 255, 191).brighter()));
+
+                    UIManager.getLookAndFeelDefaults().put("ScrollBar:\"ScrollBar.button\"[Enabled].foregroundPainter",
+                            new MenubarPainter(new Color(127, 255, 191).brighter()));
+
+                    UIManager.getLookAndFeelDefaults().put("ProgressBar[Enabled].backgroundPainter",
+                            new MenubarPainter(new Color(0, 0, 0), myColor));
+
+
+
+                    UIManager.getLookAndFeelDefaults().put("SplitPane.background", myColor);
+
+                    UIManager.getLookAndFeelDefaults().put("SplitPane:SplitPaneDivider[Enabled+Vertical].foregroundPainter",
+                            new MenubarPainter(new Color(0, 0, 0), myColor));
+                    UIManager.getLookAndFeelDefaults().put("SplitPane:SplitPaneDivider[Enabled].backgroundPainter",
+                            new MenubarPainter(new Color(0, 0, 0), myColor));
+                    UIManager.getLookAndFeelDefaults().put("SplitPane:SplitPaneDivider[Enabled].foregroundPainter",
+                            new MenubarPainter(new Color(0, 0, 0), myColor));
+                    UIManager.getLookAndFeelDefaults().put("SplitPane:SplitPaneDivider[Focused].backgroundPainter",
+                            new MenubarPainter(new Color(0, 0, 0), myColor));
+
+                    UIManager.getLookAndFeelDefaults().put("ProgressBar[Enabled].foregroundPainter",
+                            new MenubarPainter(c, c.darker().darker()));
+
+                    UIManager.getLookAndFeelDefaults().put("ProgressBar[Enabled+Finished].foregroundPainter",
+                            new MenubarPainter(c, c.darker().darker()));
+
+
+                    UIManager.getLookAndFeelDefaults().put("MenuItem[MouseOver].backgroundPainter",
+                            new MenubarPainter(c, c.darker().darker()));
+
+                    UIManager.getLookAndFeelDefaults().put("MenuItem.background", new javax.swing.plaf.ColorUIResource(myColor));
+                    UIManager.getLookAndFeelDefaults().put("MenuItem.foreground", new javax.swing.plaf.ColorUIResource(fontColor));
+                    UIManager.getLookAndFeelDefaults().put("MenuItem[MouseOver].textForeground", new javax.swing.plaf.ColorUIResource(fontColor));
+
+                    UIManager.getLookAndFeelDefaults().put("nimbusBase",
+                            new javax.swing.plaf.ColorUIResource(myColor));
+
+                    UIManager.getLookAndFeelDefaults().put("nimbusInfoBlue",
+                            new javax.swing.plaf.ColorUIResource(c));
+
+                    UIManager.getLookAndFeelDefaults().put("nimbusSelectionBackground",
+                            new javax.swing.plaf.ColorUIResource(c));
+
+                    UIManager.getLookAndFeelDefaults().put("Menu[Enabled+Selected].backgroundPainter",
+                            new MenubarPainter(c));
+
+                    UIManager.getLookAndFeelDefaults().put("MenuBar:Menu[Selected].backgroundPainter",
+                            new MenubarPainter(c));
+
+
+                    UIManager.getLookAndFeelDefaults().put("Separator.background",
+                            new javax.swing.plaf.ColorUIResource(Color.DARK_GRAY));
+
+                    UIManager.getLookAndFeelDefaults().put("Separator[Enabled].backgroundPainter",
+                            new MenubarPainter(myColor.brighter().brighter(), myColor.brighter().brighter()));
+
+                    UIManager.getLookAndFeelDefaults().put("Menu.background", new javax.swing.plaf.ColorUIResource(c));
+
                     break;
                 }
             }
