@@ -20,13 +20,13 @@ import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Philipp on 12.08.2015.
@@ -217,8 +217,11 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
      */
     @Override
     public void start() throws IOException, ReadingWebsiteFailedException, JSONException {
-        String json = WebUtils.readContentFrom(new URL("http://api.twitch" +
-                ".tv/api/channels/"+channel.getChannelName()+"/chat_properties"));
+        HttpsURLConnection con = (HttpsURLConnection) new URL("https://api.twitch" +
+                ".tv/api/channels/"+channel.getChannelName()+"/chat_properties").openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Client-ID","og1crpd047s8mo4ocshg1yf93x5ak3n");
+        String json = WebUtils.readContentFrom(con);
 
         JSONObject jsonObject = new JSONObject(json);
         JSONArray array = jsonObject.getJSONArray("chat_servers");

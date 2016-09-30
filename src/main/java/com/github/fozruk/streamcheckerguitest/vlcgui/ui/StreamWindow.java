@@ -4,6 +4,8 @@ import com.github.epilepticz.streamchecker.exception.ReadingWebsiteFailedExcepti
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannel;
 import com.github.epilepticz.streamchecker.model.channel.interf.IChannelobserver;
 import com.github.fozruk.streamcheckerguitest.chat.ChatBuffer;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistedSettingsManager;
+import com.github.fozruk.streamcheckerguitest.persistence.PersistenceManager;
 import com.github.fozruk.streamcheckerguitest.vlcgui.controller.VlcLivestreamController;
 import com.github.fozruk.streamcheckerguitest.vlcgui.vlcj.sampleCanvas;
 import org.json.JSONException;
@@ -30,6 +32,7 @@ public class StreamWindow extends JFrame implements IChannelobserver {
     private final ViewerList viewerList;
 
     private JSlider slider = new JSlider(0, 200);
+
     private JSplitPane splitPane;
 
     //VLC
@@ -128,11 +131,23 @@ public class StreamWindow extends JFrame implements IChannelobserver {
         slider.setPreferredSize(new Dimension(100, 26));
         slider.setMaximumSize(new Dimension(70, 26));
         slider.addChangeListener((e) -> controller.setVolume(slider.getValue()));
+        slider.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                if (e.getKeyChar() == '+')
+                {
+                    slider.setValue(slider.getValue() + 10);
+                }
+            }
+        });
 
         JPanel basePane = new JPanel();
         basePane.setBorder(new EmptyBorder(5, 5, 5, 5));
         basePane.setLayout(new BorderLayout(0, 0));
         setContentPane(basePane);
+
+
 
 
 
@@ -550,33 +565,39 @@ public class StreamWindow extends JFrame implements IChannelobserver {
     }
 
     public void setCanvasToFullscreen() {
-        if(!isInFullscreen)
-        {
+        try {
+            if(PersistedSettingsManager.getInstance().getOs() != PersistenceManager.OperatingSystem.Windows)
+            {
+                if(!isInFullscreen)
+                {
 
-            this.savedBounds = (Rectangle) this.getBounds().clone();
+                    this.savedBounds = (Rectangle) this.getBounds().clone();
 
-            isInFullscreen = true;
-            this.splitPane.getRightComponent().setVisible(false);
-            this.setAlwaysOnTop(true);
-            getCurrentScreen().setFullScreenWindow(this);
-            makeDividerVisible(false);
-            this.revalidate();
-            getVlcPlayerCanvas().revalidate();
-            this.chatWindow.revalidate();
-        } else
-        {
-            this.isInFullscreen = false;
-            this.splitPane.getRightComponent().setVisible(true);
-            makeDividerVisible(true);
-            getCurrentScreen().setFullScreenWindow(null);
-            this.setAlwaysOnTop(false);
-            this.setBounds(this.savedBounds);
-            this.revalidate();
-            getVlcPlayerCanvas().revalidate();
-            this.chatWindow.revalidate();
+                    isInFullscreen = true;
+                    this.splitPane.getRightComponent().setVisible(false);
+                    this.setAlwaysOnTop(true);
+                    getCurrentScreen().setFullScreenWindow(this);
+                    makeDividerVisible(false);
+                    this.revalidate();
+                    getVlcPlayerCanvas().revalidate();
+                    this.chatWindow.revalidate();
+                } else
+                {
+                    this.isInFullscreen = false;
+                    this.splitPane.getRightComponent().setVisible(true);
+                    makeDividerVisible(true);
+                    getCurrentScreen().setFullScreenWindow(null);
+                    this.setAlwaysOnTop(false);
+                    this.setBounds(this.savedBounds);
+                    this.revalidate();
+                    getVlcPlayerCanvas().revalidate();
+                    this.chatWindow.revalidate();
+                }
+                //this.pack();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //this.pack();
-
     }
 
     private void makeDividerVisible(boolean b) {
