@@ -219,7 +219,7 @@ public class TwitchImplNew extends ListenerAdapter implements IChat
     public void start() throws IOException, ReadingWebsiteFailedException, JSONException {
         HttpsURLConnection con = (HttpsURLConnection) new URL("https://api.twitch" +
                 ".tv/api/channels/"+channel.getChannelName()+"/chat_properties").openConnection();
-        con.setRequestMethod("POST");
+        con.setRequestMethod("GET");
         con.setRequestProperty("Client-ID","og1crpd047s8mo4ocshg1yf93x5ak3n");
         String json = WebUtils.readContentFrom(con);
 
